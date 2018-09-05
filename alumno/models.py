@@ -1,94 +1,109 @@
 from django.db import models
-
+from django.conf import settings
+ 
 class Alumno(models.Model):
-	numero_registro
-	carrera
-	mail
-	curriculum
-	descripcion_intereses
-	descripcion_habilidades
-	ultima_actualizacion_perfil
-	ultima_postulacion
-	ultimo_ingreso
-	nombre
-	apellido
-	prioridad
-	condicion_acreditacion
-	expedicion_acreditacion
-	comentarios_comision_carrera
-	comentarios_carrera_visibles
-	comentarios_comision_pps
-
+    numero_registro = models.PositiveIntegerField(primary_key = True)
+    carrera = models.ForeignKey('Carrera', on_delete = models.CASCADE)
+    mail = models.EmailField(unique = True)
+    curriculum = models.FileField(upload_to='curriculums/')
+    descripcion_intereses = models.TextField(max_length = 500)
+    descripcion_habilidades = models.TextField(max_length = 1000)
+    ultima_actualizacion_perfil = models.DateTimeField()
+    ultima_postulacion = models.DateTimeField()
+    ultimo_ingreso = models.DateTimeField()
+    primer_ingreso = models.DateTimeField(auto_now_add = True)
+    nombre = models.CharField(max_length = 30)
+    apellido = models.CharField(max_length = 20)
+    prioridad = models.PositiveSmallIntegerField()
+    condicion_acreditacion = models.NullBooleanField()
+    expedicion_acreditacion = models.TextField(max_length = 500)
+    comentarios_comision_carrera = models.TextField(max_length = 1000)
+    comentarios_carrera_visibles = models.BooleanField()
+    comentarios_comision_pps = models.TextField(max_length = 1000)
+ 
 class Carrera(models.Model):
-    departamento
-    nombre
-    duracion
-    super_usuario
+    departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
+    nombre = models.CharField(max_length = 100)
+    duracion = models.PositiveSmallIntegerField()
+    super_usuario = models.ForeignKey('SuperUsuario', on_delete = models.CASCADE)
+    class Meta:
+    	unique_together = (("departamento", "nombre"),)
 
 class SubcomisionCarrera(models.Model):
-	carrera
-	docente
-
+    carrera = models.ForeignKey('Carrera', on_delete = models.CASCADE)
+    docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
+    class Meta:
+    	unique_together = (("carrera", "docente"),)
+ 
 class SubcomisionPasantiasPPS(models.Model):
-	departamento
-	docente
-
+    departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
+    docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
+    class Meta:
+    	unique_together = (("departamento", "docente"),)
+ 
 class Docente(models.Model):
-	numero_registro
-	nombre
-	apellido
-	departamento
-	mail
-	telefono
-	box_oficina
-
+    numero_registro = models.PositiveIntegerField(primary_key = True)
+    nombre = models.CharField(max_length = 30)
+    apellido = models.CharField(max_length = 20)
+    departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
+    mail = models.EmailField(unique = True)
+    box_oficina = models.CharField(max_length = 30)
+ 
 class Pasantia(models.Model):
-	fecha_inicio
-	fecha_fin
-	empresa
-	alumno
-	tutor_docente
-	tutor_empresa
-	entrevista
-	informe
-	numero_legajo
-	comentarios_empresa
-	comentarios_comision_pps
-
+    fecha_inicio = models.DateTimeField(auto_now_add = True)
+    fecha_fin = models.DateTimeField()
+    tutor_docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
+    tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete = models.CASCADE)
+    entrevista = models.OneToOneField('Entrevista', on_delete = models.CASCADE, primary_key = True)
+    informe = models.FileField(upload_to='informes/')
+    numero_legajo = models.PositiveIntegerField(unique = True, null=True)
+    comentarios_empresa = models.TextField(max_length = 1000)
+    comentarios_comision_pps = models.TextField(max_length = 1000)
+ 
+class TutorEmpresa(models.Model):
+    empresa = models.ForeignKey('Empresa', on_delete = models.CASCADE)
+    nombre = models.CharField(max_length = 30)
+    apellido = models.CharField(max_length = 20)
+    cargo = models.CharField(max_length = 30)
+    mail = models.EmailField(primary_key = True)
+ 
 class Entrevista(models.Model):
-	alumno
-	empresa
-	fecha
-	resultado
-	comentarios_empresa
-	comentarios_comision_pps
-
+    alumno = models.ForeignKey('Alumno', on_delete = models.CASCADE)
+    empresa = models.ForeignKey('Empresa', on_delete = models.CASCADE)
+    fecha = models.DateTimeField()
+    resultado = models.TextField(max_length = 1000)
+    comentarios_empresa = models.TextField(max_length = 1000)
+    comentarios_comision_pps = models.TextField(max_length = 1000)
+    class Meta:
+    	unique_together = (("alumno", "empresa"),)
+ 
 class Empresa(models.Model):
-	nombre
-	password
-	descripcion
-	departamento
-
+    nombre = models.CharField(max_length = 50)
+    password = models.CharField(max_length = 20)
+    descripcion = models.TextField(max_length = 500)
+    departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
+    class Meta:
+    	unique_together = (("nombre", "departamento"),)
+ 
 class Puesto(models.Model):
-	empresa
-	nombre
-	descripcion
-	dedicacion
-	horario
-	remuneracion
-
+	puesto_id = models.AutoField(primary_key = True)
+	empresa = models.ForeignKey('Empresa', on_delete = models.CASCADE)
+	nombre = models.CharField(max_length = 50)
+	descripcion = models.TextField(max_length = 1000)
+	dedicacion = models.PositiveSmallIntegerField()
+	horario = models.CharField(max_length = 20)
+	remuneracion = models.DecimalField(max_digits=8, decimal_places=2, default = 0)
+ 
 class Postulaciones(models.Model):
-	empresa
-	alumno
-	fecha
+    empresa = models.ForeignKey('Empresa', on_delete = models.CASCADE)
+    alumno = models.ForeignKey('Alumno', on_delete = models.CASCADE)
+    fecha = models.DateTimeField()
+    class Meta:
+    	unique_together = (("empresa", "alumno"),)
 
 class Departamento(models.Model):
-	nombre
-	super_usuario
-	director
-	facutlad
+    nombre = models.CharField(max_length = 50, primary_key = True)
+    super_usuario = models.ForeignKey('SuperUsuario', on_delete = models.CASCADE)
 
-class Facultad(model.Model):
-	nombre
-	decano
-	vice_decano
+class SuperUsuario(models.Model):
+	user = settings.AUTH_USER_MODEL
