@@ -20,26 +20,35 @@ class Alumno(models.Model):
     comentarios_comision_carrera = models.TextField(max_length = 1000)
     comentarios_carrera_visibles = models.BooleanField()
     comentarios_comision_pps = models.TextField(max_length = 1000)
+    user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
+    def __str__(self):
+    	return self.numero_registro
  
 class Carrera(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
     nombre = models.CharField(max_length = 100)
     duracion = models.PositiveSmallIntegerField()
-    super_usuario = settings.AUTH_USER_MODEL
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
     class Meta:
     	unique_together = (("departamento", "nombre"),)
+    def __str__(self):
+    	return self.nombre
 
 class SubcomisionCarrera(models.Model):
     carrera = models.ForeignKey('Carrera', on_delete = models.CASCADE)
     docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
     class Meta:
     	unique_together = (("carrera", "docente"),)
+    def __str__(self):
+    	return self.carrera + " - " + self.docente
  
 class SubcomisionPasantiasPPS(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
     docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
     class Meta:
     	unique_together = (("departamento", "docente"),)
+    def __str__(self):
+    	return self.departamento + " - " + self.docente
  
 class Docente(models.Model):
     numero_registro = models.PositiveIntegerField(primary_key = True)
@@ -48,6 +57,9 @@ class Docente(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete = models.DO_NOTHING, null = True)
     mail = models.EmailField(unique = True)
     box_oficina = models.CharField(max_length = 30)
+    user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
+    def __str__(self):
+    	return self.nombre
  
 class Pasantia(models.Model):
     fecha_inicio = models.DateTimeField(auto_now_add = True)
@@ -59,6 +71,8 @@ class Pasantia(models.Model):
     numero_legajo = models.PositiveIntegerField(unique = True, null=True)
     comentarios_empresa = models.TextField(max_length = 1000)
     comentarios_comision_pps = models.TextField(max_length = 1000)
+    def __str__(self):
+    	return self.entrevista
  
 class TutorEmpresa(models.Model):
     empresa = models.ForeignKey('Empresa', on_delete = models.DO_NOTHING)
@@ -66,6 +80,9 @@ class TutorEmpresa(models.Model):
     apellido = models.CharField(max_length = 20)
     cargo = models.CharField(max_length = 30)
     mail = models.EmailField(primary_key = True)
+    def __str__(self):
+    	return self.nombre
+ 
  
 class Entrevista(models.Model):
     alumno = models.ForeignKey('Alumno', on_delete = models.DO_NOTHING)
@@ -76,14 +93,19 @@ class Entrevista(models.Model):
     comentarios_comision_pps = models.TextField(max_length = 1000)
     class Meta:
     	unique_together = (("alumno", "empresa"),)
+     def __str__(self):
+    	return self.empresa + " - " + self.alumno
  
 class Empresa(models.Model):
     nombre = models.CharField(max_length = 50)
-    password = models.CharField(max_length = 20)
     descripcion = models.TextField(max_length = 500)
     departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
+    user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
     class Meta:
     	unique_together = (("nombre", "departamento"),)
+    def __str__(self):
+    	return self.nombre
+
  
 class Puesto(models.Model):
 	puesto_id = models.AutoField(primary_key = True)
@@ -93,6 +115,8 @@ class Puesto(models.Model):
 	dedicacion = models.PositiveSmallIntegerField()
 	horario = models.CharField(max_length = 20)
 	remuneracion = models.DecimalField(max_digits=8, decimal_places=2, default = 0)
+	def __str__(self):
+    	return self.nombre
  
 class Postulaciones(models.Model):
     empresa = models.ForeignKey('Empresa', on_delete = models.CASCADE)
@@ -100,13 +124,19 @@ class Postulaciones(models.Model):
     fecha = models.DateTimeField()
     class Meta:
     	unique_together = (("empresa", "alumno"),)
+    def __str__(self):
+    	return self.carrera + " - " + self.docente
 
 class Departamento(models.Model):
     nombre = models.CharField(max_length = 50, primary_key = True)
-    super_usuario = settings.AUTH_USER_MODEL
+    user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
+    def __str__(self):
+    	return self.nombre
 
 class DirectorDepartamento(models.Model):
 	departamento = models.ForeignKey('Departamento', on_delete = models.CASCADE)
 	docente = models.ForeignKey('Docente', on_delete = models.CASCADE)
 	class Meta:
 		unique_together = (("departamento", "docente"),)
+	def __str__(self):
+    	return self.departamento + " - " + self.docente
