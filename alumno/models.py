@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+
  
 class Alumno(models.Model):
     numero_registro = models.PositiveIntegerField(primary_key = True)
@@ -57,7 +59,7 @@ class Docente(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete = models.DO_NOTHING, null = True)
     mail = models.EmailField(unique = True)
     box_oficina = models.CharField(max_length = 30)
-    user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
     def __str__(self):
     	return self.nombre
  
@@ -140,3 +142,13 @@ class DirectorDepartamento(models.Model):
 		unique_together = (("departamento", "docente"),)
 	def __str__(self):
     	return self.departamento + " - " + self.docente
+
+
+class User(AbstractUser):
+	es_alumno = models.BooleanField(default=False)
+    es_docente = models.BooleanField(default=False)
+    es_comision_carrera = models.BooleanField(default=False)
+    es_comision_pasantias = models.BooleanField(default=False)
+    es_empresa = models.BooleanField(default=False)
+    def __str__(self):
+    	return self.get_id_display()
