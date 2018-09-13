@@ -142,7 +142,6 @@ class DirectorDepartamento(models.Model):
 	def __str__(self):
 		return self.departamento + " - " + self.docente
 
-
 class User(AbstractUser):
 	es_alumno = models.BooleanField(default=False)
 	es_docente = models.BooleanField(default=False)
