@@ -1,0 +1,10 @@
+{% if alumno %}
+    <ul>
+        <li>{{ alumno.numero_registro }}</li>
+        <li>{{ alumno.nombre }}</li>
+        <li>{{ alumno.apellido }}</li>
+        <li>{{ alumno.carrera }}</li>
+    </ul>
+{% else %}
+    <p>{{ question }}</p>
+{% endif %}

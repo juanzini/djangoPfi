@@ -1,0 +1,9 @@
+{% if alumnos %}
+    <ul>
+    {% for alumno in alumnos %}
+        <li><a href="{% url 'detail' alumno.numero_registro %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay alumnos are desponibles.</p>
+{% endif %}

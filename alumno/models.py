@@ -1,35 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import date
 
  
 class Alumno(models.Model):
-	numero_registro = models.PositiveIntegerField(unique = True)
-	carrera = models.ForeignKey('Carrera', on_delete = models.DO_NOTHING)
+	numero_registro = models.PositiveIntegerField(primary_key = True)
+	carrera = models.OneToOneField('Carrera', on_delete = models.DO_NOTHING)
 	mail = models.EmailField(unique = True)
-	curriculum = models.FileField(upload_to='curriculums/')
-	descripcion_intereses = models.TextField(max_length = 500)
-	descripcion_habilidades = models.TextField(max_length = 1000)
-	ultima_actualizacion_perfil = models.DateTimeField()
-	ultima_postulacion = models.DateTimeField()
-	ultimo_ingreso = models.DateTimeField()
-	primer_ingreso = models.DateTimeField(auto_now_add = True)
+	curriculum = models.FileField(upload_to='curriculums/', blank=True, null = True)
+	descripcion_intereses = models.TextField(max_length = 500, blank=True, null = True)
+	descripcion_habilidades = models.TextField(max_length = 1000, blank=True, null = True)
+	ultima_actualizacion_perfil = models.DateField(default = date.today)
+	ultima_postulacion = models.DateField(null = True, blank=True)
+	ultimo_ingreso = models.DateField(default = date.today)
+	primer_ingreso = models.DateField(auto_now_add = True)
 	nombre = models.CharField(max_length = 30)
 	apellido = models.CharField(max_length = 20)
 	prioridad = models.PositiveSmallIntegerField()
 	condicion_acreditacion = models.NullBooleanField()
-	expedicion_acreditacion = models.TextField(max_length = 500)
-	comentarios_comision_carrera = models.TextField(max_length = 1000)
-	comentarios_carrera_visibles = models.BooleanField()
-	comentarios_comision_pps = models.TextField(max_length = 1000)
-	user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key = True)
+	expedicion_acreditacion = models.TextField(max_length = 500, null = True, blank=True)
+	comentarios_comision_carrera = models.TextField(max_length = 1000, null = True, blank=True)
+	comentarios_carrera_visibles = models.BooleanField(default = False)
+	comentarios_comision_pps = models.TextField(max_length = 1000, null = True, blank=True)
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	def __str__(self):
-		return self.numero_registro
+		return str(self.numero_registro)
  
 class Carrera(models.Model):
 	departamento = models.OneToOneField('Departamento', on_delete = models.CASCADE)
-	nombre = models.CharField(max_length = 100)
+	nombre = models.CharField(max_length = 100,  primary_key = True)
 	duracion = models.PositiveSmallIntegerField()
-	user = models.OneToOneField('User', on_delete=models.CASCADE, primary_key = True)
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	class Meta:
 		unique_together = (("departamento", "nombre"),)
 	def __str__(self):
@@ -148,5 +149,3 @@ class User(AbstractUser):
 	es_comision_carrera = models.BooleanField(default=False)
 	es_comision_pasantias = models.BooleanField(default=False)
 	es_empresa = models.BooleanField(default=False)
-	def __str__(self):
-		return self.get_id_display()
