@@ -1,46 +1,13 @@
-{% load i18n %}
-<!DOCTYPE html>
-<html lang="es">
+{% extends "base.html" %}
 
-<head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
-    <title>{% block title %}Login{% endblock %}</title>
-</head>
-
-<body>
-    <div id="header">
-    {% block header %}
-    <a href="{% url 'base' %}">{% trans "Home" %}</a> |
-
-    {% if user.is_authenticated %}
-        {% trans "Logged in" %}: {{ user.username }}
-        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>)
+{% block content %}
+    {% if alumnos %}
+        <ul>
+        {% for alumno in alumnos %}
+            <li><a href="{% url 'detail' alumno.numero_registro %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></li>
+        {% endfor %}
+        </ul>
     {% else %}
-       <a href="{% url 'auth_login' %}?next=/base/">{% trans "Log in" %}</a>
+        <p>No hay alumnos are desponibles.</p>
     {% endif %}
-    <hr />
-    {% endblock %}
-    </div>
-
-    <div id="content">
-    {% block content %}
-        {% if alumnos %}
-            <ul>
-            {% for alumno in alumnos %}
-                <li><a href="{% url 'detail' alumno.numero_registro %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No hay alumnos are desponibles.</p>
-        {% endif %}
-    {% endblock %}
-    </div>
-
-    <div id="footer">
-    {% block footer %}
-        <hr />
-    {% endblock %}
-    </div>
-</body>
-
-</html>
+{% endblock %}

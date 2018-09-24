@@ -6,4 +6,4 @@ https://simpleisbetterthancomplex.com/tutorial/2018/01/18/how-to-implement-multi
 https://docs.djangoproject.com/en/2.1/topics/auth/default/#authentication-in-web-requests
 
 
-http://www.tangowithdjango.com/book17/chapters/requirements.html#sharing-your-package-list
+http://www.tangowithdjango.com/book17/chapters/forms.html

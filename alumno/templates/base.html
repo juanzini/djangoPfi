@@ -1,9 +1,11 @@
-{% load i18n %}
 <!DOCTYPE html>
+{% load i18n %}
+{% load staticfiles %}
 <html lang="es">
 
 <head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <script src = "{% static 'js/bootstrap.js' %}"> </script>
     <title>{% block title %}Login{% endblock %}</title>
 </head>
 
@@ -13,10 +15,10 @@
     <a href="{% url 'base' %}">{% trans "Home" %}</a> |
 
     {% if user.is_authenticated %}
-        {% trans "Logged in" %}: {{ user.username }}
-        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> |
+        {% trans "Usuario" %}: {{ user.username }}
+        (<a href="{% url 'auth_logout' %}">{% trans 'Log out' %}</a>)
     {% else %}
-       <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
+       <a href="{% url 'auth_login' %}">{% trans 'Log in' %}</a>
     {% endif %}
     <hr />
     {% endblock %}
@@ -31,6 +33,8 @@
         <hr />
     {% endblock %}
     </div>
+
+    <img src="{% static 'images/rango-picture.png' %}" alt="Picture of Rango" />
 </body>
 
 </html>
