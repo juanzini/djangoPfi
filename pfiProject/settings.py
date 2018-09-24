@@ -30,6 +30,13 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
 # Application definition
 
+REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
+ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de una semana; usted puede, por supuesto, usar un valor diferente.
+REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
+LOGIN_REDIRECT_URL  =  '/index'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
+LOGIN_URL  =  '/index/base'   # Los usuarios de la página están dirigidas a si no están conectadas,
+                                                                # e intentan acceder a las páginas que requieren autenticación
+
 INSTALLED_APPS = [
 	'alumno.apps.AlumnoConfig',
     'django.contrib.admin',
@@ -38,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_registration',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -68,8 +75,6 @@ TEMPLATES = [
         },
     },
 ]
-
-ACCOUNT_ACTIVATION_DAYS = 1
 
 WSGI_APPLICATION = 'pfiProject.wsgi.application'
 

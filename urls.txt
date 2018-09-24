@@ -4,3 +4,6 @@ https://docs.djangoproject.com/es/2.1/ref/models/relations/
 https://docs.google.com/document/d/1vRl5w9apE66_AEL2WmKv4zLXZ_tGR8dqpEeXebFZ-VQ/edit
 https://simpleisbetterthancomplex.com/tutorial/2018/01/18/how-to-implement-multiple-user-types-with-django.html
 https://docs.djangoproject.com/en/2.1/topics/auth/default/#authentication-in-web-requests
+
+
+http://www.tangowithdjango.com/book17/chapters/requirements.html#sharing-your-package-list

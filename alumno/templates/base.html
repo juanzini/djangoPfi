@@ -14,26 +14,16 @@
 
     {% if user.is_authenticated %}
         {% trans "Logged in" %}: {{ user.username }}
-        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a>)
+        (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> |
     {% else %}
-       <a href="{% url 'auth_login' %}?next=/base/">{% trans "Log in" %}</a>
+       <a href="{% url 'auth_login' %}">{% trans "Log in" %}</a>
     {% endif %}
     <hr />
     {% endblock %}
     </div>
 
     <div id="content">
-    {% block content %}
-        {% if alumnos %}
-            <ul>
-            {% for alumno in alumnos %}
-                <li><a href="{% url 'detail' alumno.numero_registro %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No hay alumnos are desponibles.</p>
-        {% endif %}
-    {% endblock %}
+    {% block content %}{% endblock %}
     </div>
 
     <div id="footer">

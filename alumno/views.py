@@ -1,7 +1,4 @@
-from django.shortcuts import get_object_or_404, render
 from django.views import generic
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 from .models import Alumno
 
@@ -19,3 +16,6 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
 	model = Alumno
 	template_name = 'alumno/alumno_detail.html'
+
+class BaseView(generic.TemplateView):
+	template_name = 'base.html'
