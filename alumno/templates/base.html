@@ -1,40 +1,23 @@
+{% load bootstrap4 %}
+
 <!DOCTYPE html>
-{% load i18n %}
-{% load staticfiles %}
 <html lang="es">
+    <head>
+        {% bootstrap_css %}
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-<head>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-    <script src = "{% static 'js/bootstrap.js' %}"> </script>
-    <title>{% block title %}Login{% endblock %}</title>
-</head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <!-- Navbar -->
+        {% include "navbar.html" %}
 
-<body>
-    <div id="header">
-    {% block header %}
-    <a href="{% url 'base' %}">{% trans "Home" %}</a> |
+        <!-- Content -->
+        <div id="content" class="container" style="margin-top:60px">
+            {% block content %}{% endblock %}
+        </div>
 
-    {% if user.is_authenticated %}
-        {% trans "Usuario" %}: {{ user.username }}
-        (<a href="{% url 'auth_logout' %}">{% trans 'Log out' %}</a>)
-    {% else %}
-       <a href="{% url 'auth_login' %}">{% trans 'Log in' %}</a>
-    {% endif %}
-    <hr />
-    {% endblock %}
-    </div>
-
-    <div id="content">
-    {% block content %}{% endblock %}
-    </div>
-
-    <div id="footer">
-    {% block footer %}
-        <hr />
-    {% endblock %}
-    </div>
-
-    <img src="{% static 'images/rango-picture.png' %}" alt="Picture of Rango" />
-</body>
-
+        <!-- Scripts -->
+        {% bootstrap_javascript jquery='full' %}
+    </body>
 </html>

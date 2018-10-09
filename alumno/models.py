@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
 
- 
+
 class Alumno(models.Model):
 	numero_registro = models.PositiveIntegerField(primary_key = True)
 	carrera = models.OneToOneField('Carrera', on_delete = models.DO_NOTHING)
@@ -23,9 +23,11 @@ class Alumno(models.Model):
 	comentarios_carrera_visibles = models.BooleanField(default = False)
 	comentarios_comision_pps = models.TextField(max_length = 1000, null = True, blank=True)
 	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
+
 	def __str__(self):
 		return str(self.numero_registro)
- 
+
+
 class Carrera(models.Model):
 	departamento = models.OneToOneField('Departamento', on_delete = models.CASCADE)
 	nombre = models.CharField(max_length = 100,  primary_key = True)

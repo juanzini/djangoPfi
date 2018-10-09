@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Usuarios</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Carrera</td>
+                        <td>Acciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alumno in alumno_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detail-alumno' alumno.pk %}">{{ alumno.nombre }}</a>
+                            </td>
+                            <td>{{ alumno.carrera }}</td>
+                            <td>
+                                <a href="#"><i class="fas fa-user-edit"></i></a>
+                                <a href="#"><i class="fas fa-user-minus"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

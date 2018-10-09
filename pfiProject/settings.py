@@ -36,16 +36,16 @@ REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión au
 LOGIN_REDIRECT_URL  =  '/index'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
 LOGIN_URL  =  '/index/base'   # Los usuarios de la página están dirigidas a si no están conectadas,
                                                                 # e intentan acceder a las páginas que requieren autenticación
-
 INSTALLED_APPS = [
-	'alumno.apps.AlumnoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'alumno.apps.AlumnoConfig',
     'registration',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

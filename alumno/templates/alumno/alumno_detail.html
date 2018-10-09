@@ -1,10 +1,9 @@
-{% if alumno %}
-    <ul>
-        <li>{{ alumno.numero_registro }}</li>
-        <li>{{ alumno.nombre }}</li>
-        <li>{{ alumno.apellido }}</li>
-        <li>{{ alumno.carrera }}</li>
-    </ul>
-{% else %}
-    <p>{{ question }}</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>{{ alumno.nombre }} {{ alumno.apellido }}</h2>
+        </div>
+    </div>
+{% endblock %}
