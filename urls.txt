@@ -7,3 +7,12 @@ https://docs.djangoproject.com/en/2.1/topics/auth/default/#authentication-in-web
 
 
 http://www.tangowithdjango.com/book17/chapters/forms.html
+
+
+
+
+https://getbootstrap.com/docs/4.1/components/tooltips/
+https://docs.djangoproject.com/en/2.1/ref/templates/builtins/#for
+https://fontawesome.com/icons?d=gallery&q=user
+https://django-bootstrap4.readthedocs.io/en/latest/quickstart.html#example-template
+https://docs.djangoproject.com/en/2.1/ref/class-based-views/generic-display/
