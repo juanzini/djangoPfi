@@ -1,5 +1,5 @@
 from django.views import generic
-from .models import Alumno
+from .models import Alumno, User
 
 
 class IndexView(generic.ListView):
@@ -24,6 +24,17 @@ class CreateAlumnoView(generic.CreateView):
 	model = Alumno
 	fields = ['carrera', 'mail', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'nombre', 'apellido', 'prioridad']
 	template_name = 'alumno/alumno_create.html'
+
+	def form_valid(self, form):
+		form.instance.numero_registro = self.kwargs['num_reg']
+		form.instance.user = User.objects.create_user(username='john', password=self.kwargs['pass'])
+		return super(CreateAlumnoView, self).form_valid(form)
+
+
+class EditAlumnoView(generic.UpdateView):
+	model = Alumno
+	fields = ['carrera', 'mail', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'nombre', 'apellido', 'prioridad']
+	template_name = 'alumno/alumno_edit.html'
 
 
 class ListAlumnoView(generic.ListView):

@@ -5,8 +5,7 @@ from datetime import date
 
 class Alumno(models.Model):
 	numero_registro = models.PositiveIntegerField(primary_key = True)
-	carrera = models.OneToOneField('Carrera', on_delete = models.DO_NOTHING)
-	mail = models.EmailField(unique = True)
+	carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 	curriculum = models.FileField(upload_to='curriculums/', blank=True, null = True)
 	descripcion_intereses = models.TextField(max_length = 500, blank=True, null = True)
 	descripcion_habilidades = models.TextField(max_length = 1000, blank=True, null = True)
@@ -14,8 +13,6 @@ class Alumno(models.Model):
 	ultima_postulacion = models.DateField(null = True, blank=True)
 	ultimo_ingreso = models.DateField(default = date.today)
 	primer_ingreso = models.DateField(auto_now_add = True)
-	nombre = models.CharField(max_length = 30)
-	apellido = models.CharField(max_length = 20)
 	prioridad = models.PositiveSmallIntegerField()
 	condicion_acreditacion = models.NullBooleanField()
 	expedicion_acreditacion = models.TextField(max_length = 500, null = True, blank=True)
@@ -32,7 +29,6 @@ class Carrera(models.Model):
 	departamento = models.OneToOneField('Departamento', on_delete = models.CASCADE)
 	nombre = models.CharField(max_length = 100,  primary_key = True)
 	duracion = models.PositiveSmallIntegerField()
-	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	class Meta:
 		unique_together = (("departamento", "nombre"),)
 	def __str__(self):
@@ -40,17 +36,15 @@ class Carrera(models.Model):
 
 class SubcomisionCarrera(models.Model):
 	carrera = models.OneToOneField('Carrera', on_delete = models.CASCADE)
-	docente = models.OneToOneField('Docente', on_delete = models.CASCADE)
-	class Meta:
-		unique_together = (("carrera", "docente"),)
+	docente = models.ForeignKey('Docente', on_delete = models.DO_NOTHING)
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique=True)
 	def __str__(self):
-		return self.carrera + " - " + self.docente
+		return self.carrera.__str__()
  
 class SubcomisionPasantiasPPS(models.Model):
 	departamento = models.OneToOneField('Departamento', on_delete = models.CASCADE)
-	docente = models.OneToOneField('Docente', on_delete = models.CASCADE)
-	class Meta:
-		unique_together = (("departamento", "docente"),)
+	docente = models.ForeignKey('Docente', on_delete = models.DO_NOTHING)
+	user = models.OneToOneField('User', on_delete=models.CASCADE, unique=True)
 	def __str__(self):
 		return self.departamento + " - " + self.docente
  
@@ -61,7 +55,6 @@ class Docente(models.Model):
 	departamento = models.OneToOneField('Departamento', on_delete = models.DO_NOTHING, null = True)
 	mail = models.EmailField(unique = True)
 	box_oficina = models.CharField(max_length = 30)
-	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	def __str__(self):
 		return self.nombre
  
@@ -101,12 +94,11 @@ class Entrevista(models.Model):
 		return self.empresa + " - " + self.alumno
  
 class Empresa(models.Model):
-	nombre = models.CharField(max_length = 50)
 	descripcion = models.TextField(max_length = 500)
 	departamento = models.OneToOneField('Departamento', on_delete = models.CASCADE)
 	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	class Meta:
-		unique_together = (("nombre", "departamento"),)
+		unique_together = (("user", "departamento"),)
 	def __str__(self):
 		return self.nombre
 
@@ -133,7 +125,6 @@ class Postulaciones(models.Model):
 
 class Departamento(models.Model):
 	nombre = models.CharField(max_length = 50, primary_key = True)
-	user = models.OneToOneField('User', on_delete=models.CASCADE, unique = True)
 	def __str__(self):
 		return self.nombre
 

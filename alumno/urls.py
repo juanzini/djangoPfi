@@ -13,7 +13,8 @@ urlpatterns = [
 	path('index', views.IndexView.as_view(), name='index'),
 	path('<int:pk>/', views.DetailView.as_view(), name='detail'),
 	path('', include('registration.backends.simple.urls')),
-	path('/create', views.CreateAlumnoView.as_view(), name='create-alumno'),
-	path('/list', views.ListAlumnoView.as_view(), name='list-alumno'),
-	path('/detail/<int:pk>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
+	path('create/<int:num_reg>/<int:pass>', views.CreateAlumnoView.as_view(), name='create-alumno'),
+	path('list', views.ListAlumnoView.as_view(), name='list-alumno'),
+	path('detail/<int:pk>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
+	path('edit/<int:pk>', views.EditAlumnoView.as_view(), name='edit-alumno'),
 ]
