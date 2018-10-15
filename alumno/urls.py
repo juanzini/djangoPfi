@@ -11,10 +11,9 @@ class MyRegistrationView(RegistrationView):
 urlpatterns = [
 	path('', views.BaseView.as_view(), name='base'),
 	path('index', views.IndexView.as_view(), name='index'),
-	path('<int:pk>/', views.DetailView.as_view(), name='detail'),
 	path('', include('registration.backends.simple.urls')),
-	path('create/<int:num_reg>/<int:pass>', views.CreateAlumnoView.as_view(), name='create-alumno'),
+	path('create', views.CreateAlumnoView.as_view(), name='create-alumno'),
 	path('list', views.ListAlumnoView.as_view(), name='list-alumno'),
-	path('detail/<int:pk>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
-	path('edit/<int:pk>', views.EditAlumnoView.as_view(), name='edit-alumno'),
+	path('detail/<int:num_reg>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
+	path('edit/<int:num_reg>', views.EditAlumnoView.as_view(), name='edit-alumno'),
 ]

@@ -11,30 +11,22 @@ class IndexView(generic.ListView):
 		return Alumno.objects.order_by('numero_registro')[:5]
 
 
-class DetailView(generic.DetailView):
-	model = Alumno
-	template_name = 'alumno/alumno_detail.html'
-
-
 class BaseView(generic.TemplateView):
 	template_name = 'base.html'
 
 
 class CreateAlumnoView(generic.CreateView):
 	model = Alumno
-	fields = ['carrera', 'mail', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'nombre', 'apellido', 'prioridad']
+	fields = ['username', 'password', 'numero_registro', 'first_name', 'last_name', 'email', 'carrera', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
 	template_name = 'alumno/alumno_create.html'
-
-	def form_valid(self, form):
-		form.instance.numero_registro = self.kwargs['num_reg']
-		form.instance.user = User.objects.create_user(username='john', password=self.kwargs['pass'])
-		return super(CreateAlumnoView, self).form_valid(form)
 
 
 class EditAlumnoView(generic.UpdateView):
 	model = Alumno
-	fields = ['carrera', 'mail', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'nombre', 'apellido', 'prioridad']
+	fields = ['email', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
 	template_name = 'alumno/alumno_edit.html'
+	def get_object(self):
+		return Alumno.objects.get(numero_registro=self.kwargs['num_reg'])
 
 
 class ListAlumnoView(generic.ListView):
@@ -48,3 +40,5 @@ class ListAlumnoView(generic.ListView):
 class DetailAlumnoView(generic.DetailView):
 	model = Alumno
 	template_name = 'alumno/alumno_detail.html'
+	def get_object(self):
+		return Alumno.objects.get(numero_registro=self.kwargs['num_reg'])
