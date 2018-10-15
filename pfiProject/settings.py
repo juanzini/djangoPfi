@@ -30,12 +30,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
 # Application definition
 
-REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
-ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de una semana; usted puede, por supuesto, usar un valor diferente.
-REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
-LOGIN_REDIRECT_URL  =  '/index'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
-LOGIN_URL  =  '/index/base'   # Los usuarios de la página están dirigidas a si no están conectadas,
-                                                                # e intentan acceder a las páginas que requieren autenticación
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'alumno.apps.AlumnoConfig',
-    'registration',
     'bootstrap4',
+    'registration',
 ]
 
 MIDDLEWARE = [
@@ -108,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
+ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de un día; usted puede, por supuesto, usar un valor diferente.
+REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
+LOGIN_REDIRECT_URL  =  '/redirect'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
+LOGIN_URL  =  '/accounts/login'   # Los usuarios de la página están dirigidas a si no están conectadas
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

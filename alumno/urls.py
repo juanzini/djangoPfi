@@ -1,19 +1,20 @@
 from django.urls import path, include
 from . import views
-from registration.backends.simple.views import RegistrationView
-
-# Create a new class that redirects the user to the index page, if successful at logging
-class MyRegistrationView(RegistrationView):
-    def get_success_url(self,request, user):
-        return '3024212/'
-
 
 urlpatterns = [
-	path('', views.BaseView.as_view(), name='base'),
-	path('index', views.IndexView.as_view(), name='index'),
-	path('', include('registration.backends.simple.urls')),
+	path('', views.CreateAlumnoView.as_view(), name='login-prueba'),
+    path('accounts/', include('django.contrib.auth.urls')),
+	path('redirect', views.IndexAlumnoView.as_view(), name='redirect'),
+	path('index', views.IndexAlumnoView.as_view(), name='index-alumno'),
+	path('logout', views.LogOutView.as_view(), name='logout'),
+    path('login', views.LogOutView.as_view(), name='login'),
 	path('create', views.CreateAlumnoView.as_view(), name='create-alumno'),
 	path('list', views.ListAlumnoView.as_view(), name='list-alumno'),
 	path('detail/<int:num_reg>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
 	path('edit/<int:num_reg>', views.EditAlumnoView.as_view(), name='edit-alumno'),
+	path('entrevistas/<int:num_reg>', views.ListEntrevistasAlumnoView.as_view(), name='entrevistas-alumno'),
+	path('postulaciones/<int:num_reg>', views.ListPostulacionesAlumnoView.as_view(), name='postulaciones-alumno'),
+	path('puestos/<int:num_reg>', views.ListPuestosAlumnoView.as_view(), name='puestos-alumno'),
+	path('contacto/<int:num_reg>', views.ListContactoAlumnoView.as_view(), name='contacto-alumno'),
+	path('subcomision_carrera/detail/<carrera>', views.DetailSubcomisionCarreraView.as_view(), name='detail-subcomisionCarrera'),
 ]

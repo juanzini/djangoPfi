@@ -10,7 +10,17 @@
     </head>
     <body>
         <!-- Navbar -->
-        {% include "navbar.html" %}
+            {% if alumno %}
+                {% include "navbar/alumno.html" %}
+            {% elif subcomisionCarrera %}
+                {% include "navbar/subcomisionCarrera.html" %}
+            {% elif subcomisionPasantiasPPS %}
+                {% include "navbar/subcomisionPasantiasPPS.html" %}
+            {% elif empresa %}
+                {% include "navbar/empresa.html" %}
+            {% else %}
+                {% include "navbar/login.html" %}
+            {% endif %}
 
         <!-- Content -->
         <div id="content" class="container" style="margin-top:60px">

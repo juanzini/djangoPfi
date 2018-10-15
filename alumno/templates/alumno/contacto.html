@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Docentes</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Apellido</td>
+                        <td>Mail</td>
+                        <td>Box</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for docente in docente_list %}
+                        <tr>
+                            <td>{{ docente.nombre }}</td>
+                            <td>{{ docente.apellido }}</td>
+                            <td><a href="mailto:{{docente.mail}}" mail>
+                                <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
+                            <td>{{ docente.box_oficina }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

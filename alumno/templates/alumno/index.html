@@ -1,13 +1,12 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
 
 {% block content %}
-    {% if alumnos %}
-        <ul>
-        {% for alumno in alumnos %}
-            <li><a href="{% url 'detail' alumno.numero_registro %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No hay alumnos are desponibles.</p>
-    {% endif %}
+{% if user.is_authenticated %}
+  Hi {{ alumno.username }}!
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
 {% endblock %}
