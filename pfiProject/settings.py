@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'alumno.apps.AlumnoConfig',
     'bootstrap4',
-    'registration',
+    'django_registration',
 ]
 
 MIDDLEWARE = [
