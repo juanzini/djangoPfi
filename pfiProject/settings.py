@@ -31,13 +31,13 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'alumno.apps.AlumnoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'alumno.apps.AlumnoConfig',
     'bootstrap4',
     'django_registration',
 ]

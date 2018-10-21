@@ -3,11 +3,10 @@ from . import views
 
 urlpatterns = [
 	path('', views.CreateAlumnoView.as_view(), name='login-prueba'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django_registration.backends.activation.urls')),
+	path('accounts/', include('django.contrib.auth.urls')),
 	path('redirect', views.IndexAlumnoView.as_view(), name='redirect'),
 	path('index', views.IndexAlumnoView.as_view(), name='index-alumno'),
-	path('logout', views.LogOutView.as_view(), name='logout'),
-    path('login', views.LogOutView.as_view(), name='login'),
 	path('create', views.CreateAlumnoView.as_view(), name='create-alumno'),
 	path('list', views.ListAlumnoView.as_view(), name='list-alumno'),
 	path('detail/<int:num_reg>', views.DetailAlumnoView.as_view(), name='detail-alumno'),

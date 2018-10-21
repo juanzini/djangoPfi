@@ -1,0 +1,6 @@
+activation_key : {{activation_key}}
+activation_key : {{expiration_days}}
+activation_key : {{request}}
+activation_key : {{scheme}}
+activation_key : {{site}}
+activation_key : {{user}}

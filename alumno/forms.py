@@ -25,7 +25,7 @@ class AlumnoForm(forms.ModelForm):
             'comentarios_comision_carrera',
             'comentarios_carrera_visibles',
             'comentarios_comision_pps',
-            'user'
+            'user',
         )
 
 class AlumnoFormAdmin(admin.ModelAdmin):

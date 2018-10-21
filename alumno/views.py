@@ -2,8 +2,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import Alumno, User, SubcomisionCarrera, Docente
 
-class LogOutView(generic.TemplateView):
-	template_name = 'registration/logout.html'
+
 
 class IndexAlumnoView(generic.TemplateView):
 	template_name = 'alumno/index.html'
