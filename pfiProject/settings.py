@@ -101,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_USER_MODEL = 'alumno.User'
 REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
 ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de un día; usted puede, por supuesto, usar un valor diferente.
 REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
@@ -120,9 +120,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-AUTH_USER_MODEL = 'alumno.User'
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

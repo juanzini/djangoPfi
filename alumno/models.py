@@ -6,10 +6,17 @@ import re
 
 
 class User(AbstractUser):
-    es_alumno = models.BooleanField(default=False)
-    es_comision_carrera = models.BooleanField(default=False)
-    es_comision_pasantias = models.BooleanField(default=False)
-    es_empresa = models.BooleanField(default=False)
+    AL = 'AL'
+    CC = 'CC'
+    CP = 'CP'
+    EM = 'EM'
+    TYPE_CHOICES = (
+        (AL, 'Alumno'),
+        (CC, 'Comision Carrera'),
+        (CP, 'Comision PPS'),
+        (EM, 'Empresa'),
+    )
+    tipo = models.CharField(max_length=2, choices=TYPE_CHOICES, default=AL)
 
     def __str__(self):
         return str(self.username)
