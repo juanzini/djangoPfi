@@ -1,11 +1,24 @@
+from django.contrib.auth.views import redirect_to_login
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import Alumno, User, SubcomisionCarrera, Docente
+from django.urls import reverse
+from django.shortcuts import HttpResponseRedirect
 
-
+def redirect_view(request):
+	if request.user.is_authenticated:
+		if request.user.tipo == User.AL:
+			return HttpResponseRedirect('/list')
+		if request.user.tipo == User.EM:
+			return HttpResponseRedirect(reverse('index-alumno', args=(), kwargs={'num_reg': (Alumno.objects.get(user=request.user)).numero_registro}))
+	return redirect_to_login()
 
 class IndexAlumnoView(generic.TemplateView):
+	model = Alumno
+	context_object_name = 'alumno'
 	template_name = 'alumno/index.html'
+	def get_object(self):
+		return Alumno.objects.get(numero_registro=self.kwargs['num_reg'])
 
 class CreateAlumnoView(generic.CreateView):
 	model = Alumno
