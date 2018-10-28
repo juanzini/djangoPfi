@@ -10,13 +10,13 @@
     </head>
     <body>
         <!-- Navbar -->
-            {% if alumno %}
+            {% if request.user.tipo == 'AL' %}
                 {% include "navbar/alumno.html" %}
-            {% elif subcomisionCarrera %}
+            {% elif request.user.tipo == 'CC' %}
                 {% include "navbar/subcomisionCarrera.html" %}
-            {% elif subcomisionPasantiasPPS %}
+            {% elif request.user.tipo == 'CP' %}
                 {% include "navbar/subcomisionPasantiasPPS.html" %}
-            {% elif empresa %}
+            {% elif request.user.tipo == 'EM' %}
                 {% include "navbar/empresa.html" %}
             {% else %}
                 {% include "navbar/login.html" %}

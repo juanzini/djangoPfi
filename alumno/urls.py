@@ -1,19 +1,22 @@
-from django.urls import path, include
+from django.urls import path, include, reverse
 from . import views
+from .views import permissions
+from .models import User
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 urlpatterns = [
-	path('', views.CreateAlumnoView.as_view(), name='login-prueba'),
     path('accounts/', include('django_registration.backends.activation.urls')),
 	path('accounts/', include('django.contrib.auth.urls')),
-	path('redirect', views.redirect_view, name='redirect'),
-	path('index/<int:num_reg>', views.IndexAlumnoView.as_view(), name='index-alumno'),
-	path('create', views.CreateAlumnoView.as_view(), name='create-alumno'),
+	path('redirect', login_required(views.redirect_view), name='redirect'),
+	path('create', views.create_alumno, name='create-alumno'),
 	path('list', views.ListAlumnoView.as_view(), name='list-alumno'),
-	path('detail/<int:num_reg>', views.DetailAlumnoView.as_view(), name='detail-alumno'),
-	path('alumno/edit', views.edit_alumno, name='edit-alumno'),
-	path('entrevistas/<int:num_reg>', views.ListEntrevistasAlumnoView.as_view(), name='entrevistas-alumno'),
-	path('postulaciones/<int:num_reg>', views.ListPostulacionesAlumnoView.as_view(), name='postulaciones-alumno'),
-	path('puestos/<int:num_reg>', views.ListPuestosAlumnoView.as_view(), name='puestos-alumno'),
-	path('contacto/<int:num_reg>', views.ListContactoAlumnoView.as_view(), name='contacto-alumno'),
-	path('subcomision_carrera/detail/<carrera>', views.DetailSubcomisionCarreraView.as_view(), name='detail-subcomisionCarrera'),
+	path('alumno/index', login_required(permissions(views.IndexAlumnoView.as_view(), User.AL)), name='index-alumno'),
+	path('alumno/detail', login_required(permissions(views.DetailAlumnoView.as_view(), User.AL)), name='detail-alumno'),
+	path('alumno/edit', login_required(permissions(views.edit_alumno, User.AL)), name='edit-alumno'),
+	path('alumno/entrevistas', login_required(permissions(views.ListEntrevistasAlumnoView.as_view(), User.AL)), name='entrevistas-alumno'),
+	path('alumno/postulaciones', login_required(permissions(views.ListPostulacionesAlumnoView.as_view(), User.AL)), name='postulaciones-alumno'),
+	path('alumno/puestos', login_required(permissions(views.ListPuestosAlumnoView.as_view(), User.AL)), name='puestos-alumno'),
+	path('alumno/contacto', login_required(permissions(views.ListContactoAlumnoView.as_view(), User.AL)), name='contacto-alumno'),
+	path('subcomision_carrera/detail', views.DetailSubcomisionCarreraView.as_view(), name='detail-subcomisionCarrera'),
 ]

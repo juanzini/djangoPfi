@@ -16,7 +16,7 @@
                     {% for alumno in alumno_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' alumno.numero_registro %}">{{ alumno.user.first_name }} {{ alumno.user.last_name }}</a>
+                                <a href="{% url 'detail-alumno' %}">{{ alumno.user.first_name }} {{ alumno.user.last_name }}</a>
                             </td>
                             <td>{{ alumno.carrera }}</td>
                             <td>

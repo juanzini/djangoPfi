@@ -8,7 +8,6 @@ from django.contrib.auth.forms import UserChangeForm
 
 from django.contrib.auth.admin import UserAdmin
 
-
 class AlumnoForm(forms.ModelForm):
 
     class Meta():
@@ -30,6 +29,35 @@ class AlumnoForm(forms.ModelForm):
 
 class AlumnoFormAdmin(admin.ModelAdmin):
     form = AlumnoForm
+
+class AlumnoCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.Alumno
+        fields = (
+            'numero_registro',
+            'carrera',
+            'curriculum',
+            'descripcion_intereses',
+            'descripcion_habilidades',
+            'prioridad',
+        )
+
+class UserCreateForm(UserCreationForm):
+    class Meta:
+        model = models.User
+        fields = (
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password1',
+            'password2',
+        )
+    def __init__(self, *args, **kwargs):
+        super(UserAdmin.add_form, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
 
 class AlumnoUserEditForm(forms.ModelForm):
     class Meta:
