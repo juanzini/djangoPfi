@@ -1,9 +1,15 @@
 from django.contrib.auth.views import redirect_to_login
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from .forms import AlumnoUserEditForm, AlumnoEditForm
 from .models import Alumno, User, SubcomisionCarrera, Docente
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.contrib.messages import constants as messages
+from django.shortcuts import redirect, render
+
 
 def redirect_view(request):
 	if request.user.is_authenticated:
@@ -26,9 +32,30 @@ class CreateAlumnoView(generic.CreateView):
 	template_name = 'alumno/create.html'
 
 
+@login_required
+@transaction.atomic
+def edit_alumno(request):
+	if request.method == 'POST':
+		user_form = User(request.POST, instance=request.user)
+		alumno_form = Alumno(request.POST, instance=Alumno.objects.get(user=request.user.pk))
+		if user_form.is_valid() and alumno_form.is_valid():
+			user_form.save()
+			alumno_form.save()
+			messages.success(request, _('Your profile was successfully updated!'))
+			return redirect('settings:profile')
+		else:
+			messages.error(request, _('Please correct the error below.'))
+	else:
+		user_form = AlumnoUserEditForm(instance=request.user)
+		alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
+	return render(request, 'alumno/edit.html', {
+		'user_form': user_form,
+		'alumno_form': alumno_form,
+	})
+
 class EditAlumnoView(generic.UpdateView):
 	model = Alumno
-	fields = ['email', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
+	fields = ['user', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
 	template_name = 'alumno/edit.html'
 	def get_object(self):
 		return Alumno.objects.get(numero_registro=self.kwargs['num_reg'])

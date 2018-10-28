@@ -44,7 +44,7 @@ class Alumno(models.Model):
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False)
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
 
     class Meta:
         verbose_name = 'Alumno'
@@ -71,7 +71,7 @@ class Carrera(models.Model):
 class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE)
     docente = models.ManyToManyField('Docente')
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
 
     class Meta:
         verbose_name = 'SubcomisionCarrera'
@@ -84,7 +84,7 @@ class SubcomisionCarrera(models.Model):
 class SubcomisionPasantiasPPS(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete=models.CASCADE)
     docente = models.ManyToManyField('Docente')
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pps_user')
 
     class Meta:
         verbose_name = 'SubcomisionPasantiasPPS'
@@ -164,7 +164,7 @@ class Entrevista(models.Model):
 class Empresa(models.Model):
     descripcion = models.TextField(max_length=500)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
 
     class Meta:
         verbose_name = 'Empresa'

@@ -31,6 +31,16 @@ class AlumnoForm(forms.ModelForm):
 class AlumnoFormAdmin(admin.ModelAdmin):
     form = AlumnoForm
 
+class AlumnoUserEditForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ('first_name', 'last_name', 'email')
+
+class AlumnoEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Alumno
+        fields = ('curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad')
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = models.User
