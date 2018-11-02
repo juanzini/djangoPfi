@@ -25,7 +25,7 @@ def permissions(function, typeUser):
 def redirect_view(request):
 	if request.user.is_authenticated:
 		if request.user.tipo == User.AL:
-			return HttpResponseRedirect(reverse('list-alumno'))
+			return HttpResponseRedirect(reverse('index-alumno'))
 		if request.user.tipo == User.EM:
 			return HttpResponseRedirect(reverse('index-alumno', args=(), kwargs={'num_reg': (Alumno.objects.get(user=request.user)).numero_registro}))
 		if request.user.tipo == User.CC:

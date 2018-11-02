@@ -48,7 +48,6 @@ class UserCreateForm(UserCreationForm):
         fields = (
             'first_name',
             'last_name',
-            'username',
             'email',
             'password1',
             'password2',
@@ -90,7 +89,7 @@ class MyUserCreateForm(UserCreationForm):
 class MyUserCreateAdmin(UserAdmin):
     add_form = MyUserCreateForm
     form = MyUserChangeForm
-    prepopulated_fields = {'username': ('first_name' , 'last_name', )}
+    prepopulated_fields = {'username': ('email', )}
 
     list_display = ['username', 'first_name', 'last_name', 'email', ]
 
@@ -100,7 +99,6 @@ class MyUserCreateAdmin(UserAdmin):
             'fields': (
                 'first_name',
                 'last_name',
-                'username',
                 'email',
                 'password1',
                 'password2',
@@ -115,7 +113,6 @@ class MyUserCreateAdmin(UserAdmin):
             'fields': (
                 'first_name',
                 'last_name',
-                'username',
                 'email',
                 'password',
                 'tipo',
