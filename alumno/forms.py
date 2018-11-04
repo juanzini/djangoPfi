@@ -26,9 +26,18 @@ class AlumnoForm(forms.ModelForm):
             'comentarios_comision_pps',
             'user',
         )
+        def nombre(self):
+            return self.user.first_name
+        def apellido(self):
+            return self.user.last_name
+        def username(self):
+            return self.user.username
+        def email(self):
+            return self.user.email
 
 class AlumnoFormAdmin(admin.ModelAdmin):
     form = AlumnoForm
+    list_display = [form.Meta.nombre, form.Meta.apellido, form.Meta.username, form.Meta.email]
 
 class AlumnoCreateForm(forms.ModelForm):
     class Meta:
@@ -41,6 +50,9 @@ class AlumnoCreateForm(forms.ModelForm):
             'descripcion_habilidades',
             'prioridad',
         )
+
+class PuestoListAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'empresa' ]
 
 class UserCreateForm(UserCreationForm):
     class Meta:
@@ -89,9 +101,8 @@ class MyUserCreateForm(UserCreationForm):
 class MyUserCreateAdmin(UserAdmin):
     add_form = MyUserCreateForm
     form = MyUserChangeForm
-    prepopulated_fields = {'username': ('email', )}
 
-    list_display = ['username', 'first_name', 'last_name', 'email', ]
+    list_display = ['first_name', 'last_name', 'email', ]
 
     add_fieldsets = (
         (None, {

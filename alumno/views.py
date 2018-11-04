@@ -51,12 +51,12 @@ def create_alumno(request):
 		if user_form.is_valid() and alumno_form.is_valid():
 			user = user_form.save()
 			user.refresh_from_db()
-			alumno_form = Alumno(request.POST, instance=user.alumno)
+			alumno_form = Alumno(request.POST, instance=user.Alumno)
 			alumno_form.full_clean()
 			alumno_form.save()
-			username = user_form.cleaned_data.get('username')
+			email = user_form.cleaned_data.get('email')
 			raw_password = user_form.cleaned_data.get('password1')
-			user = authenticate(username=username, password=raw_password)
+			user = authenticate(email=email, password=raw_password)
 			login(request, user)
 			return redirect('redirect')
 	else:

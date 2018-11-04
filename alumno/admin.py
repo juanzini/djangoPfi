@@ -18,6 +18,7 @@ from .models import User
 
 from .forms import AlumnoFormAdmin
 from .forms import MyUserCreateAdmin
+from .forms import PuestoListAdmin
 
 
 # Register your models here.
@@ -26,7 +27,7 @@ admin.site.register(Docente)
 admin.site.register(Pasantia)
 admin.site.register(TutorEmpresa)
 admin.site.register(Entrevista)
-admin.site.register(Puesto)
+admin.site.register(Puesto, PuestoListAdmin)
 admin.site.register(Postulaciones)
 admin.site.register(Departamento)
 admin.site.register(DirectorDepartamento)

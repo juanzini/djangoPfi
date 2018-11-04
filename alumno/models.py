@@ -4,7 +4,6 @@ from datetime import date
 from django.core.exceptions import ValidationError
 import re
 
-
 class User(AbstractUser):
     AL = 'AL'
     CC = 'CC'
@@ -18,14 +17,17 @@ class User(AbstractUser):
     )
     tipo = models.CharField(max_length=2, choices=TYPE_CHOICES, default=AL)
     USERNAME_FIELD = 'email'
-    email = models.EmailField(('email'), unique=True)
+    email = models.EmailField(('email'), unique=True, blank=False)
+    username = models.CharField(max_length=1, unique=False, blank=True)
     REQUIRED_FIELDS = []
     def __str__(self):
-        return str(self.username)
+        return str(self.first_name) + " " + str(self.last_name)
+
+    def natural_key(self):
+        return dict(email=self.email)
 
     def __firstName__(self):
         return str(self.first_name)
-
 
 class Alumno(models.Model):
     def validate_hash(value):
@@ -40,13 +42,13 @@ class Alumno(models.Model):
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
-    prioridad = models.PositiveSmallIntegerField()
+    prioridad = models.PositiveSmallIntegerField(verbose_name="Año que cursa")
     condicion_acreditacion = models.NullBooleanField()
     expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True)
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False)
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='Alumno')
 
     class Meta:
         verbose_name = 'Alumno'
@@ -73,27 +75,27 @@ class Carrera(models.Model):
 class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE)
     docente = models.ManyToManyField('Docente')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='Carrera')
 
     class Meta:
         verbose_name = 'SubcomisionCarrera'
         verbose_name_plural = 'SubcomisionesCarreras'
 
     def __str__(self):
-        return "SubcomisionCarrera " + self.carrera.__str__()
+        return self.carrera.__str__()
 
 
 class SubcomisionPasantiasPPS(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete=models.CASCADE)
     docente = models.ManyToManyField('Docente')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pps_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='Pps')
 
     class Meta:
         verbose_name = 'SubcomisionPasantiasPPS'
         verbose_name_plural = 'SubcomisionesPasantiasPPS'
 
     def __str__(self):
-        return "SubcomisionPasantias " + self.departamento.__str__()
+        return self.departamento.__str__()
 
 
 class Docente(models.Model):
@@ -166,14 +168,14 @@ class Entrevista(models.Model):
 class Empresa(models.Model):
     descripcion = models.TextField(max_length=500)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='Empresa')
 
     class Meta:
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
 
     def __str__(self):
-        return self.parent_link.__str__()
+        return self.user.__str__()
 
 
 class Puesto(models.Model):
@@ -181,8 +183,6 @@ class Puesto(models.Model):
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField(max_length=1000)
-    dedicacion = models.PositiveSmallIntegerField()
-    horario = models.CharField(max_length=20)
     remuneracion = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, null=True)
 
     class Meta:
