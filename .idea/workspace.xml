@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,6 +26,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="3" />
+          <entry key="gitignore" value="1" />
           <entry key="html" value="143" />
           <entry key="js" value="1" />
           <entry key="py" value="75" />
@@ -42,13 +38,14 @@
           <entry key="CSS" value="3" />
           <entry key="HTML" value="136" />
           <entry key="JavaScript" value="1" />
-          <entry key="PLAIN_TEXT" value="11" />
+          <entry key="PLAIN_TEXT" value="12" />
           <entry key="Python" value="75" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="13" />
+          <entry key="gitignore" value="3" />
           <entry key="html" value="2574" />
           <entry key="py" value="11966" />
           <entry key="txt" value="69" />
@@ -58,7 +55,7 @@
         <counts>
           <entry key="CSS" value="13" />
           <entry key="HTML" value="2548" />
-          <entry key="PLAIN_TEXT" value="95" />
+          <entry key="PLAIN_TEXT" value="98" />
           <entry key="Python" value="11966" />
         </counts>
       </usages-collector>
@@ -66,7 +63,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/alumno/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="190">
@@ -75,6 +72,15 @@
                 <element signature="e#0#55#0" expanded="true" />
                 <marker date="1541361343922" expanded="true" signature="863:864" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="2" selection-start-column="2" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -204,7 +210,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/alumno/templates/alumno/alumno_detail.html" />
         <option value="$PROJECT_DIR$/alumno/templates/alumno/subcomisionCarrera/subcomisionCarrera_detail.html" />
         <option value="$PROJECT_DIR$/alumno/templates/navbar/navbar_empresa.html" />
         <option value="$PROJECT_DIR$/alumno/templates/navbar/navbar_subcomisionCarrera.html" />
@@ -255,6 +260,7 @@
         <option value="$PROJECT_DIR$/alumno/models.py" />
         <option value="$PROJECT_DIR$/alumno/forms.py" />
         <option value="$PROJECT_DIR$/alumno/views.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -278,35 +284,6 @@
           <expand>
             <path>
               <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
-              <item name="alumno" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
-              <item name="alumno" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
-              <item name="alumno" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
-              <item name="alumno" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="alumno" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
               <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -369,7 +346,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="303" y="186" width="1137" height="1052" extended-state="0" />
+    <frame x="536" y="28" width="1137" height="1052" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24057451" />
@@ -396,13 +373,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/alumno/templates/django_registration/activation_email_subject.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="36" selection-start-column="36" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/alumno/templates/django_registration/activation_email_body.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -685,6 +655,13 @@
             <element signature="e#0#55#0" expanded="true" />
             <marker date="1541361343922" expanded="true" signature="863:864" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
         </state>
       </provider>
     </entry>
