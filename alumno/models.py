@@ -17,9 +17,7 @@ class User(AbstractUser):
         (EM, 'Empresa'),
     )
     tipo = models.CharField(max_length=2, choices=TYPE_CHOICES, default=AL)
-    USERNAME_FIELD = 'email'
-    email = models.EmailField(('email'), unique=True)
-    REQUIRED_FIELDS = []
+
     def __str__(self):
         return str(self.username)
 
