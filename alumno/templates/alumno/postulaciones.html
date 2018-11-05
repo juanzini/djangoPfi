@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Postulaciones</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Puesto</th>
+                        <th>Empresa</th>
+                        <th>Fecha de Postulación</th>
+                        <th>Entrevista Asignada</th>
+                        <th>Confirmación Asistencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for postulacion in postulaciones_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
+                            </td>
+                            <td>
+                                {{ postulacion.puesto.empresa }}
+                            </td>
+                            <td>
+                                {{ postulacion.fecha }}
+                            </td>
+                            <td>
+                                {% if postulacion.entrevista %}
+                                {{ postulacion.entrevista.fecha }}
+                                {% else %}
+                                <p>No Posee</p>
+                                {% endif %}
+                            </td>
+                            {% if postulacion.entrevista %}
+                            <td>
+                                {% if postulacion.entrevista.confirmada_alumno %}
+                                <p>Botón desconfirmar</p>
+                                {% else %}
+                                <p>Botón confirmar</p>
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

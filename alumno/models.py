@@ -151,6 +151,9 @@ class Entrevista(models.Model):
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
+    notificado_alumno = models.BooleanField(default=False)
+    notificado_empresa = models.BooleanField(default=False)
+    confirmada_alumno = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Entrevista'
@@ -171,7 +174,7 @@ class Empresa(models.Model):
         verbose_name_plural = 'Empresas'
 
     def __str__(self):
-        return self.parent_link.__str__()
+        return self.user.__str__()
 
 
 class Puesto(models.Model):
@@ -192,17 +195,18 @@ class Puesto(models.Model):
 
 
 class Postulaciones(models.Model):
-    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
+    puesto = models.ForeignKey('Puesto', on_delete=models.CASCADE)
     alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE)
+    entrevista = models.ForeignKey('Entrevista', on_delete=models.CASCADE, null=True, blank=True)
     fecha = models.DateTimeField()
 
     class Meta:
         verbose_name = 'Postulacion'
         verbose_name_plural = 'Postulaciones'
-        unique_together = (("empresa", "alumno"),)
+        unique_together = (("puesto", "alumno"),)
 
     def __str__(self):
-        return self.carrera + " - " + self.docente
+        return self.puesto.empresa.__str__() + " - " + self.puesto.__str__() +" - " + self.alumno.__str__()
 
 
 class Departamento(models.Model):

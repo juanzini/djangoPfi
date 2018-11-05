@@ -3,7 +3,7 @@ from django.contrib.auth import login, authenticate
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
-from .models import Alumno, User, SubcomisionCarrera, Docente
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 from django.db import transaction
@@ -118,18 +118,18 @@ class DetailSubcomisionCarreraView(generic.DetailView):
 		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
 
 class ListEntrevistasAlumnoView(generic.ListView):
-	template_name = 'alumno/list.html'
-	context_object_name = 'alumno_list'
+	template_name = 'alumno/entrevistas.html'
+	context_object_name = 'entrevista_list'
 
 	def get_queryset(self):
-		return Alumno.objects.all()
+		return Entrevista.objects.filter(alumno=self.request.user.alumno_user)
 
 class ListPostulacionesAlumnoView(generic.ListView):
-	template_name = 'alumno/list.html'
-	context_object_name = 'alumno_list'
+	template_name = 'alumno/postulaciones.html'
+	context_object_name = 'postulaciones_list'
 
 	def get_queryset(self):
-		return Alumno.objects.all()
+		return Postulaciones.objects.filter(alumno=self.request.user.alumno_user)
 
 class ListPuestosAlumnoView(generic.ListView):
 	template_name = 'alumno/list.html'
