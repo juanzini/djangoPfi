@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Puestos Ofrecidos</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Puesto</th>
+                        <th>Empresa</th>
+                        <th>Descripci&oacute;n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for puesto in puesto_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
+                            </td>
+                            <td>
+                                {{ puesto.empresa }}
+                            </td>
+                            <td>
+                                {{ puesto.horario }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

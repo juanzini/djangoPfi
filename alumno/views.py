@@ -1,9 +1,10 @@
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import login, authenticate
 from django.views import generic
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 from django.db import transaction
@@ -132,11 +133,11 @@ class ListPostulacionesAlumnoView(generic.ListView):
 		return Postulaciones.objects.filter(alumno=self.request.user.alumno_user)
 
 class ListPuestosAlumnoView(generic.ListView):
-	template_name = 'alumno/list.html'
-	context_object_name = 'alumno_list'
+	template_name = 'alumno/puestos.html'
+	context_object_name = 'puesto_list'
 
 	def get_queryset(self):
-		return Alumno.objects.all()
+		return Puesto.objects.all()
 
 class ListContactoAlumnoView(generic.ListView):
 	template_name = 'alumno/contacto.html'
@@ -144,4 +145,8 @@ class ListContactoAlumnoView(generic.ListView):
 
 	def get_queryset(self):
 		carrera = Alumno.objects.get(user=self.request.user.pk).carrera
-		return SubcomisionCarrera.objects.get(carrera=carrera).docente.all()
+		try:
+			subcomision = SubcomisionCarrera.objects.get(carrera=carrera)
+		except ObjectDoesNotExist:
+			return None
+		return subcomision.docente.all()
