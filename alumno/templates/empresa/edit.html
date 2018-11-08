@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Editar Perfil</h2>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form user_form %}
+                {% bootstrap_form empresa_form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -3,27 +3,26 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Puestos Ofrecidos</h2>
+            <h2>Entrevistas</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
-                        <th>Empresa</th>
-                        <th>Descripci&oacute;n</th>
-                        <th>Postularse</th>
+                        <th>Alumno</th>
+                        <th>Fecha</th>
+                        <th>Comentarios de la Empresa</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for puesto in puesto_list %}
+                    {% for entrevista in entrevista_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
+                                <a href="{% url 'detail-alumno' %}">{{ entrevista.alumno }}</a>
                             </td>
                             <td>
-                                {{ puesto.empresa }}
+                                {{ entrevista.fecha }}
                             </td>
                             <td>
-                                {{ puesto.horario }}
+                                {{ entrevista.comentarios_comision_pps }}
                             </td>
                         </tr>
                     {% endfor %}

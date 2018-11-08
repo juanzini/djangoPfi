@@ -3,27 +3,25 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Puestos Ofrecidos</h2>
+            <h2>Usuarios</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
-                        <th>Empresa</th>
-                        <th>Descripci&oacute;n</th>
-                        <th>Postularse</th>
+                        <th>Nombre</th>
+                        <th>Carrera</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for puesto in puesto_list %}
+                    {% for empresa in alumno_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
+                                <a href="{% url 'detail-alumno' %}">{{ empresa.user.first_name }} {{ empresa.user.last_name }}</a>
                             </td>
+                            <td>{{ empresa.carrera }}</td>
                             <td>
-                                {{ puesto.empresa }}
-                            </td>
-                            <td>
-                                {{ puesto.horario }}
+                                <a href="#"><i class="fas fa-user-edit"></i></a>
+                                <a href="#"><i class="fas fa-user-minus"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

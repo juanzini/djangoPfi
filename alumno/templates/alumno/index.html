@@ -3,10 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.first_name }} {{ user.last_name }}!
+{% if pasantia %}
+    <div class="row">
+        <div class="col">
+            <h2>Pasntía</h2>
+        </div>
+    </div>
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a>
+  <div class="row">
+        <div class="col">
+            <h2>No Tiene Pasantía Activa</h2>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}

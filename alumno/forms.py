@@ -69,6 +69,20 @@ class AlumnoEditForm(forms.ModelForm):
         model = models.Alumno
         fields = ('curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad')
 
+class EmpresaUserEditForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ('username', 'email')
+    def __init__(self, *args, **kwargs):
+        super(EmpresaUserEditForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['username'].required = True
+
+class EmpresaEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Empresa
+        fields = ('descripcion',)
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = models.User

@@ -14,16 +14,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if docente_list %}
-                        {% for docente in docente_list %}
-                            <tr>
-                                <td>{{ docente.nombre }}</td>
-                                <td>{{ docente.apellido }}</td>
-                                <td><a href="mailto:{{docente.mail}}" mail>
-                                    <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
-                                <td>{{ docente.box_oficina }}</td>
-                            </tr>
-                        {% endfor %}
+                    {% if docente %}
+                        <tr>
+                            <td>{{ docente.nombre }}</td>
+                            <td>{{ docente.apellido }}</td>
+                            <td><a href="mailto:{{docente.mail}}" mail>
+                                <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
+                            <td>{{ docente.box_oficina }}</td>
+                        </tr>
                     {% endif %}
                 </tbody>
             </table>

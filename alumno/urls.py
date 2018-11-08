@@ -18,5 +18,12 @@ urlpatterns = [
 	path('alumno/postulaciones', login_required(permissions(views.ListPostulacionesAlumnoView.as_view(), User.AL)), name='postulaciones-alumno'),
 	path('alumno/puestos', login_required(permissions(views.ListPuestosAlumnoView.as_view(), User.AL)), name='puestos-alumno'),
 	path('alumno/contacto', login_required(permissions(views.ListContactoAlumnoView.as_view(), User.AL)), name='contacto-alumno'),
+	path('empresa/index', login_required(permissions(views.IndexEmpresaView.as_view(), User.EM)), name='index-empresa'),
+	path('empresa/detail', login_required(permissions(views.DetailEmpresaView.as_view(), User.EM)), name='detail-empresa'),
+	path('empresa/edit', login_required(permissions(views.edit_empresa, User.EM)), name='edit-empresa'),
+	path('empresa/entrevistas', login_required(permissions(views.ListEntrevistasEmpresaView.as_view(), User.EM)), name='entrevistas-empresa'),
+	path('empresa/postulaciones', login_required(permissions(views.ListPostulacionesEmpresaView.as_view(), User.EM)), name='postulaciones-empresa'),
+	path('empresa/puestos', login_required(permissions(views.ListPuestosEmpresaView.as_view(), User.EM)), name='puestos-empresa'),
+	path('empresa/contacto', login_required(permissions(views.ListContactoEmpresaView.as_view(), User.EM)), name='contacto-empresa'),
 	path('subcomision_carrera/detail', views.DetailSubcomisionCarreraView.as_view(), name='detail-subcomisionCarrera'),
 ]

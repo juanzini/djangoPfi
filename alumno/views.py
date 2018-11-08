@@ -4,7 +4,9 @@ from django.views import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
+from .forms import EmpresaUserEditForm, EmpresaEditForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
+from .models import Empresa, DirectorDepartamento
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 from django.db import transaction
@@ -28,7 +30,7 @@ def redirect_view(request):
 		if request.user.tipo == User.AL:
 			return HttpResponseRedirect(reverse('index-alumno'))
 		if request.user.tipo == User.EM:
-			return HttpResponseRedirect(reverse('index-alumno', args=(), kwargs={'num_reg': (Alumno.objects.get(user=request.user)).numero_registro}))
+			return HttpResponseRedirect(reverse('index-empresa'))
 		if request.user.tipo == User.CC:
 			return HttpResponseRedirect(reverse('detail-subcomisionCarrera'))
 	return redirect_to_login(reverse('login'))
@@ -150,3 +152,74 @@ class ListContactoAlumnoView(generic.ListView):
 		except ObjectDoesNotExist:
 			return None
 		return subcomision.docente.all()
+
+# ------------------------------------------------------------------------------------------------------------
+# --------------------------EMPRESAS--------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
+
+
+class IndexEmpresaView(generic.TemplateView):
+	model = Empresa
+	template_name = 'empresa/index.html'
+	def get_object(self):
+		return Empresa.objects.get(user=self.request.user.pk)
+
+class DetailEmpresaView(generic.DetailView):
+	model = Alumno
+	context_object_name = 'empresa'
+	template_name = 'empresa/detail.html'
+	def get_object(self):
+		return Empresa.objects.get(user=self.request.user.pk)
+
+@transaction.atomic
+def edit_empresa(request):
+	if request.method == 'POST':
+		user_form = EmpresaUserEditForm(request.POST, instance=request.user)
+		empresa_form = EmpresaEditForm(request.POST, instance=Empresa.objects.get(user=request.user.pk))
+		if user_form.is_valid() and empresa_form.is_valid():
+			user_form.save()
+			empresa_form.save()
+			messages.success(request, ('Su perfil fue correctamente actualizado!'))
+			return redirect('edit-empresa')
+		else:
+			messages.error(request, ('El formulario contiene algunos errores'))
+	else:
+		user_form = EmpresaUserEditForm(instance=request.user)
+		empresa_form = EmpresaEditForm(instance=Empresa.objects.get(user=request.user.pk))
+	return render(request, 'empresa/edit.html', {
+		'user_form': user_form,
+		'empresa_form': empresa_form,
+	})
+
+class ListEntrevistasEmpresaView(generic.ListView):
+	template_name = 'empresa/entrevistas.html'
+	context_object_name = 'entrevista_list'
+
+	def get_queryset(self):
+		return Entrevista.objects.filter(empresa=self.request.user.empresa_user)
+
+class ListPostulacionesEmpresaView(generic.ListView):
+	template_name = 'empresa/postulaciones.html'
+	context_object_name = 'postulaciones_list'
+
+	def get_queryset(self):
+		return Postulaciones.objects.filter(puesto__empresa=self.request.user.empresa_user)
+
+class ListPuestosEmpresaView(generic.ListView):
+	template_name = 'empresa/puestos.html'
+	context_object_name = 'puesto_list'
+
+	def get_queryset(self):
+		return Puesto.objects.filter(empresa=self.request.user.empresa_user)
+
+class ListContactoEmpresaView(generic.ListView):
+	template_name = 'empresa/contacto.html'
+	context_object_name = 'docente'
+
+	def get_queryset(self):
+		departamento = Empresa.objects.get(user=self.request.user.pk)
+		try:
+			director = DirectorDepartamento.objects.get(departamento=(departamento.departamento))
+		except ObjectDoesNotExist:
+			return None
+		return director
