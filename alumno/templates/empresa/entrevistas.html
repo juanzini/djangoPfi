@@ -16,7 +16,7 @@
                     {% for entrevista in entrevista_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ entrevista.alumno }}</a>
+                                <a href="{% url 'alumno-detail-empresa' entrevista.alumno.numero_registro %}">{{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}</a>
                             </td>
                             <td>
                                 {{ entrevista.fecha }}

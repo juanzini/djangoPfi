@@ -18,10 +18,11 @@
                     {% for postulacion in postulaciones_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
+                                <a href="#">{{ postulacion.puesto }}</a>
                             </td>
                             <td>
-                                {{ postulacion.alumno }}
+                                <a href="{% url 'alumno-detail-empresa' postulacion.alumno.numero_registro %}">
+                                    {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}</a>
                             </td>
                             <td>
                                 {{ postulacion.fecha }}

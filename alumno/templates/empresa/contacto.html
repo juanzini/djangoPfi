@@ -1,9 +1,10 @@
 {% extends "base.html" %}
-
+{% load tags %}
 {% block content %}
+    <hr>
     <div class="row">
         <div class="col">
-            <h2>Docentes de tu comisi&oacute;n carrera</h2>
+            <h2>Director del Departamento</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -14,15 +15,67 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if docente %}
+                {% for contacto in contactos %}
+                    {% if contacto|classname == "Docente" %}
                         <tr>
-                            <td>{{ docente.nombre }}</td>
-                            <td>{{ docente.apellido }}</td>
+                            <td>{{ contacto.nombre}}</td>
+                            <td>{{ contacto.apellido }}</td>
                             <td><a href="mailto:{{docente.mail}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
-                            <td>{{ docente.box_oficina }}</td>
+                                <i class="fas fa-envelope"></i></a> {{ contacto.mail }}</td>
+                            <td>{{ contacto.box_oficina }}</td>
                         </tr>
                     {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+        <div class="col">
+            <h2>Comision de Pasantías</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for contacto in contactos %}
+                    {% if contacto|classname == "SubcomisionPasantiasPPS" %}
+                        <tr>
+                            <td><a href="mailto:{{docente.mail}}" mail>
+                                <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <div class="row">
+         <div class="col">
+            <h2>Comisiones de Carrera</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Carrera</th>
+                        <th>Mail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for contacto in contactos %}
+                    {% if contacto|classname == "SubcomisionCarrera" %}
+                        <tr>
+                            <td>{{ contacto.carrera }}</td>
+                            <td><a href="mailto:{{docente.mail}}" mail>
+                                <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
                 </tbody>
             </table>
         </div>

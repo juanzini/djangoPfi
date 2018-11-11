@@ -10,11 +10,11 @@
                         <th>Puesto</th>
                         <th>Empresa</th>
                         <th>Descripci&oacute;n</th>
-                        <th>Postularse</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for puesto in puesto_list %}
+                    {% for puesto in puestos_list %}
                         <tr>
                             <td>
                                 <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
@@ -24,6 +24,10 @@
                             </td>
                             <td>
                                 {{ puesto.horario }}
+                            </td>
+                            <td>
+                                <p>boton.editar</p>
+                                <p>boton.eliminar</p>
                             </td>
                         </tr>
                     {% endfor %}

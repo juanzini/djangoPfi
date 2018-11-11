@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
-from .models import Empresa, DirectorDepartamento
+from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect
 from django.db import transaction
@@ -205,21 +205,53 @@ class ListPostulacionesEmpresaView(generic.ListView):
 	def get_queryset(self):
 		return Postulaciones.objects.filter(puesto__empresa=self.request.user.empresa_user)
 
+class ListAlumnosEmpresaView(generic.ListView):
+	template_name = 'empresa/alumnos.html'
+	context_object_name = 'alumnos_list'
+
+	def get_queryset(self):
+		pasantias = Pasantia.objects.all()
+		if not pasantias:
+			return Alumno.objects.all()
+		return Alumno.objects.all().exclude(pk__in=pasantias.alumno)
+
 class ListPuestosEmpresaView(generic.ListView):
 	template_name = 'empresa/puestos.html'
-	context_object_name = 'puesto_list'
+	context_object_name = 'puestos_list'
 
 	def get_queryset(self):
 		return Puesto.objects.filter(empresa=self.request.user.empresa_user)
 
 class ListContactoEmpresaView(generic.ListView):
 	template_name = 'empresa/contacto.html'
-	context_object_name = 'docente'
+	context_object_name = 'contactos'
 
 	def get_queryset(self):
-		departamento = Empresa.objects.get(user=self.request.user.pk)
+		contactos = []
+		empresa = Empresa.objects.get(user=self.request.user.pk)
 		try:
-			director = DirectorDepartamento.objects.get(departamento=(departamento.departamento))
+			director = DirectorDepartamento.objects.get(departamento=empresa.departamento)
+			contactos.append(director.docente)
 		except ObjectDoesNotExist:
+			None
+		try:
+			comisionesCarrera = SubcomisionCarrera.objects.filter(carrera__departamento=(empresa.departamento))
+			contactos = contactos.__add__(list(comisionesCarrera))
+		except ObjectDoesNotExist:
+			None
+		try:
+			comisionPasantias = SubcomisionPasantiasPPS.objects.filter(departamento=(empresa.departamento))
+			contactos = contactos.__add__(list(comisionPasantias))
+		except ObjectDoesNotExist:
+			None
+		if not contactos:
 			return None
-		return director
+		return contactos
+
+
+class AlumnoDetailEmpresaView(generic.DetailView):
+	model = Alumno
+	context_object_name = 'alumno'
+	template_name = 'empresa/alumno_detail.html'
+	def get_object(self):
+		return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])

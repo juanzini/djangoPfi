@@ -18,14 +18,15 @@
           Acciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Mis Entrevistas</a>
-          <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Mis Postualciones</a>
+          <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Entrevistas Asignadas</a>
+          <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Postualciones a {{ user.username }}</a>
+          <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Mis Puestos Ofrecidos</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Buscar Pasante</a>
+          <a class="dropdown-item" href="{% url 'alumnos-empresa' %}">Buscar Pasante</a>
         </div>
       </li>
       <li class="nav-item {% if request.resolver_match.url_name == 'contacto-empresa' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'contacto-empresa' %}">Contacto</a>
+        <a class="nav-link" href="{% url 'contacto-empresa' %}">Contactos</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'logout' %}">

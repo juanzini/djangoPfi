@@ -23,7 +23,9 @@ urlpatterns = [
 	path('empresa/edit', login_required(permissions(views.edit_empresa, User.EM)), name='edit-empresa'),
 	path('empresa/entrevistas', login_required(permissions(views.ListEntrevistasEmpresaView.as_view(), User.EM)), name='entrevistas-empresa'),
 	path('empresa/postulaciones', login_required(permissions(views.ListPostulacionesEmpresaView.as_view(), User.EM)), name='postulaciones-empresa'),
+	path('empresa/alumnos', login_required(permissions(views.ListAlumnosEmpresaView.as_view(), User.EM)), name='alumnos-empresa'),
 	path('empresa/puestos', login_required(permissions(views.ListPuestosEmpresaView.as_view(), User.EM)), name='puestos-empresa'),
 	path('empresa/contacto', login_required(permissions(views.ListContactoEmpresaView.as_view(), User.EM)), name='contacto-empresa'),
+	path('empresa/alumno/<int:numero_registro>/', login_required(permissions(views.AlumnoDetailEmpresaView.as_view(), User.EM)), name='alumno-detail-empresa'),
 	path('subcomision_carrera/detail', views.DetailSubcomisionCarreraView.as_view(), name='detail-subcomisionCarrera'),
 ]
