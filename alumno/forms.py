@@ -83,6 +83,20 @@ class EmpresaEditForm(forms.ModelForm):
         model = models.Empresa
         fields = ('descripcion',)
 
+class SubcomisionCarreraUserEditForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ('username', 'email')
+    def __init__(self, *args, **kwargs):
+        super(SubcomisionCarreraUserEditForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['username'].required = True
+
+class SubcomisionCarreraEditForm(forms.ModelForm):
+    class Meta:
+        model = models.SubcomisionCarrera
+        fields = ('docente',)
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = models.User

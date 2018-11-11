@@ -10,7 +10,7 @@
                         <th>Puesto</th>
                         <th>Empresa</th>
                         <th>Descripci&oacute;n</th>
-                        <th>Acciones</th>
+                        <th>Cantidad de Alumnos Postulados</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,8 +26,7 @@
                                 {{ puesto.horario }}
                             </td>
                             <td>
-                                <p>boton.editar</p>
-                                <p>boton.eliminar</p>
+                                {{ puesto.get_cantidad_alumnos }}
                             </td>
                         </tr>
                     {% endfor %}

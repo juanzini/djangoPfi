@@ -11,15 +11,17 @@
                         <th>Apellido</th>
                         <th>Carrera</th>
                         <th>Email</th>
+                        <th>Curriculum</th>
                         <th>A&ntilde;o que cursa</th>
-                        <th>Comentarios Comision Carrera</th>
+                        <th>Comentarios Subcomisi&oacute;n Carrera</th>
+                        <th>Comentarios Subcomisi&oacute;n Pasant&iacute;a</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for alumno in alumno_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'alumno-detail-empresa' alumno.numero_registro %}">{{ alumno.user.first_name }}</a>
+                                <a href="{% url 'alumno-detail-subcomision-carrera' alumno.numero_registro %}">{{ alumno.user.first_name }}</a>
                             </td>
                             <td>
                                 {{ alumno.user.last_name }}
@@ -31,13 +33,20 @@
                                 {{ alumno.user.email }}
                             </td>
                             <td>
+                                {{ alumno.curriculum }}
+                            </td>
+                            <td>
                                 {{ alumno.prioridad }}
                             </td>
-                            {% if alumno.comentarios_carrera_visibles == True %}
-                                <td>
-                                    {{ alumno.comentarios_comision_carrera }}
-                                </td>
-                            {% endif %}
+                            <td>
+                                {{ alumno.comentarios_carrera_visibles }}
+                            </td>
+                            <td>
+                                {{ alumno.comentarios_comision_carrera }}
+                            </td>
+                            <td>
+                                {{ alumno.comentarios_comision_pps }}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

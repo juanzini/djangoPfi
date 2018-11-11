@@ -7,8 +7,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
                         <th>Alumno</th>
+                        <th>Puesto</th>
+                        <th>Empresa</th>
                         <th>Fecha de Postulación</th>
                         <th>Entrevista Asignada</th>
                         <th>Confirmación Asistencia</th>
@@ -18,28 +19,27 @@
                     {% for postulacion in postulacion_list %}
                         <tr>
                             <td>
-                                <a href="#">{{ postulacion.puesto }}</a>
+                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
                             </td>
                             <td>
-                                <a href="{% url 'alumno-detail-empresa' postulacion.alumno.numero_registro %}">
-                                    {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}</a>
+                                {{ postulacion.puesto.empresa }}
                             </td>
                             <td>
                                 {{ postulacion.fecha }}
                             </td>
                             <td>
                                 {% if postulacion.entrevista %}
-                                {{ postulacion.entrevista.fecha }}<p> Botón Cancelar Entrevista</p>
+                                {{ postulacion.entrevista.fecha }}
                                 {% else %}
-                                <p>No Posee</p> <p> Botón Generar Entrevista</p>
+                                <p>No Posee</p>
                                 {% endif %}
                             </td>
                             {% if postulacion.entrevista %}
                             <td>
                                 {% if postulacion.entrevista.confirmada_alumno %}
-                                <p>Entrevista Confirmada</p>
+                                <p>Botón desconfirmar</p>
                                 {% else %}
-                                <p>A la espera de confirmación</p>
+                                <p>Botón confirmar</p>
                                 {% endif %}
                             </td>
                             {% endif %}

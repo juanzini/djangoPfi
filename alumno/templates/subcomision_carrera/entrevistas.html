@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Entrevistas</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Empresa</th>
+                        <th>Fecha</th>
+                        <th>Resultado</th>
+                        <th>Comentarios Empresa</th>
+                        <th>Comentarios Comisi&oacute;n PPS</th>
+                        <th>Notificado Alumno</th>
+                        <th>Notificado Empresa</th>
+                        <th>Confirmada Alumno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrevista in entrevista_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detail-alumno' %}">{{ entrevista.alumno }}</a>
+                            </td>
+                            <td>
+                                {{ entrevista.empresa }}
+                            </td>
+                            <td>
+                                {{ entrevista.fecha }}
+                            </td>
+                            <td>
+                                {{ entrevista.resultado }}
+                            </td>
+                            <td>
+                                {{ entrevista.comentarios_empresa }}
+                            </td>
+                            <td>
+                                {{ entrevista.comentarios_comision_pps }}
+                            </td>
+                            <td>
+                                {{ entrevista.notificado_alumno }}
+                            </td>
+                            <td>
+                                {{ entrevista.notificado_empresa }}
+                            </td>
+                            <td>
+                                {{ entrevista.confirmada_alumno }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

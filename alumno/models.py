@@ -107,7 +107,7 @@ class Docente(models.Model):
         verbose_name_plural = 'Docentes'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre + " " + self.apellido
 
 
 class Pasantia(models.Model):
@@ -173,6 +173,9 @@ class Empresa(models.Model):
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
 
+    def get_cantidad_de_pasantes(self):
+        return Pasantia.objects.filter(tutor_empresa__empresa=self).count()
+
     def __str__(self):
         return self.user.__str__()
 
@@ -189,6 +192,9 @@ class Puesto(models.Model):
     class Meta:
         verbose_name = 'Puesto'
         verbose_name_plural = 'Puestos'
+
+    def get_cantidad_alumnos(self):
+        return Postulaciones.objects.filter(puesto=self).count()
 
     def __str__(self):
         return self.nombre

@@ -4,7 +4,7 @@ from django.views import generic
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
-from .forms import EmpresaUserEditForm, EmpresaEditForm
+from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
 from django.urls import reverse
@@ -32,7 +32,7 @@ def redirect_view(request):
 		if request.user.tipo == User.EM:
 			return HttpResponseRedirect(reverse('index-empresa'))
 		if request.user.tipo == User.CC:
-			return HttpResponseRedirect(reverse('detail-subcomisionCarrera'))
+			return HttpResponseRedirect(reverse('detail-subcomision_carrera'))
 	return redirect_to_login(reverse('login'))
 
 class IndexAlumnoView(generic.TemplateView):
@@ -113,13 +113,6 @@ class DetailAlumnoView(generic.DetailView):
 	def get_object(self):
 		return Alumno.objects.get(user=self.request.user.pk)
 
-class DetailSubcomisionCarreraView(generic.DetailView):
-	model = SubcomisionCarrera
-	context_object_name = 'subcomisionCarrera'
-	template_name = 'subcomisionCarrera/detail.html'
-	def get_object(self):
-		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
-
 class ListEntrevistasAlumnoView(generic.ListView):
 	template_name = 'alumno/entrevistas.html'
 	context_object_name = 'entrevista_list'
@@ -154,7 +147,7 @@ class ListContactoAlumnoView(generic.ListView):
 		return subcomision.docente.all()
 
 # ------------------------------------------------------------------------------------------------------------
-# --------------------------EMPRESAS--------------------------------------------------------------------------
+# --------------------------EMPRESA---------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------
 
 
@@ -165,7 +158,7 @@ class IndexEmpresaView(generic.TemplateView):
 		return Empresa.objects.get(user=self.request.user.pk)
 
 class DetailEmpresaView(generic.DetailView):
-	model = Alumno
+	model = Empresa
 	context_object_name = 'empresa'
 	template_name = 'empresa/detail.html'
 	def get_object(self):
@@ -200,14 +193,14 @@ class ListEntrevistasEmpresaView(generic.ListView):
 
 class ListPostulacionesEmpresaView(generic.ListView):
 	template_name = 'empresa/postulaciones.html'
-	context_object_name = 'postulaciones_list'
+	context_object_name = 'postulacion_list'
 
 	def get_queryset(self):
 		return Postulaciones.objects.filter(puesto__empresa=self.request.user.empresa_user)
 
 class ListAlumnosEmpresaView(generic.ListView):
 	template_name = 'empresa/alumnos.html'
-	context_object_name = 'alumnos_list'
+	context_object_name = 'alumno_list'
 
 	def get_queryset(self):
 		pasantias = Pasantia.objects.all()
@@ -217,7 +210,7 @@ class ListAlumnosEmpresaView(generic.ListView):
 
 class ListPuestosEmpresaView(generic.ListView):
 	template_name = 'empresa/puestos.html'
-	context_object_name = 'puestos_list'
+	context_object_name = 'puesto_list'
 
 	def get_queryset(self):
 		return Puesto.objects.filter(empresa=self.request.user.empresa_user)
@@ -253,5 +246,89 @@ class AlumnoDetailEmpresaView(generic.DetailView):
 	model = Alumno
 	context_object_name = 'alumno'
 	template_name = 'empresa/alumno_detail.html'
+	def get_object(self):
+		return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+
+
+
+# ------------------------------------------------------------------------------------------------------------
+# --------------------------SUBCOMISION-CARRERA---------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
+
+
+
+class IndexSubcomisionCarreraView(generic.TemplateView):
+	model = SubcomisionCarrera
+	template_name = 'subcomision_carrera/index.html'
+	def get_object(self):
+		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
+
+class DetailSubcomisionCarreraView(generic.DetailView):
+	model = SubcomisionCarrera
+	context_object_name = 'subcomision_carrera'
+	template_name = 'subcomision_carrera/detail.html'
+	def get_object(self):
+		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
+
+@transaction.atomic
+def edit_subcomision_carrera(request):
+	if request.method == 'POST':
+		user_form = SubcomisionCarreraUserEditForm(request.POST, instance=request.user)
+		subcomision_carrera_form = SubcomisionCarreraEditForm(request.POST, instance=SubcomisionCarrera.objects.get(user=request.user.pk))
+		if user_form.is_valid() and subcomision_carrera_form.is_valid():
+			user_form.save()
+			subcomision_carrera_form.save()
+			messages.success(request, ('Su perfil fue correctamente actualizado!'))
+			return redirect('edit-subcomision-carrera')
+		else:
+			messages.error(request, ('El formulario contiene algunos errores'))
+	else:
+		user_form = SubcomisionCarreraUserEditForm(instance=request.user)
+		subcomision_carrera_form = SubcomisionCarreraEditForm(instance=SubcomisionCarrera.objects.get(user=request.user.pk))
+	return render(request, 'subcomision_carrera/edit.html', {
+		'user_form': user_form,
+		'subcomision_carrera_form': subcomision_carrera_form,
+	})
+
+class ListEntrevistasSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/entrevistas.html'
+	context_object_name = 'entrevista_list'
+
+	def get_queryset(self):
+		return Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+
+class ListPostulacionesSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/postulaciones.html'
+	context_object_name = 'postulacion_list'
+
+	def get_queryset(self):
+		return Postulaciones.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+
+class ListAlumnosSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/alumnos.html'
+	context_object_name = 'alumno_list'
+
+	def get_queryset(self):
+		return Alumno.objects.filter(carrera=self.request.user.carrera_user.carrera)
+
+class ListEmpresasSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/empresas.html'
+	context_object_name = 'empresa_list'
+
+	def get_queryset(self):
+		return Empresa.objects.filter(departamento=(self.request.user.carrera_user.carrera).departamento)
+
+class ListPuestosSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/puestos.html'
+	context_object_name = 'puesto_list'
+
+	def get_queryset(self):
+		return Puesto.objects.filter(empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
+
+
+class AlumnoDetailSubcomisionCarreraView(generic.DetailView):
+	model = Alumno
+	context_object_name = 'alumno'
+	template_name = 'subcomision_carrera/alumno_detail.html'
 	def get_object(self):
 		return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
