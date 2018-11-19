@@ -5,6 +5,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
+from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, PasantiaDetailSubcomisionCarreraForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
 from django.urls import reverse
@@ -32,7 +33,7 @@ def redirect_view(request):
 		if request.user.tipo == User.EM:
 			return HttpResponseRedirect(reverse('index-empresa'))
 		if request.user.tipo == User.CC:
-			return HttpResponseRedirect(reverse('detail-subcomision_carrera'))
+			return HttpResponseRedirect(reverse('edit-subcomision-carrera'))
 	return redirect_to_login(reverse('login'))
 
 class IndexAlumnoView(generic.TemplateView):
@@ -285,13 +286,6 @@ class IndexSubcomisionCarreraView(generic.TemplateView):
 	def get_object(self):
 		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
 
-class DetailSubcomisionCarreraView(generic.DetailView):
-	model = SubcomisionCarrera
-	context_object_name = 'subcomision_carrera'
-	template_name = 'subcomision_carrera/detail.html'
-	def get_object(self):
-		return SubcomisionCarrera.objects.get(user=self.request.user.pk)
-
 @transaction.atomic
 def edit_subcomision_carrera(request):
 	if request.method == 'POST':
@@ -313,11 +307,29 @@ def edit_subcomision_carrera(request):
 	})
 
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
+	def get_queryset(self):
+		try:
+			entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+		except ObjectDoesNotExist:
+			return None
+		for entrevista in entrevistas:
+			try:
+				pasantia = Pasantia.objects.get(entrevista=entrevista)
+			except ObjectDoesNotExist:
+				return None
+			entrevista.pasantia = pasantia
+		return entrevistas
+
+	def get_pasantia(self):
+		try:
+			pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
+		except ObjectDoesNotExist:
+			return None
+		return pasantias
+
 	template_name = 'subcomision_carrera/entrevistas.html'
 	context_object_name = 'entrevista_list'
-
-	def get_queryset(self):
-		return Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+	extra_context = {'pasantias': get_pasantia}
 
 class ListPostulacionesSubcomisionCarreraView(generic.ListView):
 	template_name = 'subcomision_carrera/postulaciones.html'
@@ -347,10 +359,37 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
 	def get_queryset(self):
 		return Puesto.objects.filter(empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
 
+class ListPasantiasSubcomisionCarreraView(generic.ListView):
+	template_name = 'subcomision_carrera/pasantias.html'
+	context_object_name = 'pasantia_list'
 
-class AlumnoDetailSubcomisionCarreraView(generic.DetailView):
+	def get_queryset(self):
+		return Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera))
+
+
+class AlumnoDetailSubcomisionCarreraView(generic.UpdateView):
 	model = Alumno
-	context_object_name = 'alumno'
 	template_name = 'subcomision_carrera/alumno_detail.html'
+	form_class = AlumnoDetailSubcomisionCarreraForm
+	success_url = '../../alumnos'
+
 	def get_object(self):
 		return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+
+
+class EntrevistaDetailSubcomisionCarreraView(generic.UpdateView):
+	model = Entrevista
+	template_name = 'subcomision_carrera/entrevista_detail.html'
+	form_class = EntrevistaDetailSubcomisionCarreraForm
+	success_url = '../../entrevistas'
+
+class PasantiaDetailSubcomisionCarreraView(generic.UpdateView):
+	model = Entrevista
+	template_name = 'subcomision_carrera/pasantia_detail.html'
+	form_class = PasantiaDetailSubcomisionCarreraForm
+
+	def get_object(self):
+		return Pasantia.objects.get(pk=self.kwargs["pk"])
+
+	def get_success_url(self):
+		return self.request.GET.get('next', '../../pasantias')

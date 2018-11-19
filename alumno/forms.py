@@ -2,11 +2,10 @@ from . import models
 
 from django import forms
 from django.contrib import admin
-
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
-
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 class AlumnoForm(forms.ModelForm):
 
@@ -26,6 +25,79 @@ class AlumnoForm(forms.ModelForm):
             'ultima_actualizacion_perfil',
             'user',
         )
+
+class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Alumno
+        fields = (
+            'numero_registro',
+            'carrera',
+            'curriculum',
+            'descripcion_intereses',
+            'descripcion_habilidades',
+            'ultima_actualizacion_perfil',
+            'ultima_postulacion',
+            'condicion_acreditacion',
+            'expedicion_acreditacion',
+            'comentarios_comision_carrera',
+            'comentarios_carrera_visibles',
+            'comentarios_comision_pps',
+        )
+    def __init__(self, *args, **kwargs):
+        super(AlumnoDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['curriculum'].widget.attrs['readonly'] = True
+        self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
+        self.fields['descripcion_habilidades'].widget.attrs['readonly'] = True
+        self.fields['ultima_actualizacion_perfil'].widget.attrs['readonly'] = True
+        self.fields['ultima_postulacion'].widget.attrs['readonly'] = True
+        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+
+class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
+    class Meta():
+        model = models.Entrevista
+        fields = (
+            'alumno',
+            'empresa',
+            'fecha',
+            'resultado',
+            'comentarios_empresa',
+            'comentarios_comision_pps',
+            'notificado_alumno',
+            'notificado_empresa',
+            'confirmada_alumno',
+        )
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['alumno'].widget.attrs['readonly'] = True
+        self.fields['empresa'].widget.attrs['readonly'] = True
+        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+
+class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
+    class Meta():
+        model = models.Pasantia
+        fields = (
+            'fecha_inicio',
+            'fecha_fin',
+            'tutor_docente',
+            'tutor_empresa',
+            'entrevista',
+            'informe',
+            'numero_legajo',
+            'comentarios_empresa',
+            'comentarios_comision_pps',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_inicio'].widget.attrs['readonly'] = True
+        self.fields['fecha_fin'].widget.attrs['readonly'] = True
+        self.fields['tutor_empresa'].widget.attrs['readonly'] = True
+        self.fields['entrevista'].widget.attrs['readonly'] = True
+        self.fields['informe'].widget.attrs['readonly'] = True
+        self.fields['numero_legajo'].widget.attrs['readonly'] = True
+        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
 class AlumnoFormAdmin(admin.ModelAdmin):
     form = AlumnoForm

@@ -48,8 +48,6 @@ urlpatterns = [
 	# -------------------SUBCOMISION CARRERA--------------------
 
 	path('subcomision_carrera/index', login_required(permissions(views.IndexSubcomisionCarreraView.as_view(), User.CC)), name='index-subcomision-carrera'),
-	path('subcomision_carrera/detail', login_required(permissions(views.DetailSubcomisionCarreraView.as_view(), User.CC)),
-		 name='detail-subcomision-carrera'),
 	path('subcomision_carrera/edit', login_required(permissions(views.edit_subcomision_carrera, User.CC)), name='edit-subcomision-carrera'),
 	path('subcomision_carrera/entrevistas', login_required(permissions(views.ListEntrevistasSubcomisionCarreraView.as_view(), User.CC)),
 		 name='entrevistas-subcomision-carrera'),
@@ -61,6 +59,12 @@ urlpatterns = [
 		 name='empresas-subcomision-carrera'),
 	path('subcomision_carrera/puestos', login_required(permissions(views.ListPuestosSubcomisionCarreraView.as_view(), User.CC)),
 		 name='puestos-subcomision-carrera'),
+	path('subcomision_carrera/pasantias', login_required(permissions(views.ListPasantiasSubcomisionCarreraView.as_view(), User.CC)),
+		 name='pasantias-subcomision-carrera'),
 	path('subcomision_carrera/alumno/<int:numero_registro>/',
 		 login_required(permissions(views.AlumnoDetailSubcomisionCarreraView.as_view(), User.CC)), name='alumno-detail-subcomision-carrera'),
+	path('subcomision_carrera/entrevista/<int:pk>/',
+		 login_required(permissions(views.EntrevistaDetailSubcomisionCarreraView.as_view(), User.CC)), name='entrevista-detail-subcomision-carrera'),
+	path('subcomision_carrera/pasantia/<int:pk>/',
+		 login_required(permissions(views.PasantiaDetailSubcomisionCarreraView.as_view(), User.CC)), name='pasantia-detail-subcomision-carrera'),
 ]

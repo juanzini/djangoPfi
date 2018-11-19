@@ -38,10 +38,10 @@ class Alumno(models.Model):
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
-    condicion_acreditacion = models.NullBooleanField()
+    condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación')
     expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True)
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
-    comentarios_carrera_visibles = models.BooleanField(default=False)
+    comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
 
@@ -69,7 +69,7 @@ class Carrera(models.Model):
 
 class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE)
-    docente = models.ManyToManyField('Docente')
+    docente = models.ManyToManyField('Docente', verbose_name='docentes')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
 
     class Meta:
@@ -82,7 +82,7 @@ class SubcomisionCarrera(models.Model):
 
 class SubcomisionPasantiasPPS(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete=models.CASCADE)
-    docente = models.ManyToManyField('Docente')
+    docente = models.ManyToManyField('Docente', verbose_name='docentes')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pps_user')
 
     class Meta:
@@ -110,10 +110,10 @@ class Docente(models.Model):
 
 
 class Pasantia(models.Model):
-    fecha_inicio = models.DateTimeField(auto_now_add=True)
+    fecha_inicio = models.DateTimeField()
     fecha_fin = models.DateTimeField()
-    tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING)
-    tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING)
+    tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
+    tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True)
     entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
@@ -140,7 +140,7 @@ class TutorEmpresa(models.Model):
         verbose_name_plural = 'Tutores de Empresas'
 
     def __str__(self):
-        return self.nombre
+        return self.nombre + " " + self.apellido
 
 
 class Entrevista(models.Model):
@@ -160,7 +160,7 @@ class Entrevista(models.Model):
         unique_together = (("alumno", "empresa"),)
 
     def __str__(self):
-        return self.empresa.__str__() + " - " + self.alumno.__str__()
+        return self.empresa.__str__() + " a " + self.alumno.__str__()
 
 
 class Empresa(models.Model):

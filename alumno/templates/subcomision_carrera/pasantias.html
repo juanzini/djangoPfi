@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Pasantias</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Empresa</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de fin</th>
+                        <th>Tutor Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pasantia in pasantia_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'pasantia-detail-subcomision-carrera' pasantia.pk %}">{{ pasantia.entrevista.alumno }}</a>
+                            </td>
+                            <td>
+                                {{ pasantia.entrevista.empresa }}
+                            </td>
+                            <td>
+                                {{ pasantia.fecha_inicio }}
+                            </td>
+                            <td>
+                                {{ pasantia.fecha_fin }}
+                            </td>
+                            <td>
+                                {{ pasantia.tutor_docente }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

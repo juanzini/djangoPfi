@@ -7,23 +7,21 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item {% if request.resolver_match.url_name == 'index-subcomision-carrera' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'index-subcomision-carrera' %}">Inicio <span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item {% if request.resolver_match.url_name == 'edit-subcomision-carrera' %}active{% endif %}">
         <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">La Subcomisi&oacute;n</a>
       </li>
-      <li class="nav-item dropdown {% if request.resolver_match.url_name == 'puestos-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'entrevistas-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'alumnos-subcomision-carrera' or request.resolver_match.url_name == 'empresas-subcomision-carrera' %}active{% endif %}">
+      <li class="nav-item dropdown {% if request.resolver_match.url_name == 'puestos-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'entrevistas-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'alumnos-subcomision-carrera' or request.resolver_match.url_name == 'empresas-subcomision-carrera' or request.resolver_match.url_name == 'pasantias-subcomision-carrera' %}active{% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Acciones
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'entrevistas-subcomision-carrera' %}">Entrevistas</a>
-            <a class="dropdown-item" href="{% url 'postulaciones-subcomision-carrera' %}">Postualciones</a>
-            <a class="dropdown-item" href="{% url 'puestos-subcomision-carrera' %}">Puestos Ofrecidos</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'alumnos-subcomision-carrera' %}">Alumnos</a>
-            <a class="dropdown-item" href="{% url 'empresas-subcomision-carrera' %}">Empresas</a>
+                <a class="dropdown-item" href="{% url 'pasantias-subcomision-carrera' %}">Pasant&iacute;as</a>
+                <a class="dropdown-item" href="{% url 'entrevistas-subcomision-carrera' %}">Entrevistas</a>
+                <a class="dropdown-item" href="{% url 'postulaciones-subcomision-carrera' %}">Postualciones</a>
+                <a class="dropdown-item" href="{% url 'puestos-subcomision-carrera' %}">Puestos Ofrecidos</a>
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'alumnos-subcomision-carrera' %}">Alumnos</a>
+                <a class="dropdown-item" href="{% url 'empresas-subcomision-carrera' %}">Empresas</a>
           </div>
       </li>
 
