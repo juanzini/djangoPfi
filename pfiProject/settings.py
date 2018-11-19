@@ -50,7 +50,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'alumno.middlewares.LastUserActivityMiddleware',
+    'alumno.middlewares.LastUserUpdateProfile',
 ]
+
+LAST_ACTIVITY_INTERVAL_SECS = 300
 
 ROOT_URLCONF = 'pfiProject.urls'
 

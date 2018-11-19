@@ -38,7 +38,6 @@ class Alumno(models.Model):
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
-    prioridad = models.PositiveSmallIntegerField()
     condicion_acreditacion = models.NullBooleanField()
     expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True)
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)

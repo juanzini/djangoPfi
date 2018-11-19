@@ -7,9 +7,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item {% if request.resolver_match.url_name == 'index-alumno' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'index-alumno' %}">Mi Pasantía <span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item {% if request.resolver_match.url_name == 'edit-alumno' %}active{% endif %}">
         <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
       </li>

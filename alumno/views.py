@@ -1,8 +1,8 @@
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import login, authenticate
 from django.views import generic
+from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import get_object_or_404
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
@@ -28,7 +28,7 @@ def permissions(function, typeUser):
 def redirect_view(request):
 	if request.user.is_authenticated:
 		if request.user.tipo == User.AL:
-			return HttpResponseRedirect(reverse('index-alumno'))
+			return HttpResponseRedirect(reverse('edit-alumno'))
 		if request.user.tipo == User.EM:
 			return HttpResponseRedirect(reverse('index-empresa'))
 		if request.user.tipo == User.CC:
@@ -43,7 +43,7 @@ class IndexAlumnoView(generic.TemplateView):
 
 class CreateAlumnoView(generic.CreateView):
 	model = Alumno
-	fields = ['username', 'password', 'numero_registro', 'first_name', 'last_name', 'email', 'carrera', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
+	fields = ['username', 'password', 'numero_registro', 'first_name', 'last_name', 'email', 'carrera', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades']
 	template_name = 'alumno/create.html'
 
 @transaction.atomic
@@ -78,6 +78,9 @@ def edit_alumno(request):
 		if user_form.is_valid() and alumno_form.is_valid():
 			user_form.save()
 			alumno_form.save()
+			alumno = Alumno.objects.get(user=request.user.pk)
+			alumno.ultima_actualizacion_perfil = datetime.now()
+			alumno.save()
 			messages.success(request, ('Su perfil fue correctamente actualizado!'))
 			return redirect('edit-alumno')
 		else:
@@ -90,12 +93,31 @@ def edit_alumno(request):
 		'alumno_form': alumno_form,
 	})
 
-class EditAlumnoView(generic.UpdateView):
-	model = Alumno
-	fields = ['user', 'curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad']
-	template_name = 'alumno/edit.html'
-	def get_object(self):
-		return Alumno.objects.get(numero_registro=self.kwargs['num_reg'])
+@transaction.atomic
+def edit_ultima_actualizacion(request, middleware):
+	if request.method == 'POST' and not middleware:
+		user_form = AlumnoUserEditForm(request.POST, instance=request.user)
+		alumno_form = AlumnoEditForm(request.POST, instance=Alumno.objects.get(user=request.user.pk))
+		if user_form.is_valid() and alumno_form.is_valid():
+			user_form.save()
+			alumno_form.save()
+			alumno = Alumno.objects.get(user=request.user.pk)
+			alumno.ultima_actualizacion_perfil = datetime.now()
+			alumno.save()
+			messages.success(request, ('Su perfil fue correctamente actualizado!'))
+			return redirect('edit-alumno')
+		else:
+			messages.error(request, ('El formulario contiene algunos errores'))
+	else:
+		if 'logout' not in request.build_absolute_uri():
+			user_form = AlumnoUserEditForm(instance=request.user)
+			alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
+		else:
+			return None
+	return render(request, 'alumno/edit_obligado.html', {
+		'user_form': user_form,
+		'alumno_form': alumno_form,
+	})
 
 
 class ListAlumnoView(generic.ListView):

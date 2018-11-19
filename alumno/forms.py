@@ -18,12 +18,12 @@ class AlumnoForm(forms.ModelForm):
             'curriculum',
             'descripcion_intereses',
             'descripcion_habilidades',
-            'prioridad',
             'condicion_acreditacion',
             'expedicion_acreditacion',
             'comentarios_comision_carrera',
             'comentarios_carrera_visibles',
             'comentarios_comision_pps',
+            'ultima_actualizacion_perfil',
             'user',
         )
 
@@ -39,7 +39,6 @@ class AlumnoCreateForm(forms.ModelForm):
             'curriculum',
             'descripcion_intereses',
             'descripcion_habilidades',
-            'prioridad',
         )
 
 class UserCreateForm(UserCreationForm):
@@ -67,7 +66,7 @@ class AlumnoUserEditForm(forms.ModelForm):
 class AlumnoEditForm(forms.ModelForm):
     class Meta:
         model = models.Alumno
-        fields = ('curriculum', 'descripcion_intereses', 'descripcion_habilidades', 'prioridad')
+        fields = ('curriculum', 'descripcion_intereses', 'descripcion_habilidades')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
