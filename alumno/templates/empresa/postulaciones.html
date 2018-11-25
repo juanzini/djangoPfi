@@ -10,8 +10,8 @@
                         <th>Puesto</th>
                         <th>Alumno</th>
                         <th>Fecha de Postulación</th>
-                        <th>Entrevista Asignada</th>
-                        <th>Confirmación Asistencia</th>
+                        <th>Estado Entrevista</th>
+                        <th>Fecha Entrevista</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,21 +28,43 @@
                                 {{ postulacion.fecha }}
                             </td>
                             <td>
-                                {% if postulacion.entrevista %}
-                                {{ postulacion.entrevista.fecha }}<p> Botón Cancelar Entrevista</p>
-                                {% else %}
-                                <p>No Posee</p> <p> Botón Generar Entrevista</p>
-                                {% endif %}
-                            </td>
                             {% if postulacion.entrevista %}
-                            <td>
-                                {% if postulacion.entrevista.confirmada_alumno %}
-                                <p>Entrevista Confirmada</p>
+                                {% if postulacion.entrevista.cancelada_alumno %}
+                                    <p style="color:red;">Cancelada por el alumno</p>
                                 {% else %}
-                                <p>A la espera de confirmación</p>
+                                    {% if postulacion.entrevista.cancelada_empresa %}
+                                        <p style="color:red;">Cancelada por la empresa</p>
+                                    {% else %}
+                                        {% if postulacion.entrevista.confirmada_alumno %}
+                                            {% if postulacion.entrevista.is_past_due %}
+                                                <p style="color:black;"> REALIZADA </p>
+                                            {% else %}
+                                                <p style="color:green;"> ACTIVA </p>
+                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
+                                                  {% csrf_token %}
+                                                  <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                </form>
+                                            {% endif %}
+                                        {% else %}
+                                            <p style="color:orange;">A la espera de confirmación de Alumno</p>
+                                        {% endif %}
+                                    {% endif %}
                                 {% endif %}
-                            </td>
+                            {% else %}
+                                <p>No Posee</p>
+                                <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'login' %}">
+                                  {% csrf_token %}
+                                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                                </form>
                             {% endif %}
+                            </td>
+                            <td>
+                            {% if postulacion.entrevista %}
+                                {{ postulacion.entrevista.fecha }}
+                            {% else %}
+                            {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>

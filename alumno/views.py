@@ -14,7 +14,7 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
-
+from django.db.models import Q
 
 def permissions(function, typeUser):
     def wrapper(request, *args, **kw):
@@ -141,7 +141,7 @@ class ListEntrevistasAlumnoView(generic.ListView):
 	context_object_name = 'entrevista_list'
 
 	def get_queryset(self):
-		return Entrevista.objects.filter(alumno=self.request.user.alumno_user)
+		return Entrevista.objects.filter(Q(alumno=self.request.user.alumno_user) & (~Q(alumno__condicion_acreditacion=None)))
 
 class ListPostulacionesAlumnoView(generic.ListView):
 	template_name = 'alumno/postulaciones.html'
@@ -212,14 +212,20 @@ class ListEntrevistasEmpresaView(generic.ListView):
 	context_object_name = 'entrevista_list'
 
 	def get_queryset(self):
-		return Entrevista.objects.filter(empresa=self.request.user.empresa_user)
+		return Entrevista.objects.filter(Q(empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)))
+
+def cancelEntrevistasEmpresaView(request):
+	entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'),empresa=request.user.empresa_user)
+	entrevista.cancelada_empresa=True
+	entrevista.save()
+	return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 class ListPostulacionesEmpresaView(generic.ListView):
 	template_name = 'empresa/postulaciones.html'
 	context_object_name = 'postulacion_list'
 
 	def get_queryset(self):
-		return Postulaciones.objects.filter(puesto__empresa=self.request.user.empresa_user)
+		return Postulaciones.objects.filter(Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)))
 
 class ListAlumnosEmpresaView(generic.ListView):
 	template_name = 'empresa/alumnos.html'

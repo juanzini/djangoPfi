@@ -13,19 +13,14 @@
       <li class="nav-item {% if request.resolver_match.url_name == 'edit-empresa' %}active{% endif %}">
         <a class="nav-link" href="{% url 'edit-empresa' %}">Mi perf&iacute;l</a>
       </li>
-      <li class="nav-item dropdown {% if request.resolver_match.url_name == 'alumnos-empresa'
-      or request.resolver_match.url_name == 'puestos-empresa'
-      or request.resolver_match.url_name == 'postulaciones-empresa'
-      or request.resolver_match.url_name == 'entrevistas-empresa'  %}active{% endif %}">
+      <li class="nav-item dropdown {% if request.resolver_match.url_name == 'alumnos-empresa' or request.resolver_match.url_name == 'puestos-empresa' or request.resolver_match.url_name == 'postulaciones-empresa' or request.resolver_match.url_name == 'entrevistas-empresa'  %}active{% endif %}">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Acciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Entrevistas Asignadas</a>
           <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Postualciones a {{ user.username }}</a>
-          <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Mis Puestos Ofrecidos</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'alumnos-empresa' %}">Buscar Pasante</a>
+          <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Mis Puestos Ofrecidos</a>
         </div>
       </li>
       <li class="nav-item {% if request.resolver_match.url_name == 'contacto-empresa' %}active{% endif %}">
@@ -34,7 +29,7 @@
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'logout' %}">
       {% csrf_token %}
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerrar Sesi&oacute;n</button>
+      <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&iacute;on?');" class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerrar Sesi&oacute;n</button>
     </form>
   </div>
     </div>

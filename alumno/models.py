@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import date
+from datetime import datetime
+from pytz import UTC
 from django.core.exceptions import ValidationError
 import re
 
@@ -153,6 +155,8 @@ class Entrevista(models.Model):
     notificado_alumno = models.BooleanField(default=False)
     notificado_empresa = models.BooleanField(default=False)
     confirmada_alumno = models.BooleanField(default=False)
+    cancelada_empresa = models.BooleanField(default=False)
+    cancelada_alumno = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Entrevista'
@@ -161,6 +165,9 @@ class Entrevista(models.Model):
 
     def __str__(self):
         return self.empresa.__str__() + " a " + self.alumno.__str__()
+
+    def is_past_due(self):
+        return datetime.utcnow().replace(tzinfo=UTC) > self.fecha.replace(tzinfo=UTC)
 
 
 class Empresa(models.Model):
