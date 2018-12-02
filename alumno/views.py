@@ -290,7 +290,8 @@ def nuevaEntrevista(request):
 			alumno=alumno,
 			empresa=empresa,
 			cancelada_empresa=False,
-			cancelada_alumno=False)
+			cancelada_alumno=False,
+			fecha__gt=datetime.now())
 	except ObjectDoesNotExist:
 		if request.POST:
 			form = EntrevistaCreateForm(request.POST)
