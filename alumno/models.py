@@ -161,7 +161,7 @@ class Entrevista(models.Model):
     class Meta:
         verbose_name = 'Entrevista'
         verbose_name_plural = 'Entrevistas'
-        unique_together = (("alumno", "empresa"),)
+        unique_together = (("alumno", "empresa", "fecha"),)
 
     def __str__(self):
         return self.empresa.__str__() + " a " + self.alumno.__str__()

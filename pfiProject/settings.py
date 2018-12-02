@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'django_registration',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}

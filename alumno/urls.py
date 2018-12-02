@@ -42,6 +42,8 @@ urlpatterns = [
 		 name='contacto-empresa'),
 	path('empresa/alumno/<int:numero_registro>/',
 		 login_required(permissions(views.AlumnoDetailEmpresaView.as_view(), User.EM)), name='alumno-detail-empresa'),
+	path('empresa/entrevista/nueva',
+		 login_required(permissions(views.nuevaEntrevista, User.EM)), name='nueva-entrevista-empresa'),
 
 	# -------------------SUBCOMISION CARRERA--------------------
 

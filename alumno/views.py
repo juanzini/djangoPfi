@@ -6,6 +6,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, PasantiaDetailSubcomisionCarreraForm
+from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm
+from django import forms
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
 from django.urls import reverse
@@ -278,7 +280,42 @@ class AlumnoDetailEmpresaView(generic.DetailView):
 	def get_object(self):
 		return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
 
-
+def nuevaEntrevista(request):
+	entrevista = None
+	postulacion =  Postulaciones.objects.get(pk=request.GET.get('postulacion'), puesto__empresa=request.user.empresa_user)
+	alumno = postulacion.alumno
+	empresa = postulacion.puesto.empresa
+	try:
+		entrevista = Entrevista.objects.get(
+			alumno=alumno,
+			empresa=empresa,
+			cancelada_empresa=False,
+			cancelada_alumno=False)
+	except ObjectDoesNotExist:
+		if request.POST:
+			form = EntrevistaCreateForm(request.POST)
+			if form.is_valid():
+				entrevista = Entrevista.objects.create(
+					alumno=alumno,
+					empresa=empresa,
+					fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+				)
+				entrevista.save()
+				postulacion.entrevista = entrevista
+				postulacion.save()
+				return redirect('/empresa/postulaciones')
+		return render(request, 'empresa/entrevista_nueva.html', {
+			'form': EntrevistaCreateForm,
+		})
+	if request.POST:
+		form = EntrevistaExistenteCreateForm(request.POST)
+		if form.is_valid():
+			postulacion.entrevista = entrevista
+			postulacion.save()
+			return redirect('/empresa/postulaciones')
+	return render(request, 'empresa/entrevista_nueva_existente.html', {
+		'form': EntrevistaExistenteCreateForm(instance=entrevista),
+	})
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------SUBCOMISION-CARRERA---------------------------------------------------------------

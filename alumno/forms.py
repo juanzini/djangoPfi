@@ -5,7 +5,9 @@ from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.admin.widgets import FilteredSelectMultiple
+from bootstrap_datepicker_plus import DateTimePickerInput
+from django.forms.widgets import HiddenInput
+from django.core.exceptions import ObjectDoesNotExist
 
 class AlumnoForm(forms.ModelForm):
 
@@ -221,3 +223,24 @@ class MyUserCreateAdmin(UserAdmin):
             ),
         }),
     )
+
+class EntrevistaCreateForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Entrevista
+        fields = ['fecha']
+        widgets = {
+            'fecha': DateTimePickerInput(options={
+                    "format": "DD/MM/YYYY HH:mm",
+                    "locale": "es",
+                }),
+        }
+        
+class EntrevistaExistenteCreateForm(forms.ModelForm):
+    class Meta():
+        model = models.Entrevista
+        fields = ['fecha']
+
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].widget.attrs['readonly'] = True
