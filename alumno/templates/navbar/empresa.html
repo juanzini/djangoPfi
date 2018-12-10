@@ -18,7 +18,9 @@
           Acciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Postualciones a {{ user.username }}</a>
+            <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Entrevistas</a>
+            <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Postualciones</a>
+            <a class="dropdown-item" href="{% url 'pasantias-empresa' %}">Pasant&iacute;as</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Mis Puestos Ofrecidos</a>
         </div>

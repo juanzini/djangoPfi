@@ -66,7 +66,6 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
             'comentarios_empresa',
             'comentarios_comision_pps',
             'notificado_alumno',
-            'notificado_empresa',
             'confirmada_alumno',
         )
     def __init__(self, *args, **kwargs):
@@ -74,6 +73,59 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['alumno'].widget.attrs['readonly'] = True
         self.fields['empresa'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+
+TRUE_FALSE_CHOICES = (
+    (True, 'Yes'),
+    (False, 'No')
+)
+
+class EntrevistaDetailEmpresaForm(forms.ModelForm):
+    class Meta():
+        model = models.Entrevista
+        fields = (
+            'notificado_alumno',
+            'confirmada_alumno',
+            'fecha',
+            'resultado',
+            'comentarios_empresa',
+            'comentarios_comision_pps',
+        )
+
+        widgets = {
+            'notificado_alumno': forms.Select(choices=TRUE_FALSE_CHOICES),
+            'confirmada_alumno': forms.Select(choices=TRUE_FALSE_CHOICES)
+        }
+
+
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaDetailEmpresaForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].widget.attrs['readonly'] = True
+        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+        self.fields['notificado_alumno'].widget.attrs['disabled'] = True
+        self.fields['confirmada_alumno'].widget.attrs['disabled'] = True
+
+
+class PasantiaDetailEmpresaForm(forms.ModelForm):
+    class Meta():
+        model = models.Pasantia
+        fields = (
+            'fecha_inicio',
+            'fecha_fin',
+            'comentarios_empresa',
+            'tutor_empresa',
+            'tutor_docente',
+            'comentarios_comision_pps',
+        )
+
+
+    def __init__(self, *args, **kwargs):
+        super(PasantiaDetailEmpresaForm, self).__init__(*args, **kwargs)
+        self.fields['fecha_fin'].widget.attrs['readonly'] = True
+        self.fields['fecha_inicio'].widget.attrs['readonly'] = True
+        self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(empresa=self.instance.entrevista.empresa)
+        self.fields['tutor_docente'].widget.attrs['disabled'] = True
+        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+
 
 class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
     class Meta():

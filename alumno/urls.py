@@ -32,7 +32,7 @@ urlpatterns = [
 	path('empresa/detail', login_required(permissions(views.DetailEmpresaView.as_view(), User.EM)),
 		 name='detail-empresa'),
 	path('empresa/edit', login_required(permissions(views.edit_empresa, User.EM)), name='edit-empresa'),
-	path('empresa/entrevistas/cancel', login_required(permissions(views.cancelEntrevistasEmpresaView, User.EM)),
+	path('empresa/entrevistas/cancel', login_required(permissions(views.cancel_entrevistas_empresa_view, User.EM)),
 		 name='empresa-entrevista-cancel'),
 	path('empresa/postulaciones', login_required(permissions(views.ListPostulacionesEmpresaView.as_view(), User.EM)),
 		 name='postulaciones-empresa'),
@@ -44,6 +44,14 @@ urlpatterns = [
 		 login_required(permissions(views.AlumnoDetailEmpresaView.as_view(), User.EM)), name='alumno-detail-empresa'),
 	path('empresa/entrevista/nueva',
 		 login_required(permissions(views.nuevaEntrevista, User.EM)), name='nueva-entrevista-empresa'),
+	path('empresa/entrevistas', login_required(permissions(views.ListEntrevistasEmpresaView.as_view(), User.EM)),
+		 name='entrevistas-empresa'),
+	path('empresa/entrevistas/<int:pk>/', login_required(permissions(views.DetailEntrevistaEmpresaView.as_view(), User.EM)),
+		 name='entrevistas-detail-empresa'),
+	path('empresa/pasantias/', login_required(permissions(views.ListPasantiasEmpresaView.as_view(), User.EM)),
+		 name='pasantias-empresa'),
+	path('empresa/pasantias/<int:pk>/', login_required(permissions(views.DetailPasantiaEmpresaView.as_view(), User.EM)),
+		 name='pasantias-detail-empresa'),
 
 	# -------------------SUBCOMISION CARRERA--------------------
 

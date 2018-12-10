@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Pasant&iacute;as</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Tutor Docente</th>
+                        <th>Tutor Empresa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pasantia in pasantia_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'pasantias-detail-empresa' pasantia.id %}">{{ pasantia.entrevista.alumno.user.first_name }} {{ pasantia.entrevista.alumno.user.last_name }}</a>
+                            </td>
+                            <td>
+                                {{ pasantia.fecha_inicio }}
+                            </td>
+                            <td>
+                                {% if pasantia.fecha_fin %}
+                                    {{ pasantia.fecha_fin }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if pasantia.tutor_docente %}
+                                    {{ pasantia.tutor_docente }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if pasantia.tutor_empresa %}
+                                    {{ pasantia.tutor_empresa }}
+                                {% else %}
+                                    <p style="color:red;"> Sin Asignar </p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
