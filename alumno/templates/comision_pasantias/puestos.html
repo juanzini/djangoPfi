@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Puestos Ofrecidos</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Puesto</th>
+                        <th>Empresa</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Cantidad de Alumnos Postulados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for puesto in puesto_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
+                            </td>
+                            <td>
+                                {{ puesto.empresa }}
+                            </td>
+                            <td>
+                                {{ puesto.horario }}
+                            </td>
+                            <td>
+                                {{ puesto.get_cantidad_alumnos }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

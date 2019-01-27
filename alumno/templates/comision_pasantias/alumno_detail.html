@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>{{ alumno.user.first_name }} {{ alumno.user.last_name }}</h2>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

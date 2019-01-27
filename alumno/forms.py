@@ -6,8 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from bootstrap_datepicker_plus import DateTimePickerInput
-from django.forms.widgets import HiddenInput
-from django.core.exceptions import ObjectDoesNotExist
 
 class AlumnoForm(forms.ModelForm):
 
@@ -72,6 +70,7 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['alumno'].widget.attrs['readonly'] = True
         self.fields['empresa'].widget.attrs['readonly'] = True
+        self.fields['resultado'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
 
 TRUE_FALSE_CHOICES = (
@@ -135,7 +134,6 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
             'fecha_fin',
             'tutor_docente',
             'tutor_empresa',
-            'entrevista',
             'informe',
             'numero_legajo',
             'comentarios_empresa',
@@ -146,8 +144,7 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs['readonly'] = True
         self.fields['fecha_fin'].widget.attrs['readonly'] = True
-        self.fields['tutor_empresa'].widget.attrs['readonly'] = True
-        self.fields['entrevista'].widget.attrs['readonly'] = True
+        self.fields['tutor_empresa'].widget.attrs['disabled'] = True
         self.fields['informe'].widget.attrs['readonly'] = True
         self.fields['numero_legajo'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
@@ -296,3 +293,93 @@ class EntrevistaExistenteCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].widget.attrs['readonly'] = True
+
+
+class SubcomisionPasantiasUserEditForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = ('username', 'email')
+    def __init__(self, *args, **kwargs):
+        super(SubcomisionPasantiasUserEditForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['username'].required = True
+
+class SubcomisionPasantiasEditForm(forms.ModelForm):
+    class Meta:
+        model = models.SubcomisionCarrera
+        fields = ('docente',)
+
+class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Alumno
+        fields = (
+            'numero_registro',
+            'carrera',
+            'curriculum',
+            'descripcion_intereses',
+            'descripcion_habilidades',
+            'ultima_actualizacion_perfil',
+            'ultima_postulacion',
+            'condicion_acreditacion',
+            'expedicion_acreditacion',
+            'comentarios_comision_carrera',
+            'comentarios_carrera_visibles',
+            'comentarios_comision_pps',
+        )
+    def __init__(self, *args, **kwargs):
+        super(AlumnoDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['condicion_acreditacion'].widget.attrs['disabled'] = True
+        self.fields['expedicion_acreditacion'].widget.attrs['readonly'] = True
+        self.fields['comentarios_comision_carrera'].widget.attrs['readonly'] = True
+
+class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
+    class Meta():
+        model = models.Entrevista
+        fields = (
+            'alumno',
+            'empresa',
+            'fecha',
+            'resultado',
+            'comentarios_empresa',
+            'comentarios_comision_pps',
+            'notificado_alumno',
+            'confirmada_alumno',
+            'cancelada_empresa',
+            'cancelada_alumno'
+        )
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['alumno'].widget.attrs['readonly'] = True
+        self.fields['empresa'].widget.attrs['readonly'] = True
+        self.fields['resultado'].widget.attrs['readonly'] = True
+        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+
+class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
+    class Meta():
+        model = models.Pasantia
+        fields = (
+            'fecha_inicio',
+            'fecha_fin',
+            'tutor_docente',
+            'tutor_empresa',
+            'informe',
+            'numero_legajo',
+            'comentarios_empresa',
+            'comentarios_comision_pps',
+        )
+        widgets = {
+            'fecha_inicio': DateTimePickerInput(options={
+                "format": "DD/MM/YYYY HH:mm",
+                "locale": "es",
+            }),
+            'fecha_fin': DateTimePickerInput(options={
+                "format": "DD/MM/YYYY HH:mm",
+                "locale": "es",
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PasantiaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['tutor_empresa'].widget.attrs['disabled'] = True
+        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True

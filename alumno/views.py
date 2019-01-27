@@ -5,10 +5,10 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
-from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
-    PasantiaDetailSubcomisionCarreraForm
+from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, PasantiaDetailSubcomisionCarreraForm
 from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, EntrevistaDetailEmpresaForm, PasantiaDetailEmpresaForm
-from django import forms
+from .forms import SubcomisionPasantiasEditForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
+from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
 from django.urls import reverse
@@ -39,6 +39,8 @@ def redirect_view(request):
             return HttpResponseRedirect(reverse('index-empresa'))
         if request.user.tipo == User.CC:
             return HttpResponseRedirect(reverse('edit-subcomision-carrera'))
+        if request.user.tipo == User.CP:
+            return HttpResponseRedirect(reverse('index-comision-pasantias'))
     return redirect_to_login(reverse('login'))
 
 
@@ -131,15 +133,6 @@ def edit_ultima_actualizacion(request, middleware):
         'user_form': user_form,
         'alumno_form': alumno_form,
     })
-
-
-class ListAlumnoView(generic.ListView):
-    template_name = 'alumno/list.html'
-    context_object_name = 'alumno_list'
-
-    def get_queryset(self):
-        return Alumno.objects.all()
-
 
 class DetailAlumnoView(generic.DetailView):
     model = Alumno
@@ -497,6 +490,127 @@ class PasantiaDetailSubcomisionCarreraView(generic.UpdateView):
     model = Entrevista
     template_name = 'subcomision_carrera/pasantia_detail.html'
     form_class = PasantiaDetailSubcomisionCarreraForm
+
+    def get_object(self):
+        return Pasantia.objects.get(pk=self.kwargs["pk"])
+
+    def get_success_url(self):
+        return self.request.GET.get('next', '../../pasantias')
+
+
+# ------------------------------------------------------------------------------------------------------------
+# ---------------------------COMISION-PASANTIAS---------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------
+
+
+class IndexComisionPsantiasView(generic.TemplateView):
+    model = SubcomisionPasantiasPPS
+    template_name = 'comision_pasantias/index.html'
+
+    def get_object(self):
+        return SubcomisionPasantiasPPS.objects.get(user=self.request.user.pk)
+
+@transaction.atomic
+def edit_comision_pasantias(request):
+    if request.method == 'POST':
+        user_form = SubcomisionPasantiasUserEditForm(request.POST, instance=request.user)
+        comision_pasantias_form = SubcomisionPasantiasEditForm(request.POST, instance=SubcomisionPasantiasPPS.objects.get(
+            user=request.user.pk))
+        if user_form.is_valid() and comision_pasantias_form.is_valid():
+            user_form.save()
+            comision_pasantias_form.save()
+            messages.success(request, ('Su perfil fue correctamente actualizado!'))
+            return redirect('edit-comision-pasantias')
+        else:
+            messages.error(request, ('El formulario contiene algunos errores'))
+    else:
+        user_form = SubcomisionPasantiasUserEditForm(instance=request.user)
+        comision_pasantias_form = SubcomisionPasantiasEditForm(
+            instance=SubcomisionPasantiasPPS.objects.get(user=request.user.pk))
+    return render(request, 'comision_pasantias/edit.html', {
+        'user_form': user_form,
+        'comision_pasantias_form': comision_pasantias_form,
+    })
+
+class ListEntrevistasComisionPasantiasView(generic.ListView):
+    def get_queryset(self):
+        try:
+            entrevistas = Entrevista.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento)
+        except ObjectDoesNotExist:
+            return None
+        for entrevista in entrevistas:
+            try:
+                pasantia = Pasantia.objects.get(entrevista=entrevista)
+            except ObjectDoesNotExist:
+                continue
+            entrevista.pasantia = pasantia
+        return entrevistas
+
+    def get_pasantia(self):
+        try:
+            pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
+        except ObjectDoesNotExist:
+            return None
+        return pasantias
+
+    template_name = 'comision_pasantias/entrevistas.html'
+    context_object_name = 'entrevista_list'
+    extra_context = {'pasantias': get_pasantia}
+
+class ListPostulacionesComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/postulaciones.html'
+    context_object_name = 'postulacion_list'
+
+    def get_queryset(self):
+        return Postulaciones.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento)
+
+class ListAlumnosComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/alumnos.html'
+    context_object_name = 'alumno_list'
+
+    def get_queryset(self):
+        return Alumno.objects.filter(carrera__departamento=self.request.user.pps_user.departamento)
+
+class ListEmpresasComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/empresas.html'
+    context_object_name = 'empresa_list'
+
+    def get_queryset(self):
+        return Empresa.objects.filter(departamento=self.request.user.pps_user.departamento)
+
+class ListPuestosComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/puestos.html'
+    context_object_name = 'puesto_list'
+
+    def get_queryset(self):
+        return Puesto.objects.filter(empresa__departamento=self.request.user.pps_user.departamento)
+
+class ListPasantiasComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/pasantias.html'
+    context_object_name = 'pasantia_list'
+
+    def get_queryset(self):
+        return Pasantia.objects.filter(entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento)
+
+class AlumnoDetailComisionPasantiasView(generic.UpdateView):
+    model = Alumno
+    template_name = 'comision_pasantias/alumno_detail.html'
+    form_class = AlumnoDetailComisionPasantiasForm
+    success_url = '../../alumnos'
+
+    def get_object(self):
+        return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+
+class EntrevistaDetailComisionPasantiasView(generic.UpdateView):
+    model = Entrevista
+    template_name = 'comision_pasantias/entrevista_detail.html'
+    form_class = EntrevistaDetailComisionPasantiasForm
+    success_url = '../../entrevistas'
+
+class PasantiaDetailComisionPasantiasView(generic.UpdateView):
+    model = Entrevista
+    template_name = 'comision_pasantias/pasantia_detail.html'
+    form_class = PasantiaDetailComisionPasantiasForm
 
     def get_object(self):
         return Pasantia.objects.get(pk=self.kwargs["pk"])
