@@ -3,7 +3,11 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Pasantias</h2>
+            <div><h2>Pasantias
+                <a href="{% url 'nueva-pasantia-comision-pasantias' %}">
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-success btn-md">Nueva Pasant&iacute;a</button>
+                </a>
+            </h2></div>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>

@@ -383,3 +383,32 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         super(PasantiaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['tutor_empresa'].widget.attrs['disabled'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+
+
+class PasantiaCreateForm(forms.ModelForm):
+    class Meta():
+        model = models.Pasantia
+        fields = (
+            'fecha_inicio',
+            'fecha_fin',
+            'entrevista',
+            'tutor_empresa',
+            'informe',
+            'numero_legajo',
+            'comentarios_comision_pps',
+        )
+        widgets = {
+            'fecha_inicio': DateTimePickerInput(options={
+                "format": "DD/MM/YYYY HH:mm",
+                "locale": "es",
+            }),
+            'fecha_fin': DateTimePickerInput(options={
+                "format": "DD/MM/YYYY HH:mm",
+                "locale": "es",
+            })
+        }
+
+        def __init__(self, *args, **kwargs):
+            super(PasantiaCreateForm, self).__init__(*args, **kwargs)
+            self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
+                empresa=self.instance.entrevista.empresa)

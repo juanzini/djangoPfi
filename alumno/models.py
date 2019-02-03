@@ -112,8 +112,8 @@ class Docente(models.Model):
 
 
 class Pasantia(models.Model):
-    fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField()
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
     entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)

@@ -119,5 +119,12 @@ urlpatterns = [
 	path('comision_pasantias/pasantias/<int:pk>/',
 		 login_required(permissions(views.PasantiaDetailComisionPasantiasView.as_view(), User.CP)),
 		 name='pasantia-detail-comision-pasantias'),
+	path('comision_pasantias/pasantias/nueva',
+		 login_required(permissions(views.CreatePasantiaView.as_view(), User.CP)),
+		 name='nueva-pasantia-comision-pasantias'),
+
+	path('comision_pasantias/pasantias/nueva/tutores',
+		login_required(permissions(views.AjaxField2View.as_view(), User.CP)),
+		name='ajax-get-tutor-empresa'),
 
 ]

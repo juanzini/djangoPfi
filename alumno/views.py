@@ -2,21 +2,23 @@ from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import login, authenticate
 from django.views import generic
 from datetime import datetime
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, PasantiaDetailSubcomisionCarreraForm
 from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, EntrevistaDetailEmpresaForm, PasantiaDetailEmpresaForm
 from .forms import SubcomisionPasantiasEditForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
-from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm
+from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
-from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia
+from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa
 from django.urls import reverse
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, get_object_or_404 ,HttpResponse
 from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
+from bootstrap_datepicker_plus import DatePickerInput
 from django.db.models import Q
 
 
@@ -617,3 +619,29 @@ class PasantiaDetailComisionPasantiasView(generic.UpdateView):
 
     def get_success_url(self):
         return self.request.GET.get('next', '../../pasantias')
+
+class CreatePasantiaView(generic.CreateView):
+    model = Pasantia
+    context_object_name = 'pasantia'
+    template_name = 'comision_pasantias/pasantia_create.html'
+    success_url = '../pasantias'
+
+    def get_form(self):
+        form = super(CreatePasantiaView, self).get_form(PasantiaCreateForm)
+        form.fields['fecha_inicio'].widget = DatePickerInput(options={
+            "format": "DD/MM/YYYY",
+            "locale": "es",
+        })
+        form.fields['fecha_fin'].widget = DatePickerInput(options={
+            "format": "DD/MM/YYYY",
+            "locale": "es",
+        })
+        return form
+
+class AjaxField2View(generic.View):
+
+    def get(self, request, *args, **kwargs):
+        entrevista = get_object_or_404(Entrevista, pk=request.GET.get('entrevista_id'))
+        tutores = TutorEmpresa.objects.filter(empresa=entrevista.empresa)
+        data = serializers.serialize('json', tutores)
+        return HttpResponse(data, content_type="application/json")

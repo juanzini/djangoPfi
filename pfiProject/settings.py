@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
-    'alumno.middlewares.LastUserUpdateProfile',
+    'alumno.middlewares.LastUserUpdateProfile'
 ]
 
 LAST_ACTIVITY_INTERVAL_SECS = 300
