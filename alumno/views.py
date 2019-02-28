@@ -67,11 +67,11 @@ def create_alumno(request):
         user_form = UserCreateForm(request.POST)
         alumno_form = AlumnoCreateForm(request.POST)
         if user_form.is_valid() and alumno_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=True)
             user.refresh_from_db()
-            alumno_form = Alumno(request.POST, instance=user.alumno)
-            alumno_form.full_clean()
-            alumno_form.save()
+            alumno = alumno_form.save(commit=False)
+            alumno.user = user
+            alumno.save()
             username = user_form.cleaned_data.get('username')
             raw_password = user_form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)

@@ -58,7 +58,6 @@ class Alumno(models.Model):
 class Carrera(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100, primary_key=True)
-    duracion = models.PositiveSmallIntegerField()
 
     class Meta:
         verbose_name = 'Carrera'
@@ -114,6 +113,8 @@ class Docente(models.Model):
 class Pasantia(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
+    logo = models.ImageField()
+    url = models.TextField(max_length=300, blank=True, null=True)
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
     entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)
