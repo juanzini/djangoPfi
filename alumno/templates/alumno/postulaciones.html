@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <h2>Postulaciones</h2>
-            <table class="table table-sm table-hover">
+            <table class="table table-sm">
                 <thead>
                     <tr>
                         <th>Puesto</th>
@@ -18,7 +18,7 @@
                     {% for postulacion in postulaciones_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
+                                {{ postulacion.puesto }}
                             </td>
                             <td>
                                 {{ postulacion.puesto.empresa }}

@@ -4,7 +4,10 @@ from datetime import date
 from datetime import datetime
 from pytz import UTC
 from django.core.exceptions import ValidationError
+from private_storage.fields import PrivateFileField
 import re
+
+from pfiProject import settings
 
 
 class User(AbstractUser):
@@ -33,9 +36,17 @@ class Alumno(models.Model):
         if not reg.match(str(value)):
             raise ValidationError(u'Formato de registro erroneo, recuerda que debe comenzar con 30')
 
+    def curriculum_upload_path(instance, filename):
+        return '{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
+    def plan_upload_path(instance, filename):
+        return '{0}-{1}-{2}'.format("plan", instance.user.username, filename)
+
     numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
-    curriculum = models.FileField(upload_to='curriculums/', blank=True, null=True)
+    curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
+                                  content_types='application/pdf', max_file_size=1024 * 1024)
+    plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
+                                  content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
@@ -65,7 +76,7 @@ class Carrera(models.Model):
         unique_together = (("departamento", "nombre"),)
 
     def __str__(self):
-        return self.nombre
+        return self.nombre.__str__() + ': ' + self.departamento.__str__()
 
 
 class SubcomisionCarrera(models.Model):
@@ -113,8 +124,6 @@ class Docente(models.Model):
 class Pasantia(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
-    logo = models.ImageField()
-    url = models.TextField(max_length=300, blank=True, null=True)
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
     entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)
@@ -150,6 +159,7 @@ class Entrevista(models.Model):
     alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
     empresa = models.ForeignKey('Empresa', on_delete=models.DO_NOTHING)
     fecha = models.DateTimeField()
+    lugar = models.TextField(max_length=1000, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
@@ -171,7 +181,13 @@ class Entrevista(models.Model):
 
 
 class Empresa(models.Model):
+    def logo_upload_path(instance, filename):
+        return '{0}-{1}-{2}'.format("logo", instance.user.username, filename)
+
     descripcion = models.TextField(max_length=500)
+    logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png'),
+                            upload_to=logo_upload_path, max_file_size=1024 * 1024)
+    url = models.Field(max_length=300, blank=True, null=True)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
 
@@ -180,7 +196,7 @@ class Empresa(models.Model):
         verbose_name_plural = 'Empresas'
 
     def get_cantidad_de_pasantes(self):
-        return Pasantia.objects.filter(tutor_empresa__empresa=self).count()
+        return Pasantia.objects.filter(entrevista__empresa=self).count()
 
     def __str__(self):
         return self.user.__str__()
@@ -189,28 +205,45 @@ class Empresa(models.Model):
 class Puesto(models.Model):
     puesto_id = models.AutoField(primary_key=True)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=50)
-    descripcion = models.TextField(max_length=1000)
-    dedicacion = models.PositiveSmallIntegerField()
+    BE = 'BE'
+    FE = 'FE'
+    QA = 'QA'
+    IOS = 'MB'
+    AND = 'AND'
+    IND = 'IND'
+    OTR = 'OTR'
+    AREA_CHOICES = [
+        (BE, 'Back-end'),
+        (FE, 'Front-end'),
+        (QA, 'Quality Assurance'),
+        (IOS, 'Mobile - iOS'),
+        (AND, 'Mobile - Android'),
+        (IND, 'Indistinto'),
+        (OTR, 'Otro'),
+    ]
+    nombre = models.CharField(max_length=3, choices=AREA_CHOICES, default=IND)
+    descripcion_actividades = models.TextField(max_length=1000)
+    conocimientos_requeridos = models.TextField(max_length=1000)
     horario = models.CharField(max_length=20)
-    remuneracion = models.DecimalField(max_digits=8, decimal_places=2, default=0, blank=True, null=True)
+    rentada = models.BooleanField(default=False, blank=False, null=False)
 
     class Meta:
         verbose_name = 'Puesto'
         verbose_name_plural = 'Puestos'
+        unique_together = (("empresa", "nombre"),)
 
     def get_cantidad_alumnos(self):
-        return Postulaciones.objects.filter(puesto=self).count()
+        return Postulacion.objects.filter(puesto=self).count()
 
     def __str__(self):
-        return self.nombre
+        return self.empresa.__str__() + ' ' + self.nombre.__str__()
 
 
-class Postulaciones(models.Model):
+class Postulacion(models.Model):
     puesto = models.ForeignKey('Puesto', on_delete=models.CASCADE)
     alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE)
     entrevista = models.ForeignKey('Entrevista', on_delete=models.CASCADE, null=True, blank=True)
-    fecha = models.DateTimeField()
+    fecha = models.DateField(default=date.today)
 
     class Meta:
         verbose_name = 'Postulacion'

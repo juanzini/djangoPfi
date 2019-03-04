@@ -9,7 +9,7 @@ from .models import TutorEmpresa
 from .models import Entrevista
 from .models import Empresa
 from .models import Puesto
-from .models import Postulaciones
+from .models import Postulacion
 from .models import Departamento
 from .models import DirectorDepartamento
 from .models import Alumno
@@ -27,7 +27,7 @@ admin.site.register(Pasantia)
 admin.site.register(TutorEmpresa)
 admin.site.register(Entrevista)
 admin.site.register(Puesto)
-admin.site.register(Postulaciones)
+admin.site.register(Postulacion)
 admin.site.register(Departamento)
 admin.site.register(DirectorDepartamento)
 admin.site.register(User, MyUserCreateAdmin)

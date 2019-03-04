@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
+ADMIN_MEDIA_PREFIX = '/media/'
 
 # Application definition
 
@@ -41,6 +44,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'django_registration',
     'bootstrap_datepicker_plus',
+    'django_cleanup.apps.CleanupConfig',
+    'private_storage'
 ]
 
 MIDDLEWARE = [

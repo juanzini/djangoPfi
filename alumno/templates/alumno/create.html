@@ -6,10 +6,40 @@
         <div class="col">
             <h2>Completar Formulario de Registración</h2>
             <hr>
-            <form method="post" class="form">
+            <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form user_form %}
-                {% bootstrap_form alumno_form %}
+                <div class="form-group"><label for="id_curriculum">Curriculum (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="curriculum" class="custom-file-input" id="id_curriculum">
+                            <label class="custom-file-label" for="id_curriculum" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group"><label for="id_plan_de_estudio">Plan de Estudio (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="plan_de_estudio" class="custom-file-input" id="id_plan_de_estudio">
+                            <label class="custom-file-label" for="id_plan_de_estudio" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio" %}
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg">Guardar</button>
@@ -17,4 +47,22 @@
             </form>
         </div>
     </div>
+
+
+<style>
+    .custom-file-label::after {
+        content: "Buscar" !important;
+    }
+</style>
+
+<script>
+    $('.custom-file-input').on('change', function() {
+   let fileName = $(this).val().split('\\').pop();
+   if (!fileName) {
+        $(this).next('.custom-file-label').addClass("selected").html("Nada seleccionado");
+    } else {
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+   }
+});
+</script>
 {% endblock %}

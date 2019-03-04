@@ -10,7 +10,7 @@ from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisi
 from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, EntrevistaDetailEmpresaForm, PasantiaDetailEmpresaForm
 from .forms import SubcomisionPasantiasEditForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulaciones, Puesto
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404 ,HttpResponse
@@ -20,6 +20,77 @@ from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
 from bootstrap_datepicker_plus import DatePickerInput
 from django.db.models import Q
+from private_storage.views import PrivateStorageDetailView
+
+
+class CvDownloadView(PrivateStorageDetailView):
+    model = Alumno
+    model_file_field = 'curriculum'
+    content_disposition = 'inline'
+
+    def get_content_disposition_filename(self, private_file):
+        return 'curriculum_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+
+    def get_queryset(self):
+        # Make sure only certain objects can be accessed.
+        return super().get_queryset().filter()
+
+    def can_access_file(self, private_file):
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.curriculum.name:
+            return True
+        if self.request.user.is_superuser:
+            return True
+        if self.request.user.is_staff:
+            return True
+        if self.request.user.tipo == User.EM:
+            return True
+        return False
+
+class LogoDownloadView(PrivateStorageDetailView):
+    model = Empresa
+    model_file_field = 'logo'
+    content_disposition = 'inline'
+
+    def get_content_disposition_filename(self, private_file):
+        return 'logo_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+
+    def get_queryset(self):
+        # Make sure only certain objects can be accessed.
+        return super().get_queryset().filter()
+
+    def can_access_file(self, private_file):
+        if self.request.user.tipo == User.EM and private_file.relative_name == self.request.user.empresa_user.logo.name:
+            return True
+        if self.request.user.is_superuser:
+            return True
+        if self.request.user.is_staff:
+            return True
+        if self.request.user.tipo == User.AL:
+            return True
+        return False
+
+class PlanDeEstudioDownloadView(PrivateStorageDetailView):
+    model = Alumno
+    model_file_field = 'plan_de_estudio'
+    content_disposition = 'inline'
+
+    def get_content_disposition_filename(self, private_file):
+        return 'plan_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+
+    def get_queryset(self):
+        # Make sure only certain objects can be accessed.
+        return super().get_queryset().filter()
+
+    def can_access_file(self, private_file):
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.plan_de_estudio.name:
+            return True
+        if self.request.user.is_superuser:
+            return True
+        if self.request.user.is_staff:
+            return True
+        if self.request.user.tipo == User.EM:
+            return True
+        return False
 
 
 def permissions(function, typeUser):
@@ -65,7 +136,7 @@ class CreateAlumnoView(generic.CreateView):
 def create_alumno(request):
     if request.method == 'POST':
         user_form = UserCreateForm(request.POST)
-        alumno_form = AlumnoCreateForm(request.POST)
+        alumno_form = AlumnoCreateForm(request.POST, request.FILES)
         if user_form.is_valid() and alumno_form.is_valid():
             user = user_form.save(commit=True)
             user.refresh_from_db()
@@ -90,7 +161,7 @@ def create_alumno(request):
 def edit_alumno(request):
     if request.method == 'POST':
         user_form = AlumnoUserEditForm(request.POST, instance=request.user)
-        alumno_form = AlumnoEditForm(request.POST, instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=Alumno.objects.get(user=request.user.pk))
         if user_form.is_valid() and alumno_form.is_valid():
             user_form.save()
             alumno_form.save()
@@ -114,7 +185,7 @@ def edit_alumno(request):
 def edit_ultima_actualizacion(request, middleware):
     if request.method == 'POST' and not middleware:
         user_form = AlumnoUserEditForm(request.POST, instance=request.user)
-        alumno_form = AlumnoEditForm(request.POST, instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=Alumno.objects.get(user=request.user.pk))
         if user_form.is_valid() and alumno_form.is_valid():
             user_form.save()
             alumno_form.save()
@@ -144,6 +215,37 @@ class DetailAlumnoView(generic.DetailView):
     def get_object(self):
         return Alumno.objects.get(user=self.request.user.pk)
 
+class DetailPustoAlumnoView(generic.TemplateView):
+    template_name = 'alumno/puesto_detail.html'
+    context_object_name = 'puesto'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPustoAlumnoView, self).get_context_data(**kwargs)
+        context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"])
+        try:
+            context['postulacion'] = Postulacion.objects.get(puesto=context['puesto'], alumno=self.request.user.alumno_user)
+        except ObjectDoesNotExist:
+            context['postulacion'] = None
+        return context
+
+
+@transaction.atomic
+def create_postulacion_alumno(request):
+    if request.method == 'POST':
+        try:
+            Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user)
+        except ObjectDoesNotExist:
+            Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')), alumno=request.user.alumno_user)
+        return HttpResponseRedirect('../empresas')
+
+@transaction.atomic
+def delete_postulacion_alumno(request):
+    if request.method == 'POST':
+        try:
+            Postulacion.objects.get(pk=request.POST.get('postulacion_id')).delete()
+        except ObjectDoesNotExist:
+            None
+        return HttpResponseRedirect('../empresas')
 
 class ListEntrevistasAlumnoView(generic.ListView):
     template_name = 'alumno/entrevistas.html'
@@ -159,15 +261,21 @@ class ListPostulacionesAlumnoView(generic.ListView):
     context_object_name = 'postulaciones_list'
 
     def get_queryset(self):
-        return Postulaciones.objects.filter(alumno=self.request.user.alumno_user)
+        return Postulacion.objects.filter(alumno=self.request.user.alumno_user)
 
 
 class ListPuestosAlumnoView(generic.ListView):
-    template_name = 'alumno/puestos.html'
+    template_name = 'alumno/empresas.html'
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        return Puesto.objects.all()
+        puestos = Puesto.objects.filter(empresa__departamento=self.request.user.alumno_user.carrera.departamento)
+        for puesto in puestos:
+            try:
+                puesto.postulacion = Postulacion.objects.get(puesto=puesto, alumno=self.request.user.alumno_user)
+            except ObjectDoesNotExist:
+                puesto.postulacion = None
+        return puestos
 
 
 class ListContactoAlumnoView(generic.ListView):
@@ -209,7 +317,7 @@ class DetailEmpresaView(generic.DetailView):
 def edit_empresa(request):
     if request.method == 'POST':
         user_form = EmpresaUserEditForm(request.POST, instance=request.user)
-        empresa_form = EmpresaEditForm(request.POST, instance=Empresa.objects.get(user=request.user.pk))
+        empresa_form = EmpresaEditForm(request.POST, request.FILES, instance=Empresa.objects.get(user=request.user.pk))
         if user_form.is_valid() and empresa_form.is_valid():
             user_form.save()
             empresa_form.save()
@@ -270,7 +378,7 @@ class ListPostulacionesEmpresaView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        return Postulaciones.objects.filter(
+        return Postulacion.objects.filter(
             Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)))
 
 
@@ -331,7 +439,7 @@ class AlumnoDetailEmpresaView(generic.DetailView):
 
 def nuevaEntrevista(request):
     entrevista = None
-    postulacion = Postulaciones.objects.get(pk=request.GET.get('postulacion'),
+    postulacion = Postulacion.objects.get(pk=request.GET.get('postulacion'),
                                             puesto__empresa=request.user.empresa_user)
     alumno = postulacion.alumno
     empresa = postulacion.puesto.empresa
@@ -436,7 +544,7 @@ class ListPostulacionesSubcomisionCarreraView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        return Postulaciones.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+        return Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
 
 
 class ListAlumnosSubcomisionCarreraView(generic.ListView):
@@ -564,7 +672,7 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        return Postulaciones.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento)
+        return Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento)
 
 class ListAlumnosComisionPasantiasView(generic.ListView):
     template_name = 'comision_pasantias/alumnos.html'
