@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from datetime import date
 from datetime import datetime
 from pytz import UTC
@@ -7,8 +7,8 @@ from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
 import re
 
-from pfiProject import settings
-
+class UserManager(UserManager):
+    pass
 
 class User(AbstractUser):
     AL = 'AL'

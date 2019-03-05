@@ -5,6 +5,8 @@ from datetime import datetime
 from django import forms
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from django_registration.backends.activation.views import RegistrationView
+
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, PasantiaDetailSubcomisionCarreraForm
@@ -139,16 +141,19 @@ def create_alumno(request):
         user_form = UserCreateForm(request.POST)
         alumno_form = AlumnoCreateForm(request.POST, request.FILES)
         if user_form.is_valid() and alumno_form.is_valid():
-            user = user_form.save(commit=True)
-            user.refresh_from_db()
-            alumno = alumno_form.save(commit=False)
-            alumno.user = user
-            alumno.save()
-            username = user_form.cleaned_data.get('username')
-            raw_password = user_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('redirect')
+            try:
+                User.objects.get(email=user_form.instance.email)
+                user_form.add_error('email', forms.ValidationError("Ya hay un usuario registrado con este email."))
+                return render(request, 'alumno/create.html', {
+                    'user_form': user_form,
+                    'alumno_form': alumno_form,
+                })
+            except ObjectDoesNotExist:
+                success_redirect = RegistrationView.as_view(form_class=UserCreateForm)(request)
+                alumno = alumno_form.save(commit=False)
+                alumno.user = User.objects.get(username=user_form.instance.username)
+                alumno.save()
+                return success_redirect
     else:
         user_form = UserCreateForm()
         alumno_form = AlumnoCreateForm()
@@ -164,13 +169,22 @@ def edit_alumno(request):
         user_form = AlumnoUserEditForm(request.POST, instance=request.user)
         alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=Alumno.objects.get(user=request.user.pk))
         if user_form.is_valid() and alumno_form.is_valid():
-            user_form.save()
-            alumno_form.save()
-            alumno = Alumno.objects.get(user=request.user.pk)
-            alumno.ultima_actualizacion_perfil = datetime.now()
-            alumno.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
-            return redirect('edit-alumno')
+            try:
+                User.objects.filter(Q(email=request.user.username) & (~Q(username=request.user.username)))
+                user_form.add_error('email', forms.ValidationError("Ya hay un usuario registrado con este email."))
+                user_form.has_error('email', forms.ValidationError("Ya hay un usuario registrado con este email."))
+                return render(request, 'alumno/create.html', {
+                    'user_form': user_form,
+                    'alumno_form': alumno_form,
+                })
+            except ObjectDoesNotExist:
+                user_form.save()
+                alumno_form.save()
+                alumno = Alumno.objects.get(user=request.user.pk)
+                alumno.ultima_actualizacion_perfil = datetime.now()
+                alumno.save()
+                messages.success(request, ('Su perfil fue correctamente actualizado!'))
+                return redirect('edit-alumno')
         else:
             messages.error(request, ('El formulario contiene algunos errores'))
     else:

@@ -136,6 +136,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'juanzini@gmail.com'
+EMAIL_HOST_PASSWORD = '<password>'
+
 BOOTSTRAP4 = {
     'include_jquery': True,
 }

@@ -1,3 +1,5 @@
+from django_registration.forms import RegistrationForm
+
 from . import models
 
 from django import forms
@@ -168,8 +170,8 @@ class AlumnoCreateForm(forms.ModelForm):
             'descripcion_habilidades',
         )
 
-class UserCreateForm(UserCreationForm):
-    class Meta:
+class UserCreateForm(RegistrationForm):
+    class Meta(RegistrationForm):
         model = models.User
         fields = (
             'first_name',
@@ -180,7 +182,7 @@ class UserCreateForm(UserCreationForm):
             'password2',
         )
     def __init__(self, *args, **kwargs):
-        super(UserAdmin.add_form, self).__init__(*args, **kwargs)
+        super(UserCreateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
