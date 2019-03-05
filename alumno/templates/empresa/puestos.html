@@ -3,31 +3,32 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Puestos Ofrecidos</h2>
+            <h2>Puestos Ofrecidos <a href="{% url 'nuevo-puesto-empresa' %}">
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-success btn-md">Nuevo Puesto</button>
+                </a></h2>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
-                        <th>Empresa</th>
-                        <th>Descripci&oacute;n</th>
-                        <th>Acciones</th>
+                        <th>&Aacute;rea</th>
+                        <th>Horario</th>
+                        <th>Rentada</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr>
+                        <tr data-link="row" class="rowlink">
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
-                            </td>
-                            <td>
-                                {{ puesto.empresa }}
+                                <a href="{% url 'puesto-detail-empresa' puesto.pk %}">{{ puesto.nombre }}</a>
                             </td>
                             <td>
                                 {{ puesto.horario }}
                             </td>
                             <td>
-                                <p>boton.editar</p>
-                                <p>boton.eliminar</p>
+                                {% if puesto.rentada %}
+                                    Si
+                                {% else %}
+                                    No
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

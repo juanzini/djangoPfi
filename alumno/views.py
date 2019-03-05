@@ -2,6 +2,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import login, authenticate
 from django.views import generic
 from datetime import datetime
+from django import forms
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
@@ -476,6 +477,29 @@ def nuevaEntrevista(request):
         'form': EntrevistaExistenteCreateForm(instance=entrevista),
     })
 
+class CreatePuestoView(generic.CreateView):
+    model = Puesto
+    context_object_name = 'puesto'
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
+    template_name = 'empresa/puesto_create.html'
+
+    def form_valid(self, form):
+        puesto = form.save(commit=False)
+        try:
+            Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user)
+            form.add_error('nombre', forms.ValidationError("Ya se encuentra ofreciéndo una pasantía para esta área."))
+            return super(CreatePuestoView, self).form_invalid(form)
+        except ObjectDoesNotExist:
+            puesto.empresa = self.request.user.empresa_user
+            puesto.save()
+        return redirect('puestos-empresa')
+
+class DetailPuestoEmpresaView(generic.UpdateView):
+    model = Puesto
+    template_name = 'empresa/puesto_detail.html'
+    context_object_name = 'puesto'
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
+    success_url = '../../puestos'
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------SUBCOMISION-CARRERA---------------------------------------------------------------

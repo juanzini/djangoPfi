@@ -21,11 +21,17 @@
                             <label class="custom-file-label" for="id_logo" data-browse="Buscar">Nada seleccionado</label>
                           </div>
                         </div>
+                          {% if user.empresa_user.logo %}
                           <p style="margin-bottom : 0rem !important; font-size: 14px; margin-left: 0.4rem;">Actualmente: <img height="8%;" width="8%;" src="{% url 'descarga-empresa-logo' user.empresa_user.pk %}"/><br></p>
+                          {% endif %}
                       </div>
                     </div>
                 </div>
-                {% bootstrap_form empresa_form exclude="logo" %}
+                <div class="form-group">
+                    <label for="id_url">URL</label>
+                    <input type="text" name="url" value="{% if user.empresa_user.url %}{{user.empresa_user.url}}{% endif %}" maxlength="200" class="form-control" placeholder="URL" id="id_url">
+                </div>
+                {% bootstrap_form empresa_form exclude="logo,url" %}
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg">Guardar</button>

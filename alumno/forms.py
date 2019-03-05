@@ -207,7 +207,7 @@ class EmpresaUserEditForm(forms.ModelForm):
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
         model = models.Empresa
-        fields = ('descripcion', 'logo', 'url')
+        fields = ('url', 'descripcion', 'logo')
 
 class SubcomisionCarreraUserEditForm(forms.ModelForm):
     class Meta:

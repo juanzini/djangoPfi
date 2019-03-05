@@ -184,10 +184,10 @@ class Empresa(models.Model):
     def logo_upload_path(instance, filename):
         return '{0}-{1}-{2}'.format("logo", instance.user.username, filename)
 
-    descripcion = models.TextField(max_length=500)
+    descripcion = models.TextField(max_length=1000, blank=True, null=True)
+    url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png'),
                             upload_to=logo_upload_path, max_file_size=1024 * 1024)
-    url = models.Field(max_length=300, blank=True, null=True)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
 
@@ -225,7 +225,7 @@ class Puesto(models.Model):
     descripcion_actividades = models.TextField(max_length=1000)
     conocimientos_requeridos = models.TextField(max_length=1000)
     horario = models.CharField(max_length=20)
-    rentada = models.BooleanField(default=False, blank=False, null=False)
+    rentado = models.BooleanField(default=False, blank=False, null=False)
 
     class Meta:
         verbose_name = 'Puesto'

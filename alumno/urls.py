@@ -33,6 +33,7 @@ urlpatterns = [
          name='descarga-alumno-curriculum'),
     path('alumno/plan-de-estudio/<int:pk>', login_required(permissions(views.PlanDeEstudioDownloadView.as_view(), User.AL)),
          name='descarga-alumno-plan-de-estudio'),
+
     # -------------------EMPRESA--------------------
 
     path('empresa/index', login_required(permissions(views.IndexEmpresaView.as_view(), User.EM)), name='index-empresa'),
@@ -60,8 +61,12 @@ urlpatterns = [
          name='pasantias-empresa'),
     path('empresa/pasantias/<int:pk>/', login_required(permissions(views.DetailPasantiaEmpresaView.as_view(), User.EM)),
          name='pasantias-detail-empresa'),
-    path('empresa/logo/<int:pk>', login_required(permissions(views.LogoDownloadView.as_view(), User.EM)),
+    path('empresa/logo/<int:pk>', login_required(views.LogoDownloadView.as_view()),
          name='descarga-empresa-logo'),
+    path('empresa/puestos/nuevo', login_required(permissions(views.CreatePuestoView.as_view(), User.EM)),
+         name='nuevo-puesto-empresa'),
+    path('empresa/puestos/detalle/<int:pk>', login_required(permissions(views.DetailPuestoEmpresaView.as_view(), User.EM)),
+         name='puesto-detail-empresa'),
 
     # -------------------SUBCOMISION CARRERA--------------------
 
