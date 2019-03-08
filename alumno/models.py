@@ -159,7 +159,7 @@ class Entrevista(models.Model):
     alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
     empresa = models.ForeignKey('Empresa', on_delete=models.DO_NOTHING)
     fecha = models.DateTimeField()
-    lugar = models.TextField(max_length=1000, blank=False, null=False)
+    lugar = models.CharField(max_length=200, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
@@ -186,7 +186,7 @@ class Empresa(models.Model):
 
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
-    logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png'),
+    logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=logo_upload_path, max_file_size=1024 * 1024)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')

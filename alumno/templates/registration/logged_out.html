@@ -1,4 +1,9 @@
 {% extends "base.html" %}
 {% csrf_token %}
-{% block content %} <h1> Desconectado </h1> <p> Ya ha cerrado la sesión. </p>
+{% block content %}
+<div class="row">
+        <div class="col" style="margin-left: 1rem;">
+            <h1> Desconectado </h1> <p> Su sesi&oacute;n finaliz&oacute; correctamente. </p>
+        </div>
+    </div>
 {% endblock %}

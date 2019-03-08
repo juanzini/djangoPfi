@@ -8,8 +8,8 @@
                 <thead>
                     <tr>
                         <th>Alumno</th>
-                        <th>Puesto</th>
                         <th>Empresa</th>
+                        <th>Puesto</th>
                         <th>Fecha de Postulación</th>
                         <th>Entrevista Asignada</th>
                         <th>Confirmación Asistencia</th>
@@ -17,32 +17,35 @@
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr>
+                        <tr  data-link="row" class="rowlink">
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
+                                <a href="{% url 'alumno-detail-subcomision-carrera' postulacion.alumno.numero_registro %}">{{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}</a>
                             </td>
                             <td>
                                 {{ postulacion.puesto.empresa }}
+                            </td>
+                            <td>
+                                {{ postulacion.puesto.get_nombre_display }}
                             </td>
                             <td>
                                 {{ postulacion.fecha }}
                             </td>
                             <td>
                                 {% if postulacion.entrevista %}
-                                {{ postulacion.entrevista.fecha }}
+                                    {{ postulacion.entrevista.fecha }}
                                 {% else %}
-                                <p>No Posee</p>
+                                    <p>No Posee</p>
                                 {% endif %}
                             </td>
-                            {% if postulacion.entrevista %}
                             <td>
-                                {% if postulacion.entrevista.confirmada_alumno %}
-                                <p>Botón desconfirmar</p>
-                                {% else %}
-                                <p>Botón confirmar</p>
+                                {% if postulacion.entrevista %}
+                                    {% if postulacion.entrevista.confirmada_alumno %}
+                                        <p>Botón desconfirmar</p>
+                                    {% else %}
+                                        <p>Botón confirmar</p>
+                                    {% endif %}
                                 {% endif %}
                             </td>
-                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -18,7 +18,7 @@
                     {% for postulacion in postulacion_list %}
                         <tr>
                             <td>
-                                <a href="#">{{ postulacion.puesto }}</a>
+                                <a href="#">{{ postulacion.puesto.get_nombre_display }}</a>
                             </td>
                             <td>
                                 <a href="{% url 'alumno-detail-empresa' postulacion.alumno.numero_registro %}">

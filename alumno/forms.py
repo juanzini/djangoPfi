@@ -283,7 +283,7 @@ class EntrevistaCreateForm(forms.ModelForm):
 
     class Meta():
         model = models.Entrevista
-        fields = ['fecha']
+        fields = ['fecha', 'lugar']
         widgets = {
             'fecha': DateTimePickerInput(options={
                     "format": "DD/MM/YYYY HH:mm",
@@ -294,7 +294,7 @@ class EntrevistaCreateForm(forms.ModelForm):
 class EntrevistaExistenteCreateForm(forms.ModelForm):
     class Meta():
         model = models.Entrevista
-        fields = ['fecha']
+        fields = ['fecha', 'lugar']
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)

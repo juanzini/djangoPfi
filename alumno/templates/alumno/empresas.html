@@ -10,6 +10,7 @@
                         <th>Empresa</th>
                         <th>Área</th>
                         <th>Horario</th>
+                        <th style="text-align: center;">Rentada</th>
                         <th style="text-align: center;">Postulado</th>
                     </tr>
                 </thead>
@@ -20,10 +21,13 @@
                                 <a href="{% url 'puesto-detial-alumno' puesto.pk %}">{{ puesto.empresa.user.first_name }} {{ puesto.empresa.user.last_name }}</a>
                             </td>
                             <td>
-                                {{ puesto.nombre }}
+                                {{ puesto.get_nombre_display }}
                             </td>
                             <td>
                                 {{ puesto.horario }}
+                            </td>
+                            <td align="center">
+                                {% if puesto.rentado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                             </td>
                             <td align="center">
                                 {% if puesto.postulacion %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}

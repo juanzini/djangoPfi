@@ -39,7 +39,16 @@
                       </div>
                     </div>
                 </div>
-                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio" %}
+                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio,descripcion_intereses,descripcion_habilidades" %}
+                <div class="form-group">
+                    <label for="id_descripcion_intereses">
+                        Descripci&oacute;n de intereses</label>
+                    <textarea name="descripcion_intereses" cols="40" rows="10" maxlength="500" class="form-control" placeholder="¿Cuáles son tus campos de interés profesional? ¿Sabes de qué te gustaría trabajar? Identificar tus preferencias e intereses profesionales es un paso clave dentro de tu proceso de orientación profesional. Trabajar de aquello que más te guste contribuirá a tu bienestar y te permitirá ofrecer la máxima expresión de tu talento y potencial." title="" id="id_descripcion_intereses"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_descripcion_habilidades">Descripci&oacute;n de habilidades</label>
+                    <textarea name="descripcion_habilidades" cols="40" rows="10" maxlength="1000" class="form-control" placeholder="Aquí puedes remarcar las habilidades personales o profesionales que poseés y consideres oportunas para tu postulación. No te guardes ninguna!" title="" id="id_descripcion_habilidades"></textarea>
+                </div>
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg">Guardar</button>

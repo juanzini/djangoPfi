@@ -7,20 +7,20 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Puesto</th>
                         <th>Empresa</th>
+                        <th>Puesto</th>
                         <th>Descripci&oacute;n</th>
                         <th>Cantidad de Alumnos Postulados</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'detail-alumno' %}">{{ puesto.nombre }}</a>
-                            </td>
+                        <tr data-link="row" class="rowlink">
                             <td>
                                 {{ puesto.empresa }}
+                            </td>
+                            <td>
+                                <a href="{% url 'detail-alumno' %}">{{ puesto.get_nombre_display }}</a>
                             </td>
                             <td>
                                 {{ puesto.horario }}

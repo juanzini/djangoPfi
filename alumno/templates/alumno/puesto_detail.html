@@ -4,7 +4,7 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2 style="margin-bottom: 20px;"> <img height="8%;" width="8%;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
+            <h2 style="margin-bottom: 20px;"> <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
                 {% if puesto.empresa.url %}
                 <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.user.first_name }} {{ puesto.empresa.user.last_name }}</a>
                 {% else %}
