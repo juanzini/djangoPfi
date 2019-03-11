@@ -161,12 +161,22 @@ class Entrevista(models.Model):
     fecha = models.DateTimeField()
     lugar = models.CharField(max_length=200, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
+    pasantia_aceptada = models.BooleanField(blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
-    notificado_alumno = models.BooleanField(default=False)
-    confirmada_alumno = models.BooleanField(default=False)
-    cancelada_empresa = models.BooleanField(default=False)
-    cancelada_alumno = models.BooleanField(default=False)
+    NOA = 'NOA'
+    COA = 'COA'
+    CAE = 'CAE'
+    CAA = 'CAA'
+    REA = 'REA'
+    STATUS_CHOICES = [
+        (COA, 'Confirmada Alumno'),
+        (NOA, 'Notificada Alumno'),
+        (CAA, 'Cancelada Alumno'),
+        (REA, 'Realizada'),
+        (CAE, 'Cancelada Empresa')
+    ]
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=NOA)
 
     class Meta:
         verbose_name = 'Entrevista'

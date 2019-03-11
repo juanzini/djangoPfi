@@ -68,8 +68,8 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
             'resultado',
             'comentarios_empresa',
             'comentarios_comision_pps',
-            'notificado_alumno',
-            'confirmada_alumno',
+            'status',
+            'pasantia_aceptada'
         )
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
@@ -77,36 +77,28 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['empresa'].widget.attrs['readonly'] = True
         self.fields['resultado'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+        self.fields['status'].widget.attrs['readonly'] = True
+        self.fields['pasantia_aceptada'].widget.attrs['readonly'] = True
 
-TRUE_FALSE_CHOICES = (
-    (True, 'Yes'),
-    (False, 'No')
-)
 
 class EntrevistaDetailEmpresaForm(forms.ModelForm):
     class Meta():
         model = models.Entrevista
         fields = (
-            'notificado_alumno',
-            'confirmada_alumno',
+            'status',
+            'pasantia_aceptada',
             'fecha',
             'resultado',
             'comentarios_empresa',
             'comentarios_comision_pps',
         )
 
-        widgets = {
-            'notificado_alumno': forms.Select(choices=TRUE_FALSE_CHOICES),
-            'confirmada_alumno': forms.Select(choices=TRUE_FALSE_CHOICES)
-        }
-
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailEmpresaForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
-        self.fields['notificado_alumno'].widget.attrs['disabled'] = True
-        self.fields['confirmada_alumno'].widget.attrs['disabled'] = True
+        self.fields['status'].widget.attrs['disabled'] = True
 
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
@@ -350,10 +342,8 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
             'resultado',
             'comentarios_empresa',
             'comentarios_comision_pps',
-            'notificado_alumno',
-            'confirmada_alumno',
-            'cancelada_empresa',
-            'cancelada_alumno'
+            'status',
+            'pasantia_aceptada'
         )
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)

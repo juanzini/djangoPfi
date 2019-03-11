@@ -22,13 +22,13 @@
                                 {{ entrevista.fecha }}
                             </td>
                             <td>
-                                {% if entrevista.cancelada_alumno %}
+                                {% if entrevista.status == 'CAA' %}
                                     <p style="color:red;">Cancelada por el alumno</p>
                                 {% else %}
-                                    {% if entrevista.cancelada_empresa %}
+                                    {% if entrevista.status == 'CAE' %}
                                         <p style="color:red;">Cancelada por la empresa</p>
                                     {% else %}
-                                        {% if entrevista.confirmada_alumno %}
+                                        {% if entrevista.status == 'COA' %}
                                             {% if entrevista.is_past_due %}
                                                 {% if entrevista.resultado %}
                                                     <p style="color:black;"> REALIZADA SIN RESPUESTA </p>

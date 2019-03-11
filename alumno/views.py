@@ -1,5 +1,5 @@
 from django.contrib.auth.views import redirect_to_login
-from django.contrib.auth import login, authenticate
+import operator
 from django.views import generic
 from datetime import datetime
 from django import forms
@@ -354,8 +354,11 @@ class ListEntrevistasEmpresaView(generic.ListView):
     context_object_name = 'entrevista_list'
 
     def get_queryset(self):
-        return Entrevista.objects.filter(Q(empresa=self.request.user.empresa_user) &
-                                         ~Q(alumno__condicion_acreditacion=None))
+        entrevistas = Entrevista.objects.filter(Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None))
+        if len(entrevistas) == 0:
+            return None
+        order = ['COA', 'NOA', 'CAE', 'CAA', 'REA']
+        return sorted(entrevistas, key=lambda x: order.index(x.status))
 
 class ListPasantiasEmpresaView(generic.ListView):
     template_name = 'empresa/pasantias.html'
@@ -449,7 +452,7 @@ class AlumnoDetailEmpresaView(generic.DetailView):
     template_name = 'empresa/alumno_detail.html'
 
     def get_object(self):
-        return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+        return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"], carrera__departamento=self.request.user.empresa_user.departamento)
 
 
 def nuevaEntrevista(request):
