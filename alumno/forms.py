@@ -16,6 +16,7 @@ class AlumnoForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'perfil',
             'curriculum',
             'plan_de_estudio',
             'descripcion_intereses',
@@ -36,6 +37,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'perfil',
             'curriculum',
             'plan_de_estudio',
             'descripcion_intereses',
@@ -50,6 +52,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         )
     def __init__(self, *args, **kwargs):
         super(AlumnoDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['perfil'].widget.attrs['readonly'] = True
         self.fields['curriculum'].widget.attrs['readonly'] = True
         self.fields['plan_de_estudio'].widget.attrs['readonly'] = True
         self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
@@ -85,7 +88,6 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
     class Meta():
         model = models.Entrevista
         fields = (
-            'status',
             'pasantia_aceptada',
             'fecha',
             'resultado',
@@ -93,12 +95,10 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
             'comentarios_comision_pps',
         )
 
-
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailEmpresaForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
-        self.fields['status'].widget.attrs['disabled'] = True
 
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
@@ -156,6 +156,7 @@ class AlumnoCreateForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'perfil',
             'curriculum',
             'plan_de_estudio',
             'descripcion_intereses',
@@ -187,7 +188,7 @@ class AlumnoUserEditForm(forms.ModelForm):
 class AlumnoEditForm(forms.ModelForm):
     class Meta:
         model = models.Alumno
-        fields = ('curriculum', 'plan_de_estudio', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'curriculum', 'plan_de_estudio', 'descripcion_intereses', 'descripcion_habilidades')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -253,6 +254,7 @@ class MyUserCreateAdmin(UserAdmin):
                 'password1',
                 'password2',
                 'tipo',
+                'is_active'
             ),
         }),
     )
@@ -267,6 +269,7 @@ class MyUserCreateAdmin(UserAdmin):
                 'email',
                 'password',
                 'tipo',
+                'is_active'
             ),
         }),
     )
@@ -284,7 +287,7 @@ class EntrevistaCreateForm(forms.ModelForm):
         }
         
 class EntrevistaExistenteCreateForm(forms.ModelForm):
-    class Meta():
+    class Meta:
         model = models.Entrevista
         fields = ['fecha', 'lugar']
 
@@ -314,6 +317,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'perfil',
             'curriculum',
             'plan_de_estudio',
             'descripcion_intereses',

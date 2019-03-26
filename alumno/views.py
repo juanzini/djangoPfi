@@ -1,5 +1,4 @@
 from django.contrib.auth.views import redirect_to_login
-import operator
 from django.views import generic
 from datetime import datetime
 from django import forms
@@ -22,8 +21,9 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
 from bootstrap_datepicker_plus import DatePickerInput
-from django.db.models import Q
+from django.db.models import Q, F
 from private_storage.views import PrivateStorageDetailView
+from django.db.models import Case, When, Value, IntegerField
 
 
 class CvDownloadView(PrivateStorageDetailView):
@@ -45,7 +45,7 @@ class CvDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM:
+        if self.request.user.tipo == User.EM and Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,alumno__pk=self.kwargs["pk"]):
             return True
         return False
 
@@ -91,7 +91,30 @@ class PlanDeEstudioDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM:
+        if self.request.user.tipo == User.EM and Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,alumno__pk=self.kwargs["pk"]):
+            return True
+        return False
+
+class PerfilDownloadView(PrivateStorageDetailView):
+    model = Alumno
+    model_file_field = 'perfil'
+    content_disposition = 'inline'
+
+    def get_content_disposition_filename(self, private_file):
+        return 'perfil_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+
+    def get_queryset(self):
+        # Make sure only certain objects can be accessed.
+        return super().get_queryset().filter()
+
+    def can_access_file(self, private_file):
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.perfil.name:
+            return True
+        if self.request.user.is_superuser:
+            return True
+        if self.request.user.is_staff:
+            return True
+        if self.request.user.tipo == User.EM and Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,alumno__pk=self.kwargs["pk"]):
             return True
         return False
 
@@ -112,7 +135,7 @@ def redirect_view(request):
         if request.user.tipo == User.AL:
             return HttpResponseRedirect(reverse('edit-alumno'))
         if request.user.tipo == User.EM:
-            return HttpResponseRedirect(reverse('index-empresa'))
+            return HttpResponseRedirect(reverse('postulaciones-empresa'))
         if request.user.tipo == User.CC:
             return HttpResponseRedirect(reverse('edit-subcomision-carrera'))
         if request.user.tipo == User.CP:
@@ -311,14 +334,6 @@ class ListContactoAlumnoView(generic.ListView):
 # ------------------------------------------------------------------------------------------------------------
 
 
-class IndexEmpresaView(generic.TemplateView):
-    model = Empresa
-    template_name = 'empresa/index.html'
-
-    def get_object(self):
-        return Empresa.objects.get(user=self.request.user.pk)
-
-
 class DetailEmpresaView(generic.DetailView):
     model = Empresa
     context_object_name = 'empresa'
@@ -354,18 +369,21 @@ class ListEntrevistasEmpresaView(generic.ListView):
     context_object_name = 'entrevista_list'
 
     def get_queryset(self):
-        entrevistas = Entrevista.objects.filter(Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None))
+        entrevistas = Entrevista.objects.filter(Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None)).annotate(pasantia_aceptada_undefined=Case(
+                   When(status='REA', pasantia_aceptada=None, then=Value(0)),
+                   default=Value(1),
+                   output_field=IntegerField()))
         if len(entrevistas) == 0:
             return None
-        order = ['COA', 'NOA', 'CAE', 'CAA', 'REA']
-        return sorted(entrevistas, key=lambda x: order.index(x.status))
+        order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
+        return sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
 
 class ListPasantiasEmpresaView(generic.ListView):
     template_name = 'empresa/pasantias.html'
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        return Pasantia.objects.filter(Q(entrevista__empresa=self.request.user.empresa_user))
+        return Pasantia.objects.filter(Q(entrevista__empresa=self.request.user.empresa_user)).order_by(F('tutor_empresa').asc(), 'fecha_inicio')
 
 
 class DetailEntrevistaEmpresaView(generic.UpdateView):
@@ -373,6 +391,7 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
     template_name = 'empresa/entrevista_detail.html'
     context_object_name = 'entrevista'
     form_class = EntrevistaDetailEmpresaForm
+    success_url = '../../entrevistas'
 
 class DetailPasantiaEmpresaView(generic.UpdateView):
     model = Pasantia
@@ -396,19 +415,9 @@ class ListPostulacionesEmpresaView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
+
         return Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)))
-
-
-class ListAlumnosEmpresaView(generic.ListView):
-    template_name = 'empresa/alumnos.html'
-    context_object_name = 'alumno_list'
-
-    def get_queryset(self):
-        pasantias = Pasantia.objects.all()
-        if not pasantias:
-            return Alumno.objects.all()
-        return Alumno.objects.all().exclude(pk__in=pasantias.alumno)
+            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by(F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
 
 
 class ListPuestosEmpresaView(generic.ListView):
@@ -446,29 +455,33 @@ class ListContactoEmpresaView(generic.ListView):
         return contactos
 
 
-class AlumnoDetailEmpresaView(generic.DetailView):
-    model = Alumno
-    context_object_name = 'alumno'
+class PostulacionDetailEmpresaView(generic.DetailView):
+    model = Postulacion
+    context_object_name = 'postulacion'
     template_name = 'empresa/alumno_detail.html'
 
     def get_object(self):
-        return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"], carrera__departamento=self.request.user.empresa_user.departamento)
+        try:
+            return Postulacion.objects.get(pk=self.kwargs["pk"], puesto__empresa=self.request.user.empresa_user)
+        except ObjectDoesNotExist:
+            try:
+                return Postulacion.objects.get(alumno__pk=self.kwargs["pk"], puesto__empresa=self.request.user.empresa_user)
+            except ObjectDoesNotExist:
+                return None
 
 
 def nuevaEntrevista(request):
     entrevista = None
-    postulacion = Postulacion.objects.get(pk=request.GET.get('postulacion'),
+    postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),
                                             puesto__empresa=request.user.empresa_user)
     alumno = postulacion.alumno
     empresa = postulacion.puesto.empresa
-    try:
-        entrevista = Entrevista.objects.get(
-            alumno=alumno,
-            empresa=empresa,
-            cancelada_empresa=False,
-            cancelada_alumno=False,
-            fecha__gt=datetime.now())
-    except ObjectDoesNotExist:
+    entrevista = Entrevista.objects.filter(
+            Q(alumno=alumno) &
+            Q(empresa=empresa) &
+            (Q(status='NOA') | Q(status='COA')) &
+            Q(fecha__gt=datetime.now())).first()
+    if entrevista == None:
         if request.POST:
             form = EntrevistaCreateForm(request.POST)
             if form.is_valid():
@@ -476,6 +489,7 @@ def nuevaEntrevista(request):
                     alumno=alumno,
                     empresa=empresa,
                     fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+                    lugar=request.POST.get('lugar')
                 )
                 entrevista.save()
                 postulacion.entrevista = entrevista
@@ -557,7 +571,7 @@ def edit_subcomision_carrera(request):
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
     def get_queryset(self):
         try:
-            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera).order_by('')
         except ObjectDoesNotExist:
             return None
         for entrevista in entrevistas:

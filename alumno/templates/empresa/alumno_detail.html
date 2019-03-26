@@ -1,9 +1,56 @@
 {% extends "base.html" %}
+{% load bootstrap4 %}
 
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>{{ alumno.user.first_name }} {{ alumno.user.last_name }}</h2>
+            <h2 style="margin-bottom: 20px; vertical-align: middle;">
+                {% if postulacion.alumno.perfil %} <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
+                {% else %} <i class="far fa-user fa-4x"></i>
+                {% endif %}
+                {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
+            </h2>
+                {% if postulacion.alumno.carrera %}
+                    <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
+                {% endif %}
+                {% if postulacion.alumno.descripcion_intereses %}
+                    <p><b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}</p>
+                {% endif %}
+                {% if postulacion.alumno.descripcion_habilidades %}
+                    <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
+                {% endif %}
+                {% if postulacion.alumno.curriculum %}
+                    <p><b>Curr&iacute;culum</b>: {{postulacion.alumno.curriculum}}</p>
+                {% endif %}
+                {% if postulacion.alumno.plan_de_estudio %}
+                    <p><b>Plan de Estudio</b>: {{postulacion.alumno.plan_de_estudio}}</p>
+                {% endif %}
+                {% if postulacion.alumno.historia_academica %}
+                    <p><b>Historia Académica</b>: {{postulacion.alumno.historia_academica}</p>
+                {% endif %}
+                {% if postulacion.alumno.comentarios_carrera_visibles %}
+                    {% if postulacion.alumno.comentarios_comision_carrera %}
+                        <p><b>Comentarios de la Comisi&oacute;n de Carrera</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
+                    {% endif %}
+                    {% if postulacion.alumno.comentarios_comision_pps %}
+                        <p><b>Comentarios de la Comisi&oacute;n de PPS</b>: {{postulacion.alumno.comentarios_comision_pps}</p>
+                    {% endif %}
+                {% endif %}
+                {% buttons %}
+                <br>
+                {% if postulacion.entrevista and not postulacion.entrevista.is_past_due %}
+                    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
+                      {% csrf_token %}
+                      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Entrevista Generada</button>
+                    </form>
+                {% else %}
+                    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                      {% csrf_token %}
+                        <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                    </form>
+                {% endif %}
+                {% endbuttons %}
         </div>
     </div>
 {% endblock %}

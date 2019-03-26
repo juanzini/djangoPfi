@@ -40,6 +40,10 @@ class Alumno(models.Model):
         return '{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
     def plan_upload_path(instance, filename):
         return '{0}-{1}-{2}'.format("plan", instance.user.username, filename)
+    def historia_upload_path(instance, filename):
+        return '{0}-{1}-{2}'.format("historia", instance.user.username, filename)
+    def perfil_upload_path(instance, filename):
+        return '{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
     numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
@@ -47,6 +51,8 @@ class Alumno(models.Model):
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
+    historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,
+                                       content_types='application/pdf', max_file_size=1024 * 1024, null=True, blank=True)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
@@ -56,6 +62,8 @@ class Alumno(models.Model):
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
+    perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
+                            upload_to=perfil_upload_path, max_file_size=1024 * 1024)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
 
     class Meta:
@@ -169,8 +177,10 @@ class Entrevista(models.Model):
     CAE = 'CAE'
     CAA = 'CAA'
     REA = 'REA'
+    NOC = 'NOC'
     STATUS_CHOICES = [
         (COA, 'Confirmada Alumno'),
+        (NOC, 'No Confirmada Alumno'),
         (NOA, 'Notificada Alumno'),
         (CAA, 'Cancelada Alumno'),
         (REA, 'Realizada'),
@@ -187,7 +197,15 @@ class Entrevista(models.Model):
         return self.empresa.__str__() + " a " + self.alumno.__str__()
 
     def is_past_due(self):
-        return datetime.utcnow().replace(tzinfo=UTC) > self.fecha.replace(tzinfo=UTC)
+        if datetime.utcnow().replace(tzinfo=UTC) > self.fecha.replace(tzinfo=UTC):
+            if not (self.status == self.REA or self.status == self.NOC):
+                if self.status == self.COA:
+                    self.status = self.REA
+                else:
+                    self.status = self.NOC
+                self.save()
+            return True
+        return False
 
 
 class Empresa(models.Model):
@@ -198,12 +216,14 @@ class Empresa(models.Model):
     url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=logo_upload_path, max_file_size=1024 * 1024)
+    nombre_fantasia=models.CharField(max_length=200, blank=False, null=False)
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
 
     class Meta:
         verbose_name = 'Empresa'
         verbose_name_plural = 'Empresas'
+        unique_together = (("departamento", "nombre_fantasia"),)
 
     def get_cantidad_de_pasantes(self):
         return Pasantia.objects.filter(entrevista__empresa=self).count()
@@ -252,7 +272,7 @@ class Puesto(models.Model):
 class Postulacion(models.Model):
     puesto = models.ForeignKey('Puesto', on_delete=models.CASCADE)
     alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE)
-    entrevista = models.ForeignKey('Entrevista', on_delete=models.CASCADE, null=True, blank=True)
+    entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING, null=True, blank=True)
     fecha = models.DateField(default=date.today)
 
     class Meta:

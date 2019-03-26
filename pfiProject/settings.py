@@ -140,7 +140,7 @@ EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'juanzini@gmail.com'
-EMAIL_HOST_PASSWORD = 'Jufla358491'
+EMAIL_HOST_PASSWORD = '($Jufla358491$)'
 
 BOOTSTRAP4 = {
     'include_jquery': True,

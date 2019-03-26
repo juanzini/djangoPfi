@@ -5,19 +5,19 @@
     <div class="row">
         <div class="col">
             <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/empresa/entrevistas"> Entrevistas </a></h6>
-            <h2>Entrevista a {{ entrevista.alumno.user.first_name }} {{entrevista.alumno.user.last_name}}</h2>
+            <h2>Entrevista a <a href="{% url 'alumno-detail-empresa' entrevista.alumno.pk %}">{{ entrevista.alumno.user.first_name }} {{entrevista.alumno.user.last_name}}</a></h2>
                 {% if entrevista.status == 'CAA' %}
                     <p style="color:red;">Cancelada por el alumno</p>
                 {% else %}
                     {% if entrevista.status == 'CAE' %}
                         <p style="color:red;">Cancelada por la empresa</p>
                     {% else %}
-                        {% if entrevista.status == 'COA' %}
+                        {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
                             {% if entrevista.is_past_due %}
                                 {% if entrevista.resultado %}
-                                    <p style="color:black;"> REALIZADA SIN RESPUESTA </p>
-                                {% else %}
                                     <p style="color:black;"> REALIZADA CON RESPUESTA </p>
+                                {% else %}
+                                    <p style="color:black;"> REALIZADA SIN RESPUESTA </p>
                                 {% endif %}
                             {% else %}
                                 <p style="color:green;"> ACTIVA </p>
@@ -31,7 +31,7 @@
                             {% if entrevista.is_past_due %}
                                 <p style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</p>
                             {% else %}
-                                <p style="color:orange;">A la espera de confirmación de Alumno</p>
+                                <p style="color:orange;">A la espera de confirmación del Alumno</p>
                             {% endif %}
                         {% endif %}
                     {% endif %}

@@ -12,7 +12,6 @@ urlpatterns = [
 
     # -------------------ALUMNO--------------------
 
-    # path('alumno/index', login_required(permissions(views.IndexAlumnoView.as_view(), User.AL)), name='index-alumno'),
     path('alumno/detail', login_required(permissions(views.DetailAlumnoView.as_view(), User.AL)), name='detail-alumno'),
     path('alumno/edit', login_required(permissions(views.edit_alumno, User.AL)), name='edit-alumno'),
     path('alumno/entrevistas', login_required(permissions(views.ListEntrevistasAlumnoView.as_view(), User.AL)),
@@ -33,11 +32,11 @@ urlpatterns = [
          name='descarga-alumno-curriculum'),
     path('alumno/plan-de-estudio/<int:pk>', login_required(permissions(views.PlanDeEstudioDownloadView.as_view(), User.AL)),
          name='descarga-alumno-plan-de-estudio'),
+    path('alumno/perfil/<int:pk>', login_required(views.PerfilDownloadView.as_view()),
+         name='descarga-alumno-perfil'),
 
     # -------------------EMPRESA--------------------
 
-    path('empresa/index', login_required(permissions(views.IndexEmpresaView.as_view(), User.EM)),
-         name='index-empresa'),
     path('empresa/detail', login_required(permissions(views.DetailEmpresaView.as_view(), User.EM)),
          name='detail-empresa'),
     path('empresa/edit', login_required(permissions(views.edit_empresa, User.EM)),
@@ -50,14 +49,14 @@ urlpatterns = [
          name='puestos-empresa'),
     path('empresa/contacto', login_required(permissions(views.ListContactoEmpresaView.as_view(), User.EM)),
          name='contacto-empresa'),
-    path('empresa/alumno/<int:numero_registro>/', login_required(permissions(views.AlumnoDetailEmpresaView.as_view(), User.EM)),
+    path('empresa/postulacion/<int:pk>/', login_required(permissions(views.PostulacionDetailEmpresaView.as_view(), User.EM)),
          name='alumno-detail-empresa'),
     path('empresa/entrevista/nueva', login_required(permissions(views.nuevaEntrevista, User.EM)),
          name='nueva-entrevista-empresa'),
     path('empresa/entrevistas', login_required(permissions(views.ListEntrevistasEmpresaView.as_view(), User.EM)),
          name='entrevistas-empresa'),
     path('empresa/entrevistas/<int:pk>/', login_required(permissions(views.DetailEntrevistaEmpresaView.as_view(), User.EM)),
-         name='entrevistas-detail-empresa'),
+         name='entrevista-detail-empresa'),
     path('empresa/pasantias/', login_required(permissions(views.ListPasantiasEmpresaView.as_view(), User.EM)),
          name='pasantias-empresa'),
     path('empresa/pasantias/<int:pk>/', login_required(permissions(views.DetailPasantiaEmpresaView.as_view(), User.EM)),

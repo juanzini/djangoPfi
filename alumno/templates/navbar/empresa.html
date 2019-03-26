@@ -7,9 +7,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item {% if request.resolver_match.url_name == 'index-empresa' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'index-empresa' %}">Inicio <span class="sr-only">(current)</span></a>
-      </li>
       <li class="nav-item {% if request.resolver_match.url_name == 'edit-empresa' %}active{% endif %}">
         <a class="nav-link" href="{% url 'edit-empresa' %}">Mi perf&iacute;l</a>
       </li>
@@ -18,8 +15,8 @@
           Acciones
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Entrevistas</a>
             <a class="dropdown-item" href="{% url 'postulaciones-empresa' %}">Postualciones</a>
+            <a class="dropdown-item" href="{% url 'entrevistas-empresa' %}">Entrevistas</a>
             <a class="dropdown-item" href="{% url 'pasantias-empresa' %}">Pasant&iacute;as</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{% url 'puestos-empresa' %}">Mis Pasantías Ofrecidas</a>
