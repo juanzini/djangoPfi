@@ -88,8 +88,8 @@ class Carrera(models.Model):
 
 
 class SubcomisionCarrera(models.Model):
-    carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE)
-    docente = models.ManyToManyField('Docente', verbose_name='docentes')
+    carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE, related_name='carrera_comision')
+    docente = models.ManyToManyField('Docente', verbose_name='docentes', related_name='comision_docente')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
 
     class Meta:
@@ -118,7 +118,7 @@ class Docente(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=20)
     departamento = models.ForeignKey('Departamento', on_delete=models.DO_NOTHING, null=True)
-    mail = models.EmailField(unique=True)
+    email = models.EmailField(unique=True)
     box_oficina = models.CharField(max_length=30)
 
     class Meta:
@@ -270,10 +270,11 @@ class Puesto(models.Model):
 
 
 class Postulacion(models.Model):
-    puesto = models.ForeignKey('Puesto', on_delete=models.CASCADE)
-    alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE)
-    entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING, null=True, blank=True)
+    puesto = models.ForeignKey('Puesto', on_delete=models.DO_NOTHING)
+    alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
+    entrevista = models.OneToOneField('Entrevista', on_delete=models.SET_NULL, null=True, blank=True, related_name='entrevista_postulacion')
     fecha = models.DateField(default=date.today)
+    activa = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Postulacion'

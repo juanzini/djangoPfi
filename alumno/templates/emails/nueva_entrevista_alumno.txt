@@ -1,0 +1,8 @@
+Hola {{user.first_name}} {{user.last_name}}!!
+
+Te escribimos para informarte que {{entrevista.empresa.nombre_fantasia}} quiere entrevistarte.
+La cita es para el {{entrevista.fecha}}hs., en {{entrevista.lugar}}.
+
+Esperamos que sea todo un éxito!!.
+
+Departamento de Informática, UNSL.

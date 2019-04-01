@@ -20,13 +20,10 @@
                     <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
                 {% endif %}
                 {% if postulacion.alumno.curriculum %}
-                    <p><b>Curr&iacute;culum</b>: {{postulacion.alumno.curriculum}}</p>
+                    <p><b>Curr&iacute;culum</b>: <a href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
                 {% endif %}
                 {% if postulacion.alumno.plan_de_estudio %}
-                    <p><b>Plan de Estudio</b>: {{postulacion.alumno.plan_de_estudio}}</p>
-                {% endif %}
-                {% if postulacion.alumno.historia_academica %}
-                    <p><b>Historia Académica</b>: {{postulacion.alumno.historia_academica}</p>
+                    <p><b>Plan de Estudio</b>: <a href="{% url 'descarga-alumno-plan-de-estudio' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
                 {% endif %}
                 {% if postulacion.alumno.comentarios_carrera_visibles %}
                     {% if postulacion.alumno.comentarios_comision_carrera %}

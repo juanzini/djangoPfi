@@ -9,6 +9,7 @@
                     <tr>
                         <th>Alumno</th>
                         <th>Fecha</th>
+                        <th>Puesto</th>
                         <th>Estado</th>
                         <th>Pasantía Aceptada</th>
                     </tr>
@@ -21,6 +22,9 @@
                             </td>
                             <td>
                                 {{ entrevista.fecha }}
+                            </td>
+                            <td>
+                                {{ entrevista.entrevista_postulacion.puesto }}
                             </td>
                             <td>
                                 {% if entrevista.status == 'CAA' %}

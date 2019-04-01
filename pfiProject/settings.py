@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -139,8 +138,8 @@ STATIC_URL = '/static/'
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'juanzini@gmail.com'
-EMAIL_HOST_PASSWORD = '($Jufla358491$)'
+EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
+EMAIL_HOST_PASSWORD = ''
 
 BOOTSTRAP4 = {
     'include_jquery': True,
