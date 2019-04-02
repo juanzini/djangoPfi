@@ -431,7 +431,7 @@ class DetailPasantiaEmpresaView(generic.UpdateView):
 
 def cancel_entrevistas_empresa_view(request):
     entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'), empresa=request.user.empresa_user)
-    entrevista.cancelada_empresa = True
+    entrevista.status = 'CAE'
     entrevista.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -503,16 +503,21 @@ def nuevaEntrevista(request):
     alumno = postulacion.alumno
     empresa = postulacion.puesto.empresa
     entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
-    if entrevista == None:
+    if entrevista == None or entrevista.status in ['NOC','CAA','CAE']:
         if request.POST:
             form = EntrevistaCreateForm(request.POST)
             if form.is_valid():
-                entrevista = Entrevista.objects.create(
-                    alumno=alumno,
-                    empresa=empresa,
-                    fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
-                    lugar=request.POST.get('lugar')
-                )
+                if entrevista == None:
+                    entrevista = Entrevista.objects.create(
+                        alumno=alumno,
+                        empresa=empresa,
+                        fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+                        lugar=request.POST.get('lugar')
+                    )
+                else:
+                    entrevista.status = 'NOA'
+                    entrevista.fecha = datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M")
+                    entrevista.lugar = request.POST.get('lugar')
                 entrevista.save()
                 postulacion.entrevista = entrevista
                 postulacion.save()

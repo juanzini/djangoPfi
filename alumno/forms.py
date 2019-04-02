@@ -1,7 +1,8 @@
 from django_registration.forms import RegistrationForm
 
 from . import models
-
+from datetime import timedelta as td
+from datetime import datetime
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
@@ -90,6 +91,7 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
         fields = (
             'pasantia_aceptada',
             'fecha',
+            'lugar',
             'resultado',
             'comentarios_empresa',
             'comentarios_comision_pps',
@@ -97,7 +99,9 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailEmpresaForm, self).__init__(*args, **kwargs)
-        self.fields['fecha'].widget.attrs['readonly'] = True
+        if not self.instance.status in ['COA', 'NOA'] or datetime.astimezone(self.instance.fecha - td(days=1)) < datetime.astimezone(datetime.now()):
+            self.fields['fecha'].widget.attrs['readonly'] = True
+            self.fields['lugar'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
 

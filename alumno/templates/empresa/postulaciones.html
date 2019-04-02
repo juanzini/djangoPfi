@@ -28,13 +28,13 @@
                             </td>
                             <td>
                             {% if postulacion.entrevista %}
-                                {% if postulacion.status == 'CAA' %}
+                                {% if postulacion.entrevista.status == 'CAA' %}
                                     <p style="color:red;">Cancelada por el alumno</p>
                                 {% else %}
-                                    {% if postulacion.status == 'CAE' %}
+                                    {% if postulacion.entrevista.status == 'CAE' %}
                                         <p style="color:red;">Cancelada por la empresa</p>
                                     {% else %}
-                                        {% if postulacion.status == 'COA' %}
+                                        {% if postulacion.entrevista.status == 'COA' %}
                                             {% if postulacion.entrevista.is_past_due %}
                                                 <p style="color:black;"> REALIZADA </p>
                                             {% else %}

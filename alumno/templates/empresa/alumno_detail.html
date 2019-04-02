@@ -35,17 +35,32 @@
                 {% endif %}
                 {% buttons %}
                 <br>
-                {% if postulacion.entrevista and not postulacion.entrevista.is_past_due %}
+                {% if postulacion.entrevista and not postulacion.entrevista.is_past_due and not postulacion.entrevista.status in 'NOC,CAA,CAE' %}
                     <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
                       {% csrf_token %}
                       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Entrevista Generada</button>
                     </form>
                 {% else %}
-                    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
-                      {% csrf_token %}
-                        <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
-                    </form>
+                    {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
+                        {% if postulacion.entrevista.status == NOC %}
+                            <p>Se le generó una entrevista que  <b style="color:red;">no fue confirmada por el alumno</b></p>
+                        {% elif postulacion.entrevista.status == CAA %}
+                            <p style="color:red;">Se le generó una entrevista que fue <b style="color:red;">cancelada por el alumno</b></p>
+                        {% else %}
+                            <p>Se le generó una entrevista que fue <b style="color:red;">cancelada por la empresa</b></p>
+                        {% endif %}
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-warning my-2 my-sm-0" type="submit">Regenerar Entrevista</button>
+                        </form>
+                    {% else %}
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                        </form>
+                    {% endif %}
                 {% endif %}
                 {% endbuttons %}
         </div>
