@@ -51,6 +51,8 @@ urlpatterns = [
          name='contacto-empresa'),
     path('empresa/postulacion/<int:pk>/', login_required(permissions(views.PostulacionDetailEmpresaView.as_view(), User.EM)),
          name='alumno-detail-empresa'),
+    path('empresa/postulacion/desestimar', login_required(permissions(views.delete_postulacion_empresa, User.EM)),
+         name='desestimar-postulacion-empresa'),
     path('empresa/entrevista/nueva', login_required(permissions(views.nuevaEntrevista, User.EM)),
          name='nueva-entrevista-empresa'),
     path('empresa/entrevista/regenerar', login_required(permissions(views.nuevaEntrevista, User.EM)),

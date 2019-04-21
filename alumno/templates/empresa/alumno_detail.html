@@ -54,11 +54,23 @@
                             <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                           <button class="btn btn-warning my-2 my-sm-0" type="submit">Regenerar Entrevista</button>
                         </form>
+                        <br>
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
+                        </form>
                     {% else %}
                         <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
                           {% csrf_token %}
                             <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                        </form>
+                        <br>
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
                         </form>
                     {% endif %}
                 {% endif %}

@@ -274,6 +274,7 @@ class Postulacion(models.Model):
     alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
     entrevista = models.OneToOneField('Entrevista', on_delete=models.SET_NULL, null=True, blank=True, related_name='entrevista_postulacion')
     fecha = models.DateField(default=date.today)
+    fecha_desestimacion = models.DateField(default=date.today)
     activa = models.BooleanField(default=True)
 
     class Meta:

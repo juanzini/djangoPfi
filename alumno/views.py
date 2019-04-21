@@ -1,6 +1,6 @@
 from django.contrib.auth.views import redirect_to_login
 from django.views import generic
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from django import forms
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -288,10 +288,15 @@ class DetailPustoAlumnoView(generic.TemplateView):
 def create_postulacion_alumno(request):
     if request.method == 'POST':
         try:
-            Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user)
+            Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user, activa=True)
         except ObjectDoesNotExist:
-            Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
-                                       alumno=request.user.alumno_user)
+            postulacion = Postulacion.filter(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user, activa=False)
+            if postulacion and postulacion.fecha_desestimacion < (date.today() - timedelta(days=60)):
+                postulacion.activa = True
+                postulacion.save()
+            elif not postulacion:
+                Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
+                                           alumno=request.user.alumno_user)
         return HttpResponseRedirect('../empresas')
 
 
@@ -299,7 +304,10 @@ def create_postulacion_alumno(request):
 def delete_postulacion_alumno(request):
     if request.method == 'POST':
         try:
-            Postulacion.objects.get(pk=request.POST.get('postulacion_id')).delete()
+            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion_id'),
+                                                  alumno=request.user.alumno_user)
+            postulacion.activa = False
+            postulacion.save()
         except ObjectDoesNotExist:
             None
         return HttpResponseRedirect('../empresas')
@@ -433,6 +441,18 @@ def cancel_entrevistas_empresa_view(request):
     entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'), empresa=request.user.empresa_user)
     entrevista.status = 'CAE'
     entrevista.save()
+    context = {
+        'user': entrevista.alumno.user,
+        'entrevista': entrevista
+    }
+    message = render_to_string(
+        template_name='emails/cancelacion_entrevista_alumno.txt',
+        context=context
+    )
+    docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
+    email = EmailMessage(entrevista.alumno.user.first_name + " cancelaron tu entrevista.", message,
+                         to=[entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+    email.send()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -495,6 +515,35 @@ class PostulacionDetailEmpresaView(generic.DetailView):
                                                puesto__empresa=self.request.user.empresa_user, activa=True)
             except ObjectDoesNotExist:
                 return None
+
+
+@transaction.atomic
+def delete_postulacion_empresa(request):
+    if request.method == 'POST':
+        try:
+            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),puesto__empresa=request.user.empresa_user)
+            if postulacion.entrevista:
+                if postulacion.entrevista.status in ['COA', 'NOA']:
+                    request.GET['entrevista_id'] = postulacion.entrevista.pk
+                    cancel_entrevistas_empresa_view(request)
+            postulacion.activa = False
+            postulacion.fecha_desestimacion = date.today
+            postulacion.save()
+            context = {
+                'user': postulacion.alumno.user,
+                'postulacion': postulacion
+            }
+            message = render_to_string(
+                template_name='emails/desestimacion_postulacion_alumno.txt',
+                context=context
+            )
+            docentes = Docente.objects.filter(comision_docente=postulacion.alumno.carrera.carrera_comision)
+            email = EmailMessage(postulacion.alumno.user.first_name + " desestimaron tu postulacion.", message,
+                                 to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
+            email.send()
+        except ObjectDoesNotExist:
+            None
+        return HttpResponseRedirect('../postulaciones')
 
 
 def nuevaEntrevista(request):
