@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django_registration.backends.activation.views import RegistrationView
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from smtplib import SMTPRecipientsRefused
 
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
@@ -425,6 +426,39 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
     form_class = EntrevistaDetailEmpresaForm
     success_url = '../../entrevistas'
 
+    def form_valid(self, form):
+        entrevistaNueva = self.object
+        entrevistaVieja = Entrevista.objects.get(pk=entrevistaNueva.pk)
+        if entrevistaVieja.pasantia_aceptada == entrevistaNueva.pasantia_aceptada:
+            return super(DetailEntrevistaEmpresaView, self).form_valid(form)
+        context = {
+            'entrevista': self.object
+        }
+        docentes = Docente.objects.filter(comision_docente=self.object.alumno.carrera.carrera_comision)
+        if self.object.pasantia_aceptada == True:
+            message = render_to_string(
+                template_name='emails/aceptacion_pasantia_alumno.txt',
+                context=context
+            )
+            email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " ACEPTÓ una pasantía",
+                                 message, to=list(docente.email for docente in docentes))
+            try:
+                email.send()
+            except SMTPRecipientsRefused:
+                None
+        elif self.object.pasantia_aceptada == False:
+            message = render_to_string(
+                template_name='emails/reachazo_pasantia_alumno.txt',
+                context=context
+            )
+            email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " RECHAZÓ una pasantía",
+                                 message, to=[self.object.alumno.user.email] + list(docente.email for docente in docentes))
+            try:
+                email.send()
+            except SMTPRecipientsRefused:
+                None
+        return super(DetailEntrevistaEmpresaView, self).form_valid(form)
+
 
 class DetailPasantiaEmpresaView(generic.UpdateView):
     model = Pasantia
@@ -452,7 +486,10 @@ def cancel_entrevistas_empresa_view(request):
     docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
     email = EmailMessage(entrevista.alumno.user.first_name + " cancelaron tu entrevista.", message,
                          to=[entrevista.alumno.user.email] + list(docente.email for docente in docentes))
-    email.send()
+    try:
+        email.send()
+    except SMTPRecipientsRefused:
+        None
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
@@ -540,7 +577,10 @@ def delete_postulacion_empresa(request):
             docentes = Docente.objects.filter(comision_docente=postulacion.alumno.carrera.carrera_comision)
             email = EmailMessage(postulacion.alumno.user.first_name + " desestimaron tu postulacion.", message,
                                  to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
-            email.send()
+            try:
+                email.send()
+            except SMTPRecipientsRefused:
+                None
         except ObjectDoesNotExist:
             None
         return HttpResponseRedirect('../postulaciones')
@@ -580,7 +620,10 @@ def nuevaEntrevista(request):
                 )
                 docentes = Docente.objects.filter(comision_docente=alumno.carrera.carrera_comision)
                 email = EmailMessage('Felicitaciones ' + alumno.user.first_name + "!!", message, to=[alumno.user.email] + list(docente.email for docente in docentes))
-                email.send()
+                try:
+                    email.send()
+                except SMTPRecipientsRefused:
+                    None
                 return redirect('/empresa/postulaciones')
         return render(request, 'empresa/entrevista_nueva.html', {
             'form': EntrevistaCreateForm,

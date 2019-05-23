@@ -99,6 +99,11 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailEmpresaForm, self).__init__(*args, **kwargs)
+        if self.instance.status == 'REA':
+            if self.instance.pasantia_aceptada == True or self.instance.pasantia_aceptada == False:
+                self.fields['pasantia_aceptada'].disabled = True
+        else:
+            self.fields.pop('pasantia_aceptada')
         if not self.instance.status in ['COA', 'NOA'] or datetime.astimezone(self.instance.fecha - td(days=1)) < datetime.astimezone(datetime.now()):
             self.fields['fecha'].widget.attrs['readonly'] = True
             self.fields['lugar'].widget.attrs['readonly'] = True
@@ -123,7 +128,7 @@ class PasantiaDetailEmpresaForm(forms.ModelForm):
         self.fields['fecha_fin'].widget.attrs['readonly'] = True
         self.fields['fecha_inicio'].widget.attrs['readonly'] = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(empresa=self.instance.entrevista.empresa)
-        self.fields['tutor_docente'].widget.attrs['disabled'] = True
+        self.fields['tutor_docente'].disabled = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
 
@@ -145,7 +150,7 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs['readonly'] = True
         self.fields['fecha_fin'].widget.attrs['readonly'] = True
-        self.fields['tutor_empresa'].widget.attrs['disabled'] = True
+        self.fields['tutor_empresa'].disabled = True
         self.fields['informe'].widget.attrs['readonly'] = True
         self.fields['numero_legajo'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
@@ -336,7 +341,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
         )
     def __init__(self, *args, **kwargs):
         super(AlumnoDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
-        self.fields['condicion_acreditacion'].widget.attrs['disabled'] = True
+        self.fields['condicion_acreditacion'].disabled = True
         self.fields['expedicion_acreditacion'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_carrera'].widget.attrs['readonly'] = True
 
@@ -386,7 +391,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PasantiaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
-        self.fields['tutor_empresa'].widget.attrs['disabled'] = True
+        self.fields['tutor_empresa'].disabled = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
 
 

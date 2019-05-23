@@ -137,8 +137,8 @@ class Pasantia(models.Model):
     entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
 
     class Meta:
         verbose_name = 'Pasantia'
@@ -170,8 +170,8 @@ class Entrevista(models.Model):
     lugar = models.CharField(max_length=200, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     pasantia_aceptada = models.BooleanField(blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True)
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True)
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
     NOA = 'NOA'
     COA = 'COA'
     CAE = 'CAE'

@@ -4,6 +4,8 @@ from django.conf import settings
 from .models import User
 from .views import edit_ultima_actualizacion, edit_alumno
 from django.contrib.auth import logout
+from django.utils import translation
+
 
 class LastUserActivityMiddleware:
     KEY = "last-activity"
@@ -37,6 +39,7 @@ class LastUserActivityMiddleware:
     def process_response(self, request, response):
         return response
 
+
 class LastUserUpdateProfile(object):
     def __init__(self, get_response):
         self.get_response = get_response
@@ -58,6 +61,22 @@ class LastUserUpdateProfile(object):
             if not last_update or last_update < too_old_time.date():
                 return edit_ultima_actualizacion(request, True)
         return None
+
+    def process_response(self, request, response):
+        return response
+
+
+class LocaleMiddleware(object):
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
+    def process_request(self, request):
+        language = translation.get_language_from_request(request)
+        translation.activate(language)
+        request.LANGUAGE_CODE = translation.get_language()
 
     def process_response(self, request, response):
         return response

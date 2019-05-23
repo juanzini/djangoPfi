@@ -13,7 +13,7 @@
                         <p style="color:red;">Cancelada por la empresa</p>
                     {% else %}
                         {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
-                            {% if entrevista.is_past_due %}
+                            {% if entrevista.is_past_due or entrevista.status == 'REA' %}
                                 {% if entrevista.resultado %}
                                     <p style="color:black;"> REALIZADA CON RESPUESTA </p>
                                 {% else %}

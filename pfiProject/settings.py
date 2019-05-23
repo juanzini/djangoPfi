@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django_registration',
     'bootstrap_datepicker_plus',
     'django_cleanup.apps.CleanupConfig',
-    'private_storage'
+    'private_storage',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'alumno.middlewares.LocaleMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
     'alumno.middlewares.LastUserUpdateProfile'
 ]
