@@ -134,7 +134,7 @@ class Pasantia(models.Model):
     fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
-    entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING)
+    entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
@@ -203,6 +203,9 @@ class Entrevista(models.Model):
                     self.status = self.REA
                 else:
                     self.status = self.NOC
+                self.entrevista_postulacion.fecha_desestimacion = datetime.now()
+                self.entrevista_postulacion.activa = False
+                self.entrevista_postulacion.save()
                 self.save()
             return True
         return False
@@ -251,11 +254,12 @@ class Puesto(models.Model):
         (IND, 'Indistinto'),
         (OTR, 'Otro'),
     ]
-    nombre = models.CharField(max_length=3, choices=AREA_CHOICES, default=IND)
+    nombre = models.CharField(max_length=3, choices=AREA_CHOICES, default=IND, verbose_name='Área')
     descripcion_actividades = models.TextField(max_length=1000)
     conocimientos_requeridos = models.TextField(max_length=1000)
-    horario = models.CharField(max_length=20)
+    horario = models.CharField(max_length=100)
     rentado = models.BooleanField(default=False, blank=False, null=False)
+    activo = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Puesto'
@@ -274,7 +278,7 @@ class Postulacion(models.Model):
     alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
     entrevista = models.OneToOneField('Entrevista', on_delete=models.SET_NULL, null=True, blank=True, related_name='entrevista_postulacion')
     fecha = models.DateField(default=date.today)
-    fecha_desestimacion = models.DateField(default=date.today)
+    fecha_desestimacion = models.DateField(blank=True, null=True)
     activa = models.BooleanField(default=True)
 
     class Meta:

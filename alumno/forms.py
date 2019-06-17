@@ -109,6 +109,21 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
             self.fields['lugar'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
+class EntrevistaDetailAlumnoForm(forms.ModelForm):
+    class Meta():
+        model = models.Entrevista
+        fields = (
+            'fecha',
+            'lugar',
+            'resultado'
+        )
+
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaDetailAlumnoForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].widget.attrs['readonly'] = True
+        self.fields['lugar'].widget.attrs['readonly'] = True
+        self.fields['resultado'].widget.attrs['readonly'] = True
+
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
     class Meta():

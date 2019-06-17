@@ -18,7 +18,7 @@
                     {% for puesto in puesto_list %}
                         <tr data-link="row" class="rowlink">
                             <td>
-                                <a href="{% url 'puesto-detial-alumno' puesto.pk %}">{{ puesto.empresa.nombre_fantasia }}</a>
+                                <a href="{% url 'puesto-detail-alumno' puesto.pk %}">{{ puesto.empresa.nombre_fantasia }}</a>
                             </td>
                             <td>
                                 {{ puesto.get_nombre_display }}

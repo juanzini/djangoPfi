@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.core.serializers import serialize
-from smtplib import SMTPRecipientsRefused
+from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 
 from alumno.models import Postulacion, Docente
 
@@ -28,7 +28,7 @@ def postulationResponseTimeOutInTwoDays():
                              to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
-        except SMTPRecipientsRefused:
+        except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
     return serialize('json', postulaciones)
 
@@ -51,6 +51,6 @@ def postulationResponseTimeOut():
             to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
-        except SMTPRecipientsRefused:
+        except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
     return serialize('json', postulaciones)

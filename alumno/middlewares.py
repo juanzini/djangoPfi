@@ -26,8 +26,10 @@ class LastUserActivityMiddleware:
                 last_activity = datetime.now()
             else:
                 last_activity = datetime.strptime(request.session.get(self.KEY), "%Y-%m-%dT%H:%M:%S.%f")
-
-            too_old_time = datetime.now() - td(seconds=settings.LAST_ACTIVITY_INTERVAL_SECS)
+            if settings.DEBUG:
+                too_old_time = datetime.now() - td(seconds=settings.LAST_ACTIVITY_INTERVAL_SECS_DEBUG)
+            else:
+                too_old_time = datetime.now() - td(seconds=settings.LAST_ACTIVITY_INTERVAL_SECS)
             if last_activity < too_old_time:
                 logout(request)
                 return None

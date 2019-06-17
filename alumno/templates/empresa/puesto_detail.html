@@ -12,7 +12,8 @@
                 {% buttons %}
                     <br>
                 <button type="submit" class="btn btn-success btn-lg">Guardar</button>
-                <a href="{% url 'puestos-empresa' %}"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
+                <a href="{% url 'eliminar-puesto-empresa' puesto.pk %}"><button class="btn btn-outline-danger btn-lg" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este puesto ofercido?');">Eliminar</button></a>
+                <button class="btn btn-outline-primary btn-lg" onclick="history.back();return false" type="button" style="float: right;">Atr&aacute;s</button>
                 {% endbuttons %}
             </form>
         </div>

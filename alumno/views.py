@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django_registration.backends.activation.views import RegistrationView
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-from smtplib import SMTPRecipientsRefused
+from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 
 from .forms import AlumnoUserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
@@ -17,6 +17,7 @@ from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, Entrevis
     PasantiaDetailEmpresaForm
 from .forms import SubcomisionPasantiasEditForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
+from .forms import EntrevistaDetailAlumnoForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa
 from django.urls import reverse
@@ -276,12 +277,18 @@ class DetailPustoAlumnoView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailPustoAlumnoView, self).get_context_data(**kwargs)
-        context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"])
+        context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"],empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         try:
             context['postulacion'] = Postulacion.objects.get(puesto=context['puesto'],
                                                              alumno=self.request.user.alumno_user)
+            context['is_available'] = context['postulacion'].fecha_desestimacion is None or context['postulacion'].fecha_desestimacion < (date.today() - timedelta(days=60))
+            if not context['is_available']:
+                context['next_day'] = context['postulacion'].fecha_desestimacion + timedelta(days=60)
+            if not context['postulacion'].activa:
+                context['postulacion'] = None
         except ObjectDoesNotExist:
             context['postulacion'] = None
+            context['is_available'] = True
         return context
 
 
@@ -289,29 +296,32 @@ class DetailPustoAlumnoView(generic.TemplateView):
 def create_postulacion_alumno(request):
     if request.method == 'POST':
         try:
-            Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user, activa=True)
-        except ObjectDoesNotExist:
-            postulacion = Postulacion.filter(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user, activa=False)
-            if postulacion and postulacion.fecha_desestimacion < (date.today() - timedelta(days=60)):
+            postulacion = Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user)
+            if postulacion.fecha_desestimacion is None or postulacion.fecha_desestimacion < (date.today() - timedelta(days=60)):
                 postulacion.activa = True
                 postulacion.save()
-            elif not postulacion:
+        except ObjectDoesNotExist:
                 Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
                                            alumno=request.user.alumno_user)
-        return HttpResponseRedirect('../empresas')
-
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @transaction.atomic
 def delete_postulacion_alumno(request):
     if request.method == 'POST':
         try:
-            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion_id'),
-                                                  alumno=request.user.alumno_user)
-            postulacion.activa = False
-            postulacion.save()
+            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion_id'), alumno=request.user.alumno_user, activa=True)
         except ObjectDoesNotExist:
-            None
-        return HttpResponseRedirect('../empresas')
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        if postulacion.entrevista:
+            if postulacion.entrevista.status in ['COA', 'NOA', ]:
+                try:
+                    Pasantia.objects.get(entrevista=postulacion.entrevista)
+                except ObjectDoesNotExist:
+                    cancel_entrevistas_alumno(postulacion.entrevista, None)
+        postulacion.activa = False
+        postulacion.fecha_desestimacion = datetime.now()
+        postulacion.save()
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 class ListEntrevistasAlumnoView(generic.ListView):
@@ -325,10 +335,10 @@ class ListEntrevistasAlumnoView(generic.ListView):
 
 class ListPostulacionesAlumnoView(generic.ListView):
     template_name = 'alumno/postulaciones.html'
-    context_object_name = 'postulaciones_list'
+    context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        return Postulacion.objects.filter(alumno=self.request.user.alumno_user)
+        return Postulacion.objects.filter(Q(alumno=self.request.user.alumno_user) & (Q(entrevista__isnull=False) | (Q(entrevista__isnull=True) & Q(activa=True))))
 
 
 class ListPuestosAlumnoView(generic.ListView):
@@ -357,6 +367,60 @@ class ListContactoAlumnoView(generic.ListView):
             return None
         return subcomision.docente.all()
 
+class DetailEntrevistaAlumnoView(generic.UpdateView):
+    model = Entrevista
+    template_name = 'alumno/entrevista_detail.html'
+    context_object_name = 'entrevista'
+    form_class = EntrevistaDetailAlumnoForm
+    success_url = '../../entrevistas'
+
+    def form_valid(self, form):
+        return super(DetailEntrevistaAlumnoView, self).form_valid(form)
+
+@transaction.atomic
+def cancel_entrevistas_alumno_view(request):
+    entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'), alumno=request.user.alumno_user)
+    return cancel_entrevistas_alumno(entrevista, HttpResponseRedirect(request.META['HTTP_REFERER']))
+
+def cancel_entrevistas_alumno(entrevista, placeReturn):
+    entrevista.status = 'CAA'
+    entrevista.save()
+    context = {
+        'entrevista': entrevista
+    }
+    message = render_to_string(
+        template_name='emails/cancelacion_entrevista_empresa.txt',
+        context=context
+    )
+    docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
+    email = EmailMessage(entrevista.empresa.nombre_fantasia + " cancelaron una entrevista.", message,
+                         to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
+    try:
+        email.send()
+    except (SMTPRecipientsRefused, SMTPSenderRefused):
+        None
+    return placeReturn
+
+@transaction.atomic
+def confirm_entrevistas_alumno_view(request):
+    entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'), alumno=request.user.alumno_user)
+    entrevista.status = 'COA'
+    entrevista.save()
+    context = {
+        'entrevista': entrevista
+    }
+    message = render_to_string(
+        template_name='emails/confirmacion_entrevista_empresa.txt',
+        context=context
+    )
+    docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
+    email = EmailMessage(entrevista.empresa.nombre_fantasia + " confirmaron una entrevista!!.", message,
+                         to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
+    try:
+        email.send()
+    except (SMTPRecipientsRefused, SMTPSenderRefused):
+        None
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------EMPRESA---------------------------------------------------------------------------
@@ -444,7 +508,7 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
                                  message, to=list(docente.email for docente in docentes))
             try:
                 email.send()
-            except SMTPRecipientsRefused:
+            except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         elif self.object.pasantia_aceptada == False:
             message = render_to_string(
@@ -455,7 +519,7 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
                                  message, to=[self.object.alumno.user.email] + list(docente.email for docente in docentes))
             try:
                 email.send()
-            except SMTPRecipientsRefused:
+            except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         return super(DetailEntrevistaEmpresaView, self).form_valid(form)
 
@@ -470,7 +534,7 @@ class DetailPasantiaEmpresaView(generic.UpdateView):
         form.instance.empresa = self.request.user.empresa_user
         return super(DetailPasantiaEmpresaView, self).form_valid(form)
 
-
+@transaction.atomic
 def cancel_entrevistas_empresa_view(request):
     entrevista = Entrevista.objects.get(pk=request.GET.get('entrevista_id'), empresa=request.user.empresa_user)
     entrevista.status = 'CAE'
@@ -488,7 +552,7 @@ def cancel_entrevistas_empresa_view(request):
                          to=[entrevista.alumno.user.email] + list(docente.email for docente in docentes))
     try:
         email.send()
-    except SMTPRecipientsRefused:
+    except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -508,7 +572,7 @@ class ListPuestosEmpresaView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        return Puesto.objects.filter(empresa=self.request.user.empresa_user)
+        return Puesto.objects.filter(empresa=self.request.user.empresa_user, activo=True)
 
 
 class ListContactoEmpresaView(generic.ListView):
@@ -558,7 +622,7 @@ class PostulacionDetailEmpresaView(generic.DetailView):
 def delete_postulacion_empresa(request):
     if request.method == 'POST':
         try:
-            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),puesto__empresa=request.user.empresa_user)
+            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),puesto__empresa=request.user.empresa_user, activa=True)
             if postulacion.entrevista:
                 if postulacion.entrevista.status in ['COA', 'NOA']:
                     request.GET['entrevista_id'] = postulacion.entrevista.pk
@@ -579,13 +643,13 @@ def delete_postulacion_empresa(request):
                                  to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
             try:
                 email.send()
-            except SMTPRecipientsRefused:
+            except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         except ObjectDoesNotExist:
             None
         return HttpResponseRedirect('../postulaciones')
 
-
+@transaction.atomic
 def nuevaEntrevista(request):
     postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),
                                           puesto__empresa=request.user.empresa_user, activa=True)
@@ -622,7 +686,7 @@ def nuevaEntrevista(request):
                 email = EmailMessage('Felicitaciones ' + alumno.user.first_name + "!!", message, to=[alumno.user.email] + list(docente.email for docente in docentes))
                 try:
                     email.send()
-                except SMTPRecipientsRefused:
+                except (SMTPRecipientsRefused, SMTPSenderRefused):
                     None
                 return redirect('/empresa/postulaciones')
         return render(request, 'empresa/entrevista_nueva.html', {
@@ -648,13 +712,31 @@ class CreatePuestoView(generic.CreateView):
     def form_valid(self, form):
         puesto = form.save(commit=False)
         try:
-            Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user)
+            Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user, activo=True)
             form.add_error('nombre', forms.ValidationError("Ya se encuentra ofreciéndo una pasantía para esta área."))
             return super(CreatePuestoView, self).form_invalid(form)
         except ObjectDoesNotExist:
+            try:
+                puestoDb = Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user, activo=False)
+                puestoDb.descripcion_actividades = puesto.descripcion_actividades
+                puestoDb.conocimientos_requeridos =  puesto.conocimientos_requeridos
+                puestoDb.horario = puesto.horario
+                puestoDb.rentado = puesto.rentado
+                puestoDb.activo = True
+                puestoDb.save()
+                return redirect('puestos-empresa')
+            except ObjectDoesNotExist:
+                None
             puesto.empresa = self.request.user.empresa_user
             puesto.save()
         return redirect('puestos-empresa')
+
+@transaction.atomic
+def delete_puesto_empresa(request, *args, **kwargs):
+    puesto = get_object_or_404(Puesto, pk=kwargs.get('pk'), empresa=request.user.empresa_user, activo=True)
+    puesto.activo = False
+    puesto.save()
+    return redirect('puestos-empresa')
 
 
 class DetailPuestoEmpresaView(generic.UpdateView):
@@ -663,6 +745,9 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     context_object_name = 'puesto'
     fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
     success_url = '../../puestos'
+
+    def get_object(self):
+        return get_object_or_404(Puesto, pk=self.kwargs["pk"], activo=True)
 
 
 # ------------------------------------------------------------------------------------------------------------

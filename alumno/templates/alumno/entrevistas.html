@@ -8,21 +8,49 @@
                 <thead>
                     <tr>
                         <th>Empresa</th>
+                        <th>Puesto</th>
                         <th>Fecha</th>
-                        <th>Comentarios de la Empresa</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for entrevista in entrevista_list %}
-                        <tr>
+                        <tr data-link="row" class="rowlink">
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ entrevista.empresa }}</a>
+                                <a href="{% url 'entrevista-detail-alumno' entrevista.id %}">{{ entrevista.empresa.nombre_fantasia }}</a>
+                            </td>
+                            <td>
+                                {{ entrevista.entrevista_postulacion.puesto.get_nombre_display }}
                             </td>
                             <td>
                                 {{ entrevista.fecha }}
                             </td>
                             <td>
-                                {{ entrevista.resultado }}
+                                {% if entrevista.status == 'CAA' %}
+                                    <p style="color:red;">Cancelada por el alumno</p>
+                                {% else %}
+                                    {% if entrevista.status == 'CAE' %}
+                                        <p style="color:red;">Cancelada por la empresa</p>
+                                    {% else %}
+                                        {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                                            {% if entrevista.is_past_due %}
+                                                {% if entrevista.resultado %}
+                                                    <p style="color:black;"> REALIZADA CON RESPUESTA </p>
+                                                {% else %}
+                                                    <p style="color:black;"> REALIZADA SIN RESPUESTA </p>
+                                                {% endif %}
+                                            {% else %}
+                                                <p style="color:green;"> ACTIVA </p>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if entrevista.is_past_due %}
+                                                <p style="color:black;"> Se excedi&oacute; la fecha y no confirm&oacute;</p>
+                                            {% else %}
+                                                <p style="color:orange;">A la espera de confirmación del Alumno</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

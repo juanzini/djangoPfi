@@ -1,0 +1,8 @@
+Hola {{ entrevista.empresa.nombre_fantasia }}!!
+
+Te escribimos para informarte que el alumno {{entrevista.alumno.user.first_name}} {{entrevista.alumno.user.last_name}} confirmó su asistencia a la entrevista que tenías programada
+para el {{entrevista.fecha}}hs., en {{entrevista.lugar}}.
+
+Los mejores deseos para la cita!!
+
+Departamento de Informática, UNSL.
