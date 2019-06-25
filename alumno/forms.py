@@ -20,6 +20,7 @@ class AlumnoForm(forms.ModelForm):
             'perfil',
             'curriculum',
             'plan_de_estudio',
+            'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
             'condicion_acreditacion',
@@ -41,6 +42,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
             'perfil',
             'curriculum',
             'plan_de_estudio',
+            'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
             'ultima_actualizacion_perfil',
@@ -56,6 +58,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['perfil'].widget.attrs['readonly'] = True
         self.fields['curriculum'].widget.attrs['readonly'] = True
         self.fields['plan_de_estudio'].widget.attrs['readonly'] = True
+        self.fields['historia_academica'].widget.attrs['readonly'] = True
         self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
         self.fields['descripcion_habilidades'].widget.attrs['readonly'] = True
         self.fields['ultima_actualizacion_perfil'].widget.attrs['readonly'] = True
@@ -183,6 +186,7 @@ class AlumnoCreateForm(forms.ModelForm):
             'perfil',
             'curriculum',
             'plan_de_estudio',
+            'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
         )
@@ -212,7 +216,7 @@ class AlumnoUserEditForm(forms.ModelForm):
 class AlumnoEditForm(forms.ModelForm):
     class Meta:
         model = models.Alumno
-        fields = ('perfil', 'curriculum', 'plan_de_estudio', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'curriculum', 'plan_de_estudio', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -344,6 +348,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
             'perfil',
             'curriculum',
             'plan_de_estudio',
+            'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
             'ultima_actualizacion_perfil',

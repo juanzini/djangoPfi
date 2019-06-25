@@ -5,6 +5,7 @@ from datetime import datetime
 from pytz import UTC
 from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
+from django.core.validators import MinValueValidator, MaxValueValidator
 import re
 
 class UserManager(UserManager):
@@ -64,6 +65,8 @@ class Alumno(models.Model):
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
     perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024)
+    progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
+                                       MaxValueValidator(100)], default=0)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
 
     class Meta:

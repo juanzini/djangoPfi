@@ -41,7 +41,22 @@
                       </div>
                     </div>
                 </div>
-                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio" %}
+                <div class="form-group"><label for="id_historia_academica">Historia Académica (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="historia_academica" class="form-control custom-file-input" required id="id_historia_academica">
+                            <label class="custom-file-label" for="id_historia_academica" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio,historia_academica" %}
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg" name="guardar">Guardar</button>

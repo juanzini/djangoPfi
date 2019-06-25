@@ -20,7 +20,7 @@ from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComision
 from .forms import EntrevistaDetailAlumnoForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.db import transaction
 from django.contrib import messages
@@ -188,7 +188,11 @@ def create_alumno(request):
                     'alumno_form': alumno_form,
                 })
             except ObjectDoesNotExist:
-                success_redirect = RegistrationView.as_view(form_class=UserCreateForm)(request)
+                try:
+                    success_redirect = RegistrationView.as_view(form_class=UserCreateForm)(request)
+                except (SMTPRecipientsRefused, SMTPSenderRefused):
+                    success_redirect = reverse('django_registration_complete')
+                    pass
                 alumno = alumno_form.save(commit=False)
                 alumno.user = User.objects.get(username=user_form.instance.username)
                 alumno.save()
@@ -296,13 +300,32 @@ class DetailPustoAlumnoView(generic.TemplateView):
 def create_postulacion_alumno(request):
     if request.method == 'POST':
         try:
+            nuevaPostulacion = False
             postulacion = Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user)
             if postulacion.fecha_desestimacion is None or postulacion.fecha_desestimacion < (date.today() - timedelta(days=60)):
                 postulacion.activa = True
                 postulacion.save()
+                nuevaPostulacion = True
         except ObjectDoesNotExist:
-                Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
-                                           alumno=request.user.alumno_user)
+            postulacion = Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
+                                       alumno=request.user.alumno_user)
+            nuevaPostulacion = True
+        if nuevaPostulacion:
+            context = {
+                'user': postulacion.alumno.user,
+                'postulacion': postulacion
+            }
+            message = render_to_string(
+                template_name='emails/nueva_postulacion_empresa.txt',
+                context=context
+            )
+            docentes = Docente.objects.filter(comision_docente=postulacion.alumno.carrera.carrera_comision)
+            email = EmailMessage(postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
+                                 to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
+            try:
+                email.send()
+            except (SMTPRecipientsRefused, SMTPSenderRefused):
+                None
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @transaction.atomic
@@ -789,7 +812,15 @@ def edit_subcomision_carrera(request):
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
     def get_queryset(self):
         try:
-            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera).order_by('')
+            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera).annotate(
+            pasantia_aceptada_undefined=Case(
+                When(status='REA', pasantia_aceptada=None, then=Value(0)),
+                default=Value(1),
+                output_field=IntegerField()))
+            if len(entrevistas) == 0:
+                entrevistas = []
+            order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
+            entrevistas = sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
         except ObjectDoesNotExist:
             return None
         for entrevista in entrevistas:
