@@ -239,12 +239,21 @@ class SubcomisionCarreraUserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraUserEditForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-        self.fields['username'].required = True
+        self.fields['username'].disabled = True
 
+from django.contrib.admin.widgets import FilteredSelectMultiple
 class SubcomisionCarreraEditForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionCarrera
-        fields = ('docente',)
+        fields = ('docentes',)
+
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',), }
+        js = ('/static/jsAdmin.js',)
+
+    def __init__(self, *args, **kwargs):
+        super(SubcomisionCarreraEditForm, self).__init__(*args, **kwargs)
+        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=self.instance.carrera.departamento), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
@@ -330,13 +339,13 @@ class SubcomisionPasantiasUserEditForm(forms.ModelForm):
         fields = ('username', 'email')
     def __init__(self, *args, **kwargs):
         super(SubcomisionPasantiasUserEditForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
+        self.fields['email'].disable = True
         self.fields['username'].required = True
 
 class SubcomisionPasantiasEditForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionCarrera
-        fields = ('docente',)
+        fields = ('docentes',)
 
 class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
 

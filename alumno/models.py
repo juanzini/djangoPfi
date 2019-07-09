@@ -92,7 +92,7 @@ class Carrera(models.Model):
 
 class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE, related_name='carrera_comision')
-    docente = models.ManyToManyField('Docente', verbose_name='docentes', related_name='comision_docente')
+    docentes = models.ManyToManyField('Docente', verbose_name='docentes', related_name='comision_docente')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
 
     class Meta:
@@ -105,7 +105,7 @@ class SubcomisionCarrera(models.Model):
 
 class SubcomisionPasantiasPPS(models.Model):
     departamento = models.OneToOneField('Departamento', on_delete=models.CASCADE)
-    docente = models.ManyToManyField('Docente', verbose_name='docentes')
+    docentes = models.ManyToManyField('Docente', verbose_name='docentes')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='pps_user')
 
     class Meta:
