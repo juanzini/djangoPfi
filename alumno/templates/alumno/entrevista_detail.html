@@ -7,20 +7,20 @@
             <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/alumno/entrevistas"> Entrevistas </a></h6>
             <h2>Entrevista con <a href="{% url 'puesto-detail-alumno' entrevista.entrevista_postulacion.puesto.pk %}">{{ entrevista.empresa.nombre_fantasia }}</a></h2>
                 {% if entrevista.status == 'CAA' %}
-                    <p style="color:red;">Cancelada por el alumno</p>
+                    <span style="color:red;">Cancelada por el alumno</span>
                 {% else %}
                     {% if entrevista.status == 'CAE' %}
-                        <p style="color:red;">Cancelada por la empresa</p>
+                        <span style="color:red;">Cancelada por la empresa</span>
                     {% else %}
                         {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
                             {% if entrevista.is_past_due or entrevista.status == 'REA' %}
                                 {% if entrevista.resultado %}
-                                    <p style="color:black;"> REALIZADA CON RESPUESTA </p>
+                                    <span style="color:black;"> REALIZADA CON RESPUESTA </span>
                                 {% else %}
-                                    <p style="color:black;"> REALIZADA SIN RESPUESTA </p>
+                                    <span style="color:black;"> REALIZADA SIN RESPUESTA </span>
                                 {% endif %}
                             {% else %}
-                                <p style="color:green;"> ACTIVA </p>
+                                <span style="color:green;"> ACTIVA </span>
                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
                                   {% csrf_token %}
                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
@@ -29,9 +29,9 @@
                             {% endif %}
                         {% else %}
                             {% if entrevista.is_past_due %}
-                                <p style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</p>
+                                <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
                             {% else %}
-                                <p style="color:orange;">A la espera de confirmación del Alumno</p>
+                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
                                 <form style="display: inline-flex" class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-confirm' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
@@ -57,7 +57,7 @@
                 </div>
                 {% buttons %}
                     <br>
-                    <a href="{% url 'entrevistas-alumno' %}"><button class="btn btn-outline-primary btn-lg" type="button" style="float: left;">Atr&aacute;s</button></a>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
                 {% endbuttons %}
             </form>
         </div>

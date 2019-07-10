@@ -4,12 +4,14 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2 style="margin-bottom: 20px; vertical-align: middle;">
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
                 {% if postulacion.alumno.perfil %} <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
                 {% else %} <i class="far fa-user fa-4x"></i>
                 {% endif %}
-                {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
-            </h2>
+                <h2 style="margin-left: 2rem;">
+                    {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
+                </h2>
+            </div>
                 {% if postulacion.alumno.carrera %}
                     <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
                 {% endif %}

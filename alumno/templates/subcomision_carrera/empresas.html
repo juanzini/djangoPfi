@@ -15,9 +15,9 @@
                 </thead>
                 <tbody>
                     {% for empresa in empresa_list %}
-                        <tr>
+                        <tr data-link="row" class="rowlink">
                             <td>
-                                {{ empresa.nombre_fantasia }}
+                                <a href="{% url 'empresa-detail-subcomision-carrera' empresa.pk %}">{{ empresa.nombre_fantasia }}</a>
                             </td>
                             <td>
                                 {{ empresa.user.email }}

@@ -29,16 +29,16 @@
                             <td>
                             {% if postulacion.entrevista %}
                                 {% if postulacion.entrevista.status == 'CAA' %}
-                                    <p style="color:red;">Cancelada por el alumno</p>
+                                    <span style="color:red;">Cancelada por el alumno</span>
                                 {% else %}
                                     {% if postulacion.entrevista.status == 'CAE' %}
-                                        <p style="color:red;">Cancelada por la empresa</p>
+                                        <span style="color:red;">Cancelada por la empresa</span>
                                     {% else %}
                                         {% if postulacion.entrevista.status == 'COA' %}
                                             {% if postulacion.entrevista.is_past_due %}
-                                                <p style="color:black;"> REALIZADA </p>
+                                                <span style="color:black;"> REALIZADA </span>
                                             {% else %}
-                                                <p style="color:green;"> ACTIVA </p>
+                                                <span style="color:green;"> ACTIVA </span>
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
@@ -47,9 +47,9 @@
                                             {% endif %}
                                         {% else %}
                                             {% if postulacion.entrevista.is_past_due %}
-                                                <p style="color:black;"> Se excedi&oacute; la fecha y el alumno no confirm&oacute;</p>
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y el alumno no confirm&oacute;</span>
                                             {% else %}
-                                                <p style="color:orange;">A la espera de confirmación de Alumno</p>
+                                                <span style="color:orange;">A la espera de confirmación de Alumno</span>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}

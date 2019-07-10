@@ -4,29 +4,32 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2 style="margin-bottom: 20px;"> <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
-                {% if puesto.empresa.url %}
-                <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
-                {% else %}
-                {{ puesto.empresa.nombre_fantasia }}
-                {% endif %}
-            </h2>
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
+                <h2 style="margin-bottom: 20px; margin-left: 2rem;">
+                    {% if puesto.empresa.url %}
+                    <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
+                    {% else %}
+                    {{ puesto.empresa.nombre_fantasia }}
+                    {% endif %}
+                </h2>
+            </div>
                 {% if puesto.get_nombre_display %}
-                    <p><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</p>
+                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span>
                 {% endif %}
                 {% if puesto.descripcion_actividades %}
-                    <p><b>Actividades</b>: {{puesto.descripcion_actividades}}</p>
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <p><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</p>
+                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span>
                 {% endif %}
                 {% if puesto.horario %}
-                    <p><b>Horario</b>: {{ puesto.horario }}</p>
+                    <span><b>Horario</b>: {{ puesto.horario }}</span>
                 {% endif %}
                 {% if puesto.rentada %}
-                    <p><b>Rentado</b>: Si</p>
+                    <span><b>Rentado</b>: Si</span>
                 {% else %}
-                    <p><b>Rentado</b>: No</p>
+                    <span><b>Rentado</b>: No</span>
                 {% endif %}
                 {% buttons %}
                 <br>
@@ -41,7 +44,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="puesto_id" value="{{ puesto.pk }}">
                                 <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?');" class="btn btn-primary btn-md" type="submit">Postularme</button>
-                                <a href="{% url 'empresas-alumno' %}" style="float: right;"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
+                            <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
                             </form>
                         {% endif %}
                     {% else %}

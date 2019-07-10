@@ -11,6 +11,7 @@
                         <th>Puesto</th>
                         <th>Descripci&oacute;n</th>
                         <th>Cantidad de Alumnos Postulados</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,13 +21,20 @@
                                 {{ puesto.empresa }}
                             </td>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ puesto.get_nombre_display }}</a>
+                                <a href="{% url 'puesto-detail-subcomision-carrera' puesto.pk %}">{{ puesto.get_nombre_display }}</a>
                             </td>
                             <td>
                                 {{ puesto.horario }}
                             </td>
                             <td>
                                 {{ puesto.get_cantidad_alumnos }}
+                            </td>
+                            <td>
+                                {% if puesto.activo %}
+                                Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

@@ -39,10 +39,6 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
-            'perfil',
-            'curriculum',
-            'plan_de_estudio',
-            'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
             'ultima_actualizacion_perfil',
@@ -53,17 +49,35 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
             'comentarios_carrera_visibles',
             'comentarios_comision_pps',
         )
+        widgets = {
+            'carrera': forms.TextInput,
+        }
     def __init__(self, *args, **kwargs):
         super(AlumnoDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
-        self.fields['perfil'].widget.attrs['readonly'] = True
-        self.fields['curriculum'].widget.attrs['readonly'] = True
-        self.fields['plan_de_estudio'].widget.attrs['readonly'] = True
-        self.fields['historia_academica'].widget.attrs['readonly'] = True
+        self.fields['carrera'].disabled = True
         self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
         self.fields['descripcion_habilidades'].widget.attrs['readonly'] = True
         self.fields['ultima_actualizacion_perfil'].widget.attrs['readonly'] = True
         self.fields['ultima_postulacion'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+
+class EmpresaDetailSubcomisionCarreraForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Empresa
+        fields = (
+            'nombre_fantasia',
+            'descripcion',
+            'logo',
+            'url'
+        )
+    def __init__(self, *args, **kwargs):
+        super(EmpresaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['nombre_fantasia'].disabled = True
+        self.fields['descripcion'].disabled = True
+        self.fields['logo'].disabled = True
+        self.fields['url'].disabled = True
+
 
 class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     class Meta():
@@ -80,12 +94,13 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
         )
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].disabled = True
         self.fields['alumno'].widget.attrs['readonly'] = True
         self.fields['empresa'].widget.attrs['readonly'] = True
         self.fields['resultado'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
-        self.fields['status'].widget.attrs['readonly'] = True
-        self.fields['pasantia_aceptada'].widget.attrs['readonly'] = True
+        self.fields['status'].disabled = True
+        self.fields['pasantia_aceptada'].disabled = True
 
 
 class EntrevistaDetailEmpresaForm(forms.ModelForm):
@@ -168,7 +183,8 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs['readonly'] = True
         self.fields['fecha_fin'].widget.attrs['readonly'] = True
-        self.fields['tutor_empresa'].disabled = True
+        self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
+                empresa=self.instance.entrevista.empresa)
         self.fields['informe'].widget.attrs['readonly'] = True
         self.fields['numero_legajo'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
@@ -238,7 +254,7 @@ class SubcomisionCarreraUserEditForm(forms.ModelForm):
         fields = ('username', 'email')
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraUserEditForm, self).__init__(*args, **kwargs)
-        self.fields['email'].required = True
+        self.fields['email'].disabled = True
         self.fields['username'].disabled = True
 
 from django.contrib.admin.widgets import FilteredSelectMultiple

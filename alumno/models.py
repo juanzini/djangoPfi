@@ -87,7 +87,7 @@ class Carrera(models.Model):
         unique_together = (("departamento", "nombre"),)
 
     def __str__(self):
-        return self.nombre.__str__() + ': ' + self.departamento.__str__()
+        return self.nombre.__str__()
 
 
 class SubcomisionCarrera(models.Model):
@@ -270,7 +270,7 @@ class Puesto(models.Model):
         unique_together = (("empresa", "nombre"),)
 
     def get_cantidad_alumnos(self):
-        return Postulacion.objects.filter(puesto=self).count()
+        return Postulacion.objects.filter(puesto=self,activa=True).count()
 
     def __str__(self):
         return self.empresa.__str__() + ' ' + self.nombre.__str__()

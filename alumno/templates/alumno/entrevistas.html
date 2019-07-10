@@ -27,26 +27,26 @@
                             </td>
                             <td>
                                 {% if entrevista.status == 'CAA' %}
-                                    <p style="color:red;">Cancelada por el alumno</p>
+                                    <span style="color:red;">Cancelada por el alumno</span>
                                 {% else %}
                                     {% if entrevista.status == 'CAE' %}
-                                        <p style="color:red;">Cancelada por la empresa</p>
+                                        <span style="color:red;">Cancelada por la empresa</span>
                                     {% else %}
                                         {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
                                             {% if entrevista.is_past_due %}
                                                 {% if entrevista.resultado %}
-                                                    <p style="color:black;"> REALIZADA CON RESPUESTA </p>
+                                                    <span style="color:black;"> REALIZADA CON RESPUESTA </span>
                                                 {% else %}
-                                                    <p style="color:black;"> REALIZADA SIN RESPUESTA </p>
+                                                    <span style="color:black;"> REALIZADA SIN RESPUESTA </span>
                                                 {% endif %}
                                             {% else %}
-                                                <p style="color:green;"> ACTIVA </p>
+                                                <span style="color:green;"> ACTIVA </span>
                                             {% endif %}
                                         {% else %}
                                             {% if entrevista.is_past_due %}
-                                                <p style="color:black;"> Se excedi&oacute; la fecha y no confirm&oacute;</p>
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y no confirm&oacute;</span>
                                             {% else %}
-                                                <p style="color:orange;">A la espera de confirmación del Alumno</p>
+                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}

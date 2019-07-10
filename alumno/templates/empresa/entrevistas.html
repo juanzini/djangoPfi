@@ -28,20 +28,20 @@
                             </td>
                             <td>
                                 {% if entrevista.status == 'CAA' %}
-                                    <p style="color:red;">Cancelada por el alumno</p>
+                                    <span style="color:red;">Cancelada por el alumno</span>
                                 {% else %}
                                     {% if entrevista.status == 'CAE' %}
-                                        <p style="color:red;">Cancelada por la empresa</p>
+                                        <span style="color:red;">Cancelada por la empresa</span>
                                     {% else %}
                                         {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
                                             {% if entrevista.is_past_due %}
                                                 {% if entrevista.resultado %}
-                                                    <p style="color:black;"> REALIZADA CON RESPUESTA AL ALUMNO </p>
+                                                    <span style="color:black;"> REALIZADA CON RESPUESTA AL ALUMNO </span>
                                                 {% else %}
-                                                    <p style="color:black;"> REALIZADA SIN RESPUESTA AL ALUMNO </p>
+                                                    <span style="color:black;"> REALIZADA SIN RESPUESTA AL ALUMNO </span>
                                                 {% endif %}
                                             {% else %}
-                                                <p style="color:green;"> ACTIVA </p>
+                                                <span style="color:green;"> ACTIVA </span>
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
@@ -50,9 +50,9 @@
                                             {% endif %}
                                         {% else %}
                                             {% if entrevista.is_past_due %}
-                                                <p style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</p>
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
                                             {% else %}
-                                                <p style="color:orange;">A la espera de confirmación del Alumno</p>
+                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
@@ -67,12 +67,12 @@
                                 {% if entrevista.status == 'REA' %}
                                     {% if entrevista.pasantia_aceptada is not None %}
                                         {% if entrevista.pasantia_aceptada %}
-                                            <p> Si </p>
+                                            Si
                                         {% else %}
-                                            <p> No </p>
+                                            No
                                         {% endif %}
                                     {% else %}
-                                        <p> No definido </p>
+                                        No definido
                                     {% endif %}
                                 {% endif %}
                             </td>

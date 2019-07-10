@@ -4,13 +4,33 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>{{ alumno.user.first_name }} {{ alumno.user.last_name }}</h2>
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                {% if postulacion.alumno.perfil %} <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
+                {% else %} <i class="far fa-user fa-4x"></i>
+                {% endif %}
+                <h2 style="margin-left: 2rem;">{{ alumno.user.first_name }} {{ alumno.user.last_name }}</h2></div>
             <form method="post" class="form">
                 {% csrf_token %}
+                {% if alumno.curriculum %}
+                <div class="form-group" style="margin-bottom: 0px; margin-top: 1rem;">
+                    <label><i class="fas fa-file-pdf"></i> <a href="{% url 'descarga-alumno-curriculum' alumno.pk %}" target="_blank">Curriculum</a><br></label>
+                </div>
+                {% endif %}
+                {% if alumno.plan_de_estudio %}
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label><i class="fas fa-file-pdf"></i> <a href="{% url 'descarga-alumno-plan-de-estudio' alumno.pk %}" target="_blank">Plan de Estudio</a><br></label>
+                </div>
+                {% endif %}
+                {% if alumno.historia_academica %}
+                <div class="form-group" style="margin-bottom: 0px;">
+                    <label><i class="fas fa-file-pdf"></i> <a href="{% url 'descarga-alumno-historia-academica' alumno.pk %}" target="_blank">Historia Académica</a><br></label>
+                </div>
+                {% endif %}
                 {% bootstrap_form form %}
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
                 {% endbuttons %}
             </form>
         </div>

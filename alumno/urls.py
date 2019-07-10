@@ -40,6 +40,8 @@ urlpatterns = [
          name='descarga-alumno-plan-de-estudio'),
     path('alumno/perfil/<int:pk>', login_required(views.PerfilDownloadView.as_view()),
          name='descarga-alumno-perfil'),
+    path('alumno/historia-academica/<int:pk>', login_required(views.HistoriaAcademicaDownloadView.as_view()),
+         name='descarga-alumno-historia-academica'),
 
     # -------------------EMPRESA--------------------
 
@@ -113,6 +115,10 @@ urlpatterns = [
     path('subcomision_carrera/pasantia/<int:pk>/',
          login_required(permissions(views.PasantiaDetailSubcomisionCarreraView.as_view(), User.CC)),
          name='pasantia-detail-subcomision-carrera'),
+    path('subcomision_carrera/empresas/puesto/<int:pk>', login_required(permissions(views.DetailPustoSubcomisionCarreraView.as_view(), User.CC)),
+         name='puesto-detail-subcomision-carrera'),
+    path('subcomision_carrera/empresas/<int:pk>', login_required(permissions(views.EmpresaDetailSubcomisionCarreraView.as_view(), User.CC)),
+         name='empresa-detail-subcomision-carrera'),
 
     # -------------------COMISION PASANTIA--------------------
 

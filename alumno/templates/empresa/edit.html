@@ -22,7 +22,7 @@
                           </div>
                         </div>
                           {% if user.empresa_user.logo %}
-                          <p style="margin-bottom : 0rem !important; font-size: 14px; margin-left: 0.4rem;">Actualmente: <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' user.empresa_user.pk %}"/><br></p>
+                          <span style="margin-bottom : 0rem !important; font-size: 14px; margin-left: 0.4rem;">Actualmente: <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' user.empresa_user.pk %}"/><br></span>
                           {% endif %}
                       </div>
                     </div>

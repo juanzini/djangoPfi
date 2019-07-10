@@ -17,10 +17,10 @@ from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, Entrevis
     PasantiaDetailEmpresaForm
 from .forms import SubcomisionPasantiasEditForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
-from .forms import EntrevistaDetailAlumnoForm
+from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.db import transaction
 from django.contrib import messages
@@ -47,6 +47,11 @@ class CvDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
+        if self.request.user.tipo == User.CC:
+            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -56,7 +61,7 @@ class CvDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM:
+        if self.request.user.tipo == User.EM or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
             return True
         return False
 
@@ -74,15 +79,7 @@ class LogoDownloadView(PrivateStorageDetailView):
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
-        if self.request.user.tipo == User.EM and private_file.relative_name == self.request.user.empresa_user.logo.name:
-            return True
-        if self.request.user.is_superuser:
-            return True
-        if self.request.user.is_staff:
-            return True
-        if self.request.user.tipo == User.AL:
-            return True
-        return False
+        return True
 
 
 class PlanDeEstudioDownloadView(PrivateStorageDetailView):
@@ -95,6 +92,16 @@ class PlanDeEstudioDownloadView(PrivateStorageDetailView):
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
+        if self.request.user.tipo == User.EM:
+            postulaciones = Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
+        if self.request.user.tipo == User.CC:
+            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -104,8 +111,8 @@ class PlanDeEstudioDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM and Postulacion.objects.filter(
-                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs["pk"]):
+        if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
+                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs["pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
             return True
         return False
 
@@ -120,6 +127,16 @@ class PerfilDownloadView(PrivateStorageDetailView):
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
+        if self.request.user.tipo == User.EM:
+            postulaciones = Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
+        if self.request.user.tipo == User.CC:
+            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -129,8 +146,40 @@ class PerfilDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM and Postulacion.objects.filter(
-                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs["pk"]):
+        if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
+                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
+                    "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
+            return True
+        return False
+
+
+class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
+    model = Alumno
+    model_file_field = 'historia_academica'
+    content_disposition = 'inline'
+
+    def get_content_disposition_filename(self, private_file):
+        return 'historia_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+
+    def get_queryset(self):
+        # Make sure only certain objects can be accessed.
+        if self.request.user.tipo == User.EM:
+            postulaciones = Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
+        return super().get_queryset().filter()
+
+    def can_access_file(self, private_file):
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.perfil.name:
+            return True
+        if self.request.user.is_superuser:
+            return True
+        if self.request.user.is_staff:
+            return True
+        if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
+                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
+                    "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
             return True
         return False
 
@@ -911,6 +960,24 @@ class PasantiaDetailSubcomisionCarreraView(generic.UpdateView):
     def get_success_url(self):
         return self.request.GET.get('next', '../../pasantias')
 
+class DetailPustoSubcomisionCarreraView(generic.TemplateView):
+    template_name = 'subcomision_carrera/puesto_detail.html'
+    context_object_name = 'puesto'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPustoSubcomisionCarreraView, self).get_context_data(**kwargs)
+        context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"],empresa__departamento=self.request.user.carrera_user.carrera.departamento)
+        context['numero_alumnos_postulados'] = Postulacion.objects.filter(puesto=context['puesto'], activa=True).count()
+        return context
+
+class EmpresaDetailSubcomisionCarreraView(generic.UpdateView):
+    model = Empresa
+    template_name = 'subcomision_carrera/empresa_detail.html'
+    form_class = EmpresaDetailSubcomisionCarreraForm
+    success_url = '../../alumnos'
+
+    def get_object(self):
+        return Empresa.objects.get(pk=self.kwargs["pk"])
 
 # ------------------------------------------------------------------------------------------------------------
 # ---------------------------COMISION-PASANTIAS---------------------------------------------------------------
