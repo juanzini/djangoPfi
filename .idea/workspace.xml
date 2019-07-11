@@ -310,9 +310,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="368" y="75" width="1426" height="980" extended-state="0" />
+    <frame x="616" y="94" width="1425" height="980" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21810406" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21825963" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
