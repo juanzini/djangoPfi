@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from decouple import config
-import dj_database_url
 
 from datetime import timedelta
 
@@ -69,7 +67,7 @@ MIDDLEWARE = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-LAST_ACTIVITY_INTERVAL_SECS = config('LAST_ACTIVITY_INTERVAL_SECS')
+LAST_ACTIVITY_INTERVAL_SECS = 600
 LAST_ACTIVITY_INTERVAL_SECS_DEBUG = 30000
 
 ROOT_URLCONF = 'pfiProject.urls'
@@ -95,6 +93,9 @@ WSGI_APPLICATION = 'pfiProject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+import dj_database_url
+from decouple import config
 
 DATABASES = {
     'default': dj_database_url.config(
