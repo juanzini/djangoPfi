@@ -3,28 +3,30 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Docentes</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Mail</th>
-                        <th>Box</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for docente in docente_list %}
+            <h2>Docentes de tu comisi&oacute;n carrera</h2>
+                <table class="table table-sm table-hover">
+                    <thead>
                         <tr>
-                            <td>{{ docente.nombre }}</td>
-                            <td>{{ docente.apellido }}</td>
-                            <td><a href="mailto:{{docente.mail}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
-                            <td>{{ docente.box_oficina }}</td>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Mail</th>
+                            <th>Box</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% if docente_list %}
+                            {% for docente in docente_list %}
+                                <tr>
+                                    <td>{{ docente.nombre }}</td>
+                                    <td>{{ docente.apellido }}</td>
+                                    <td><a href="mailto:{{docente.mail}}" mail>
+                                        <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
+                                    <td>{{ docente.box_oficina }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
         </div>
     </div>
 {% endblock %}

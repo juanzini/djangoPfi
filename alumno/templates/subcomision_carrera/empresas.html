@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Empresas</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Url</th>
+                        <th>Cantidad de pasantes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empresa in empresa_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'empresa-detail-subcomision-carrera' empresa.pk %}">{{ empresa.nombre_fantasia }}</a>
+                            </td>
+                            <td>
+                                {{ empresa.user.email }}
+                            </td>
+                            <td>
+                                {{ empresa.url }}
+                            </td>
+                            <td>
+                                {{ empresa.get_cantidad_de_pasantes }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

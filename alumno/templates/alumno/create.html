@@ -6,10 +6,64 @@
         <div class="col">
             <h2>Completar Formulario de Registración</h2>
             <hr>
-            <form method="post" class="form">
+            <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form user_form %}
-                {% bootstrap_form alumno_form %}
+                <div class="form-group"><label for="id_curriculum">Curriculum (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="curriculum" class="form-control custom-file-input" required id="id_curriculum">
+                            <label class="custom-file-label" for="id_curriculum" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group"><label for="id_plan_de_estudio">Plan de Estudio (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="plan_de_estudio" class="form-control custom-file-input" required id="id_plan_de_estudio">
+                            <label class="custom-file-label" for="id_plan_de_estudio" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group"><label for="id_historia_academica">Historia Académica (.pdf)</label>
+                    <div class="row bootstrap4-multi-input">
+                      <div class="col-12">
+                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">Nombre de Archivo:</span>
+                          </div>
+                          <div class="custom-file">
+                            <input type="file" name="historia_academica" class="form-control custom-file-input" required id="id_historia_academica">
+                            <label class="custom-file-label" for="id_historia_academica" data-browse="Buscar">Nada seleccionado</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% bootstrap_form alumno_form exclude="curriculum,plan_de_estudio,historia_academica,descripcion_intereses,descripcion_habilidades" %}
+                <div class="form-group">
+                    <label for="id_descripcion_intereses">
+                        Descripci&oacute;n de intereses</label>
+                    <textarea name="descripcion_intereses" cols="40" rows="10" maxlength="500" class="form-control" placeholder="¿Cuáles son tus campos de interés profesional? ¿Sabes de qué te gustaría trabajar? Identificar tus preferencias e intereses profesionales es un paso clave dentro de tu proceso de orientación profesional. Trabajar de aquello que más te guste contribuirá a tu bienestar y te permitirá ofrecer la máxima expresión de tu talento y potencial." title="" id="id_descripcion_intereses"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="id_descripcion_habilidades">Descripci&oacute;n de habilidades</label>
+                    <textarea name="descripcion_habilidades" cols="40" rows="10" maxlength="1000" class="form-control" placeholder="Aquí puedes remarcar las habilidades personales o profesionales que poseés y consideres oportunas para tu postulación. No te guardes ninguna!" title="" id="id_descripcion_habilidades"></textarea>
+                </div>
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-success btn-lg">Guardar</button>
@@ -17,4 +71,22 @@
             </form>
         </div>
     </div>
+
+
+<style>
+    .custom-file-label::after {
+        content: "Buscar" !important;
+    }
+</style>
+
+<script>
+    $('.custom-file-input').on('change', function() {
+   let fileName = $(this).val().split('\\').pop();
+   if (!fileName) {
+        $(this).next('.custom-file-label').addClass("selected").html("Nada seleccionado");
+    } else {
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
+   }
+});
+</script>
 {% endblock %}

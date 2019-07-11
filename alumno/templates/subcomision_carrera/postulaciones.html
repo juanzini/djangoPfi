@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Postulaciones</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Empresa</th>
+                        <th>Puesto</th>
+                        <th>Fecha de Postulación</th>
+                        <th>Estado Entrevista</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for postulacion in postulacion_list %}
+                        <tr  data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'alumno-detail-subcomision-carrera' postulacion.alumno.numero_registro %}">{{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}</a>
+                            </td>
+                            <td>
+                                {{ postulacion.puesto.empresa }}
+                            </td>
+                            <td>
+                                {{ postulacion.puesto.get_nombre_display }}
+                            </td>
+                            <td>
+                                {{ postulacion.fecha }}
+                            </td>
+                            <td>
+                                {% if postulacion.entrevista %}
+                                {% if postulacion.entrevista.status == 'CAA' %}
+                                    <span style="color:red;">Cancelada por el alumno</span>
+                                {% else %}
+                                    {% if postulacion.entrevista.status == 'CAE' %}
+                                        <span style="color:red;">Cancelada por la empresa</span>
+                                    {% else %}
+                                        {% if postulacion.entrevista.status == 'COA' %}
+                                            {% if postulacion.entrevista.is_past_due %}
+                                                <span style="color:black;"> REALIZADA </span>
+                                            {% else %}
+                                                <span style="color:green;"> ACTIVA </span>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if postulacion.entrevista.is_past_due %}
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y el alumno no confirm&oacute;</span>
+                                            {% else %}
+                                                <span style="color:orange;">A la espera de confirmación de Alumno</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                Sin entrevista generada
+                            {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

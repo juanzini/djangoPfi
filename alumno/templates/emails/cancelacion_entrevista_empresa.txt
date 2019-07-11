@@ -1,0 +1,6 @@
+Hola {{ entrevista.empresa.nombre_fantasia }}!!
+
+Te escribimos para informarte que el alumno {{entrevista.alumno.user.first_name}} {{entrevista.alumno.user.last_name}} canceló la entrevista que tenías programada
+para el {{entrevista.fecha}}hs., en {{entrevista.lugar}}.
+
+Departamento de Informática, UNSL.

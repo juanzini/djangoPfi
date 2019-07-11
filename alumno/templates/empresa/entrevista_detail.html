@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/empresa/entrevistas"> Entrevistas </a></h6>
+            <h2>Entrevista a <a href="{% url 'alumno-detail-empresa' entrevista.alumno.pk %}">{{ entrevista.alumno.user.first_name }} {{entrevista.alumno.user.last_name}}</a></h2>
+                {% if entrevista.status == 'CAA' %}
+                    <span style="color:red;">Cancelada por el alumno</span>
+                {% else %}
+                    {% if entrevista.status == 'CAE' %}
+                        <span style="color:red;">Cancelada por la empresa</span>
+                    {% else %}
+                        {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                            {% if entrevista.is_past_due or entrevista.status == 'REA' %}
+                                {% if entrevista.resultado %}
+                                    <span style="color:black;"> REALIZADA CON RESPUESTA </span>
+                                {% else %}
+                                    <span style="color:black;"> REALIZADA SIN RESPUESTA </span>
+                                {% endif %}
+                            {% else %}
+                                <span style="color:green;"> ACTIVA </span>
+                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            {% if entrevista.is_past_due %}
+                                <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
+                            {% else %}
+                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
+                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,12 +1,14 @@
-{% load bootstrap4 %}
 {% load static %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery="full" %}
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        {% bootstrap_css %}
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link href="{% static 'color-scheme.css' %}" rel="stylesheet" media="screen" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
@@ -31,12 +33,11 @@
         <!-- begin The Footer -->
         <footer class="site-footer">
         <div class="container">
-            <div class="row">
                 <div class="col-md-5">
                     <div id="contact" class="footer-widget">
                         <h4 class="footer-widget-title">Departamento de Informática</h4>
-                        <p>Universidad Nacional de San Luis<br>Ejército de Los Andes 950<br>+54-266-4520300 int 2133<br>Línea Directa +54-266-4520331<br>secinfo@unsl.edu.ar<br>Bloque II - 1 Piso - Oficina Nº12<br /> San Luis, Argentina<br>CP 5700
-                        </p>
+                        <span>Universidad Nacional de San Luis<br>Ejército de Los Andes 950 - Bloque II - 1 Piso - Oficina Nº12<br /> San Luis, Argentina - CP 5700<br>+54-266-4520300 int 2133<br>Línea Directa +54-266-4520331<br>secinfo@unsl.edu.ar
+                        </span>
                     </div>
                     <a href="https://www.facebook.com/dirinfounsl/?fref=ts" class="fab fa-facebook-square fa-3x"></a>&nbsp;
                     <a href="https://twitter.com/dirinfounsl" class="fab fa-twitter-square fa-3x"></a>
@@ -44,9 +45,11 @@
             </div><!-- /.row -->
             <hr>
         </div>
+        </footer>
         <!-- /.site-footer -->
 
         <!-- Scripts -->
-        {% bootstrap_javascript jquery='full' %}
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
+        {% block script %}{% endblock %}
     </body>
 </html>

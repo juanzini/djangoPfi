@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Entrevistas</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Fecha</th>
+                        <th>Puesto</th>
+                        <th>Estado</th>
+                        <th>Pasantía Aceptada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrevista in entrevista_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'entrevista-detail-empresa' entrevista.id %}">{{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}</a>
+                            </td>
+                            <td>
+                                {{ entrevista.fecha }}
+                            </td>
+                            <td>
+                                {{ entrevista.entrevista_postulacion.puesto }}
+                            </td>
+                            <td>
+                                {% if entrevista.status == 'CAA' %}
+                                    <span style="color:red;">Cancelada por el alumno</span>
+                                {% else %}
+                                    {% if entrevista.status == 'CAE' %}
+                                        <span style="color:red;">Cancelada por la empresa</span>
+                                    {% else %}
+                                        {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                                            {% if entrevista.is_past_due %}
+                                                {% if entrevista.resultado %}
+                                                    <span style="color:black;"> REALIZADA CON RESPUESTA AL ALUMNO </span>
+                                                {% else %}
+                                                    <span style="color:black;"> REALIZADA SIN RESPUESTA AL ALUMNO </span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span style="color:green;"> ACTIVA </span>
+                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
+                                                  {% csrf_token %}
+                                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                </form>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if entrevista.is_past_due %}
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
+                                            {% else %}
+                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
+                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
+                                                  {% csrf_token %}
+                                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if entrevista.status == 'REA' %}
+                                    {% if entrevista.pasantia_aceptada is not None %}
+                                        {% if entrevista.pasantia_aceptada %}
+                                            Si
+                                        {% else %}
+                                            No
+                                        {% endif %}
+                                    {% else %}
+                                        No definido
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

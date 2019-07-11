@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Puestos Ofrecidos</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Puesto</th>
+                        <th>Descripci&oacute;n</th>
+                        <th>Cantidad de Alumnos Postulados</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for puesto in puesto_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                {{ puesto.empresa }}
+                            </td>
+                            <td>
+                                <a href="{% url 'puesto-detail-subcomision-carrera' puesto.pk %}">{{ puesto.get_nombre_display }}</a>
+                            </td>
+                            <td>
+                                {{ puesto.horario }}
+                            </td>
+                            <td>
+                                {{ puesto.get_cantidad_alumnos }}
+                            </td>
+                            <td>
+                                {% if puesto.activo %}
+                                Activo
+                                {% else %}
+                                Inactivo
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Alumnos</h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Carrera</th>
+                        <th>Email</th>
+                        <th style="white-space: nowrap;">Comentarios Visibles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alumno in alumno_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'alumno-detail-subcomision-carrera' alumno.numero_registro %}">{{ alumno.user.first_name }}</a>
+                            </td>
+                            <td>
+                                {{ alumno.user.last_name }}
+                            </td>
+                            <td>
+                                {{ alumno.carrera }}
+                            </td>
+                            <td>
+                                {{ alumno.user.email }}
+                            </td>
+                            <td>
+                                {{ alumno.comentarios_carrera_visibles }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

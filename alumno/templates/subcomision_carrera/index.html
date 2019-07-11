@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if pasantia %}
+    <div class="row">
+        <div class="col">
+            <h2>Pasantía</h2>
+        </div>
+    </div>
+{% else %}
+  <div class="row">
+        <div class="col">
+            <h2>No Tiene Pasantía Activa</h2>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

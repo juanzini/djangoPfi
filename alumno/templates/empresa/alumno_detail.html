@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                {% if postulacion.alumno.perfil %} <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
+                {% else %} <i class="far fa-user fa-4x"></i>
+                {% endif %}
+                <h2 style="margin-left: 2rem;">
+                    {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
+                </h2>
+            </div>
+                {% if postulacion.alumno.carrera %}
+                    <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
+                {% endif %}
+                {% if postulacion.alumno.descripcion_intereses %}
+                    <p><b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}</p>
+                {% endif %}
+                {% if postulacion.alumno.descripcion_habilidades %}
+                    <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
+                {% endif %}
+                {% if postulacion.alumno.curriculum %}
+                    <p><b>Curr&iacute;culum</b>: <a href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
+                {% endif %}
+                {% if postulacion.alumno.plan_de_estudio %}
+                    <p><b>Plan de Estudio</b>: <a href="{% url 'descarga-alumno-plan-de-estudio' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
+                {% endif %}
+                {% if postulacion.alumno.comentarios_carrera_visibles %}
+                    {% if postulacion.alumno.comentarios_comision_carrera %}
+                        <p><b>Comentarios de la Comisi&oacute;n de Carrera</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
+                    {% endif %}
+                    {% if postulacion.alumno.comentarios_comision_pps %}
+                        <p><b>Comentarios de la Comisi&oacute;n de PPS</b>: {{postulacion.alumno.comentarios_comision_pps}</p>
+                    {% endif %}
+                {% endif %}
+                {% buttons %}
+                <br>
+                {% if postulacion.entrevista and not postulacion.entrevista.is_past_due and not postulacion.entrevista.status in 'NOC,CAA,CAE' %}
+                    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
+                      {% csrf_token %}
+                      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Entrevista Generada</button>
+                    </form>
+                {% else %}
+                    {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
+                        {% if postulacion.entrevista.status == NOC %}
+                            <p>Se le generó una entrevista que  <b style="color:red;">no fue confirmada por el alumno</b></p>
+                        {% elif postulacion.entrevista.status == CAA %}
+                            <p style="color:red;">Se le generó una entrevista que fue <b style="color:red;">cancelada por el alumno</b></p>
+                        {% else %}
+                            <p>Se le generó una entrevista que fue <b style="color:red;">cancelada por la empresa</b></p>
+                        {% endif %}
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-warning my-2 my-sm-0" type="submit">Regenerar Entrevista</button>
+                        </form>
+                        <br>
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
+                        </form>
+                    {% else %}
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                        </form>
+                        <br>
+                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                          {% csrf_token %}
+                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+                {% endbuttons %}
+        </div>
+    </div>
+{% endblock %}

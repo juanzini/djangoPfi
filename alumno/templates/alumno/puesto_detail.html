@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
+                <h2 style="margin-bottom: 20px; margin-left: 2rem;">
+                    {% if puesto.empresa.url %}
+                    <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
+                    {% else %}
+                    {{ puesto.empresa.nombre_fantasia }}
+                    {% endif %}
+                </h2>
+            </div>
+                {% if puesto.get_nombre_display %}
+                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span>
+                {% endif %}
+                {% if puesto.descripcion_actividades %}
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span>
+                {% endif %}
+                {% if puesto.conocimientos_requeridos %}
+                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span>
+                {% endif %}
+                {% if puesto.horario %}
+                    <span><b>Horario</b>: {{ puesto.horario }}</span>
+                {% endif %}
+                {% if puesto.rentada %}
+                    <span><b>Rentado</b>: Si</span>
+                {% else %}
+                    <span><b>Rentado</b>: No</span>
+                {% endif %}
+                {% buttons %}
+                <br>
+                {% if not puesto.activo %}
+                    Este puesto ya no se encuentra disponible
+                {% else %}
+                    {% if not postulacion %}
+                        {% if not is_available %}
+                            Debe esperar hasta el {{ next_day }} para poder volver a postularse.
+                        {% else %}
+                            <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-create-alumno' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="puesto_id" value="{{ puesto.pk }}">
+                                <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?');" class="btn btn-primary btn-md" type="submit">Postularme</button>
+                            <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-delete-alumno' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="postulacion_id" value="{{ postulacion.pk }}">
+                            <button onClick="javascript: return confirm('No podrá volver a postularse por 60 días en este mismo puesto.\n¿Est&aacute; seguro que desea DEJAR DE POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?\n Si tiene una entrevista activa, la misma CADUCARÁ!!');" class="btn btn-danger btn-md" type="submit">Quitar postulaci&oacute;n</button>
+                            <button class="btn btn-outline-primary btn-md" type="button" style="float: right;" onclick="history.back()">Atr&aacute;s</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+                {% endbuttons %}
+        </div>
+    </div>
+{% endblock %}

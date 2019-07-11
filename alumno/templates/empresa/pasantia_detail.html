@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/empresa/pasantias"> Pasant&iacute;as </a></h6>
+            <h2>Pasant&iacute;a de {{ pasantia.entrevista.alumno.user.first_name }} {{pasantia.entrevista.alumno.user.last_name}}</h2>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

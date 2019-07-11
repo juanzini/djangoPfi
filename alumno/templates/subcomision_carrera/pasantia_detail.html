@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Pasant&iacute;a de {{ pasantia.entrevista.alumno.user.first_name }} {{ pasantia.entrevista.alumno.user.last_name }}</h2>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

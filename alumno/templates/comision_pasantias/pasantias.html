@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div><h2>Pasantias
+                <a href="{% url 'nueva-pasantia-comision-pasantias' %}">
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-success btn-md">Nueva Pasant&iacute;a</button>
+                </a>
+            </h2></div>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Alumno</th>
+                        <th>Empresa</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de fin</th>
+                        <th>Tutor Docente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pasantia in pasantia_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}">{{ pasantia.entrevista.alumno }}</a>
+                            </td>
+                            <td>
+                                {{ pasantia.entrevista.empresa }}
+                            </td>
+                            <td>
+                                {{ pasantia.fecha_inicio }}
+                            </td>
+                            <td>
+                                {{ pasantia.fecha_fin }}
+                            </td>
+                            <td>
+                                {{ pasantia.tutor_docente }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

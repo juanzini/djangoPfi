@@ -1,1 +1,1 @@
-Este es el subject {{user.first_name}}
+Confirmanos tu e-mail {{user.first_name}}!

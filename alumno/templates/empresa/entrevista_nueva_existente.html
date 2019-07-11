@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    {{ form.media }}
+    <div class="row">
+        <div class="col">
+            <h2>Ya se encuentra activa una entrevista para el alumno</h2>
+            <span style="color:orange;">Seleccione guardar si desea agregar esta postulación a la entrevista activa:</span>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <input type="hidden" name="postulacion" value="{{ request.POST.postulacion }}">
+                    <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

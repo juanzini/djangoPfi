@@ -1,0 +1,13 @@
+Hola {{postulacion.puesto.empresa.nombre_fantasia}}!!
+
+Te escribimos para informarte que la postulación del alumno {{postulacion.alumno.user.first_name}} {{postulacion.alumno.user.last_name}}
+a una pasantía en su empresa se desestimará automáticamente dentro de {{dias}} días.
+
+En el caso de que se encuentre interesado en realizar una entrevista al alumno solicitamos ingresar al sistema de pasantías y prácticas profesionales
+de la UNSL, dirigirse a la sección de postulaciones y cargar una entrevista para el alumno.
+También agradeceríamos que en el caso de que no esté interesado en el alumno nos pueda indicar el motivo para poder seguir creciendo
+como institución educativa.
+
+Desde ya, muchas gracias!!
+
+Departamento de Informática, UNSL.

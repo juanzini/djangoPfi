@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                 {% if puesto.empresa.logo %} <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
+                 {% else %} <i class="far fa-user fa-4x"></i>
+                 {% endif %}
+                <h2 style="margin-left: 2rem; margin-left: 2rem;">
+                    {% if puesto.empresa.url %}
+                    <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
+                    {% else %}
+                    {{ puesto.empresa.nombre_fantasia }}
+                    {% endif %}
+                </h2>
+             </div>
+                {% if puesto.get_nombre_display %}
+                    <p><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</p>
+                {% endif %}
+                {% if puesto.descripcion_actividades %}
+                    <p><b>Actividades</b>: {{puesto.descripcion_actividades}}</p>
+                {% endif %}
+                {% if puesto.conocimientos_requeridos %}
+                    <p><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</p>
+                {% endif %}
+                {% if puesto.horario %}
+                    <p><b>Horario</b>: {{ puesto.horario }}</p>
+                {% endif %}
+                {% if puesto.rentada %}
+                    <p><b>Rentado</b>: Si</p>
+                {% else %}
+                    <p><b>Rentado</b>: No</p>
+                {% endif %}
+                {% buttons %}
+                <br>
+                {% if not puesto.activo %}
+                    <span style="color: red">Este puesto no se encuentra disponible para postularse.</span>
+                {% else %}
+                    <span style="color: green">Actualmente hay {{ numero_alumnos_postulados }} Alumnos postulados.</span>
+                {% endif %}
+                <button class="btn btn-outline-primary btn-md" type="button" style="float: right;" onclick="history.back()">Atr&aacute;s</button>
+                {% endbuttons %}
+        </div>
+    </div>
+{% endblock %}

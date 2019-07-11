@@ -1,6 +1,12 @@
-activation_key : {{activation_key}}
-activation_key : {{expiration_days}}
-activation_key : {{request}}
-activation_key : {{scheme}}
-activation_key : {{site}}
-activation_key : {{user}}
+Hola {{user}}!!
+
+Estás a un paso de completar el registro en el Sistema de Pasantías y Prácticas Profesionales del Departamento de Informática de la Universidad Nacional de San Luis :)
+Solo tenés que hacer click en el enlace para validar tu email y comenzar tu viaje por el mundo laboral. Te esperan grandes éxitos!
+
+http://{{site}}/accounts/activate/{{activation_key}}
+
+No dejes pasar mucho tiempo, el enlace caduca {{expiration_days}} día{% if expiration_days > 1%}s{% endif %} luego de recibir este email.
+
+Saludos y espramos tus postulaciones!!
+
+Departamento de Informática, UNSL.
