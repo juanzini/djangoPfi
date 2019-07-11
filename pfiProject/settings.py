@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
+ALLOWED_HOSTS = ['*']
 
 PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
@@ -91,11 +91,13 @@ WSGI_APPLICATION = 'pfiProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+import dj_database_url
+from decouple import config
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
 
 
@@ -138,8 +140,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.gmail.com'
