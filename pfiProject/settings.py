@@ -62,7 +62,6 @@ MIDDLEWARE = [
     'alumno.middlewares.LocaleMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
     'alumno.middlewares.LastUserUpdateProfile',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
