@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="" />
+    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/urls.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,11 +25,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pfiProject/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1369">
-              <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
+            <state relative-caret-position="246">
+              <caret line="67" column="19" selection-start-line="67" selection-end-line="67" selection-end-column="19" />
               <folding>
                 <element signature="e#309#318#0" expanded="true" />
               </folding>
@@ -34,7 +37,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/requirements.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
@@ -46,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pfiProject/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            <state relative-caret-position="405">
+              <caret line="27" column="67" selection-start-line="27" selection-start-column="67" selection-end-line="27" selection-end-column="67" />
               <folding>
                 <element signature="e#634#666#0" expanded="true" />
               </folding>
@@ -79,7 +82,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>plan_de_est</find>
       <find>descarga-alumno-</find>
       <find>historia_</find>
       <find>historia_acade</find>
@@ -109,6 +111,7 @@
       <find>&lt;p</find>
       <find>Carrera</find>
       <find>static</find>
+      <find>STATICFILES_STORAGE</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -168,9 +171,9 @@
         <option value="$PROJECT_DIR$/alumno/models.py" />
         <option value="$PROJECT_DIR$/alumno/templates/subcomision_carrera/alumnos.html" />
         <option value="$PROJECT_DIR$/alumno/forms.py" />
-        <option value="$PROJECT_DIR$/pfiProject/settings.py" />
-        <option value="$PROJECT_DIR$/pfiProject/urls.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/pfiProject/urls.py" />
+        <option value="$PROJECT_DIR$/pfiProject/settings.py" />
       </list>
     </option>
   </component>
@@ -311,6 +314,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="616" y="94" width="1425" height="980" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21825963" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -846,16 +850,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pfiProject/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#634#666#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/alumno/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2030">
@@ -869,16 +863,6 @@
     <entry file="file://$PROJECT_DIR$/static/jsAdmin.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/pfiProject/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1369">
-          <caret line="98" column="38" selection-start-line="98" selection-start-column="38" selection-end-line="98" selection-end-column="38" />
-          <folding>
-            <element signature="e#309#318#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -890,6 +874,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
           <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pfiProject/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="67" selection-start-line="27" selection-start-column="67" selection-end-line="27" selection-end-column="67" />
+          <folding>
+            <element signature="e#634#666#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pfiProject/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="67" column="19" selection-start-line="67" selection-end-line="67" selection-end-column="19" />
+          <folding>
+            <element signature="e#309#318#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

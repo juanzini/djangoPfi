@@ -61,8 +61,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'alumno.middlewares.LocaleMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
-    'alumno.middlewares.LastUserUpdateProfile'
+    'alumno.middlewares.LastUserUpdateProfile',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LAST_ACTIVITY_INTERVAL_SECS = 300
 LAST_ACTIVITY_INTERVAL_SECS_DEBUG = 30000
