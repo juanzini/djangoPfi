@@ -1,1 +1,1 @@
-web: gunicorn spypp.wsgi --log-file -
+web: gunicorn pfiProject.wsgi --log-file -
