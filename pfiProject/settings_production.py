@@ -19,8 +19,6 @@ DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
 SECRET_KEY = config('SECRET_KEY', default='#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateS3BotoStorage'
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
@@ -30,12 +28,16 @@ AWS_PRIVATE_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_PRIVATE_STORAGE_BUCKE
 AWS_PRIVATE_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_DEFAULT_ACL = None
 
 AWS_LOCATION = 'static'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'spypp/media'),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 STATIC_URL = 'https://%s/%s/' % (AWS_PRIVATE_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 

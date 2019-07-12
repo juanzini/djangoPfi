@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
-  # bucket name
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 ADMIN_MEDIA_PREFIX = '/media/'
 

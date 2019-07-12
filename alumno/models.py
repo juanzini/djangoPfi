@@ -38,13 +38,13 @@ class Alumno(models.Model):
             raise ValidationError(u'Formato de registro erroneo, recuerda que debe comenzar con 30')
 
     def curriculum_upload_path(instance, filename):
-        return '{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
+        return 'curriculums/{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
     def plan_upload_path(instance, filename):
-        return '{0}-{1}-{2}'.format("plan", instance.user.username, filename)
+        return 'planes_de_estudio/{0}-{1}-{2}'.format("plan", instance.user.username, filename)
     def historia_upload_path(instance, filename):
-        return '{0}-{1}-{2}'.format("historia", instance.user.username, filename)
+        return 'historias_academicas/{0}-{1}-{2}'.format("historia", instance.user.username, filename)
     def perfil_upload_path(instance, filename):
-        return '{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
+        return 'perfiles/{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
     numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
@@ -216,7 +216,7 @@ class Entrevista(models.Model):
 
 class Empresa(models.Model):
     def logo_upload_path(instance, filename):
-        return '{0}-{1}-{2}'.format("logo", instance.user.username, filename)
+        return 'logos/{0}-{1}-{2}'.format("logo", instance.user.username, filename)
 
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
