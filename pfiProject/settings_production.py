@@ -19,7 +19,7 @@ CELERY_RESULT_BACKEND = config('DATABASE_URL')
 DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
 SECRET_KEY = config('SECRET_KEY', default='#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*')
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -29,17 +29,10 @@ PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateS3BotoStorage'
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_PRIVATE_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
-
 AWS_PRIVATE_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_PRIVATE_STORAGE_BUCKET_NAME
-AWS_PRIVATE_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
 AWS_DEFAULT_ACL = None
 
-STATIC_DIRECTORY = '/static/'
 MEDIA_DIRECTORY = '/media/'
-
-STATIC_URL = 'https://%s/%s/' % (AWS_PRIVATE_S3_CUSTOM_DOMAIN, STATIC_DIRECTORY)
 MEDIA_URL = 'https://%s/%s/' % (AWS_PRIVATE_S3_CUSTOM_DOMAIN, MEDIA_DIRECTORY)
 
 DATABASES = {
@@ -47,6 +40,5 @@ DATABASES = {
         default=config('DATABASE_URL')
     )
 }
-
 
 DEFAULT_FILE_STORAGE = S3BotoStorage(location='media')

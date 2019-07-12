@@ -156,5 +156,6 @@ CELERY_TASK_SERIALIZER = 'json'
 
 if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
     from .settings_production import *
+    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
 else:
     ADMIN_MEDIA_PREFIX = '/media/'
