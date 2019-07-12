@@ -11,8 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-
-from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,13 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
-PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateS3BotoStorage'
-
-AWS_PRIVATE_STORAGE_BUCKET_NAME = 'spypp-assets'  # bucket name
+  # bucket name
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 ADMIN_MEDIA_PREFIX = '/media/'
 
@@ -63,13 +60,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'alumno.middlewares.LocaleMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
-    'alumno.middlewares.LastUserUpdateProfile',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'alumno.middlewares.LastUserUpdateProfile'
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-LAST_ACTIVITY_INTERVAL_SECS = 600
+LAST_ACTIVITY_INTERVAL_SECS = 300
 LAST_ACTIVITY_INTERVAL_SECS_DEBUG = 30000
 
 ROOT_URLCONF = 'pfiProject.urls'
@@ -96,13 +90,11 @@ WSGI_APPLICATION = 'pfiProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-import dj_database_url
-from decouple import config
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 
@@ -145,18 +137,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
 
 EMAIL_USE_SSL = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = config('USERNAME_EMAIL')
-EMAIL_HOST_PASSWORD = config('PASSWORD_EMAIL')
+EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
+EMAIL_HOST_PASSWORD = ''
 
 BOOTSTRAP4 = {
     'include_jquery': True,
@@ -168,3 +155,7 @@ CELERY_RESULT_BACKEND = config('DATABASE_URL')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
+
+if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
+    from .settings_production import *
+    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
