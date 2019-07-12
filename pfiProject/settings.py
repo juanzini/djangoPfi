@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
 
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
-ADMIN_MEDIA_PREFIX = '/media/'
 
 # Application definition
 
@@ -157,4 +156,5 @@ CELERY_TASK_SERIALIZER = 'json'
 
 if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
     from .settings_production import *
-    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
+else:
+    ADMIN_MEDIA_PREFIX = '/media/'

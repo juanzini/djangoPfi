@@ -19,7 +19,7 @@ CELERY_RESULT_BACKEND = config('DATABASE_URL')
 DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
 SECRET_KEY = config('SECRET_KEY', default='#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -49,4 +49,4 @@ DATABASES = {
 }
 
 
-DEFAULT_FILE_STORAGE = lambda: S3BotoStorage(location='media')
+DEFAULT_FILE_STORAGE = S3BotoStorage(location='media')
