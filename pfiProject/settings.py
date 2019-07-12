@@ -28,7 +28,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
+PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateS3BotoStorage'
+
+AWS_PRIVATE_STORAGE_BUCKET_NAME = 'spypp-assets'  # bucket name
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 ADMIN_MEDIA_PREFIX = '/media/'
 
@@ -62,6 +64,7 @@ MIDDLEWARE = [
     'alumno.middlewares.LocaleMiddleware',
     'alumno.middlewares.LastUserActivityMiddleware',
     'alumno.middlewares.LastUserUpdateProfile',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
