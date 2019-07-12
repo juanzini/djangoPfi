@@ -24,6 +24,7 @@ iso8601==0.1.12
 jmespath==0.9.4
 kombu==4.5.0
 psycopg2==2.7.4
+psycopg2-binary==2.8.3
 python-crontab==2.3.6
 python-dateutil==2.8.0
 python-decouple==3.1
