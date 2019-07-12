@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'django_cleanup.apps.CleanupConfig',
     'private_storage',
-    'django_celery_beat'
+    'django_celery_beat',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -149,7 +150,7 @@ BOOTSTRAP4 = {
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = config('DATABASE_URL')
+CELERY_RESULT_BACKEND = config('DATABASE_URL', default='django-db')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -159,3 +160,4 @@ if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
     MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
 else:
     ADMIN_MEDIA_PREFIX = '/media/'
+    PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
