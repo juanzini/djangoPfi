@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/pfiProject/settings_production.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings_production.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/alumno/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/edit_obligado.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/alumno/edit_obligado.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +60,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pfiProject/settings_production.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
@@ -67,6 +68,15 @@
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/alumno/templates/alumno/edit.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="55" column="196" selection-start-line="55" selection-start-column="196" selection-end-line="55" selection-end-column="196" />
             </state>
           </provider>
         </entry>
@@ -147,8 +157,8 @@
       <find>DEFAULT_FILE_STORAGE</find>
       <find>boto3</find>
       <find>plan_de_est</find>
-      <find>STATIC_URL</find>
       <find>PRIVATE_ST</find>
+      <find>STATIC_URL</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -187,8 +197,6 @@
         <option value="$PROJECT_DIR$/alumno/templates/empresa/edit.html" />
         <option value="$PROJECT_DIR$/alumno/templates/base.html" />
         <option value="$PROJECT_DIR$/alumno/templates/django_registration/activation_failed.html" />
-        <option value="$PROJECT_DIR$/alumno/templates/alumno/edit.html" />
-        <option value="$PROJECT_DIR$/alumno/templates/alumno/edit_obligado.html" />
         <option value="$PROJECT_DIR$/alumno/templates/alumno/detail.html" />
         <option value="$PROJECT_DIR$/alumno/templates/registration/logged_out.html" />
         <option value="$PROJECT_DIR$/alumno/templates/empresa/entrevista_nueva_existente.html" />
@@ -211,6 +219,8 @@
         <option value="$PROJECT_DIR$/pfiProject/s3utils.py" />
         <option value="$PROJECT_DIR$/pfiProject/settings.py" />
         <option value="$PROJECT_DIR$/pfiProject/settings_production.py" />
+        <option value="$PROJECT_DIR$/alumno/templates/alumno/edit.html" />
+        <option value="$PROJECT_DIR$/alumno/templates/alumno/edit_obligado.html" />
       </list>
     </option>
   </component>
@@ -240,6 +250,19 @@
             <path>
               <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
+              <item name="alumno" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
+              <item name="alumno" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pfiProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pfiProject" type="462c0819:PsiDirectoryNode" />
+              <item name="alumno" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="alumno" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -366,7 +389,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="393" y="68" width="1425" height="980" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21825963" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -665,13 +687,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alumno/templates/alumno/edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="58" column="22" lean-forward="true" selection-start-line="11" selection-start-column="16" selection-end-line="58" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/bootstrap_datepicker_plus/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -935,6 +950,13 @@
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/alumno/templates/alumno/edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="55" column="196" selection-start-line="55" selection-start-column="196" selection-end-line="55" selection-end-column="196" />
         </state>
       </provider>
     </entry>
