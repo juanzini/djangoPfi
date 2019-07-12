@@ -1,7 +1,6 @@
 import os
 import dj_database_url
 from decouple import config
-from storages.backends.s3boto3 import S3Boto3StorageFile
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,4 +40,4 @@ DATABASES = {
     )
 }
 
-DEFAULT_FILE_STORAGE = S3Boto3StorageFile(location='media')
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3StorageFile'
