@@ -27,7 +27,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pfiProject/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
+            <state relative-caret-position="1815">
               <caret line="163" selection-start-line="163" selection-end-line="163" />
               <folding>
                 <element signature="e#309#318#0" expanded="true" />
@@ -62,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pfiProject/settings_production.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-45">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="435">
+              <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -146,9 +146,9 @@
       <find>STATICFILES_STORAGE</find>
       <find>DEFAULT_FILE_STORAGE</find>
       <find>boto3</find>
+      <find>plan_de_est</find>
       <find>STATIC_URL</find>
       <find>PRIVATE_ST</find>
-      <find>plan_de_est</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -920,7 +920,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pfiProject/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
+        <state relative-caret-position="1815">
           <caret line="163" selection-start-line="163" selection-end-line="163" />
           <folding>
             <element signature="e#309#318#0" expanded="true" />
@@ -930,8 +930,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pfiProject/settings_production.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="435">
+          <caret line="33" column="65" selection-start-line="33" selection-start-column="65" selection-end-line="33" selection-end-column="65" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
