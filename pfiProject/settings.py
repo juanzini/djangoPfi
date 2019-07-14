@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'private_storage',
     'django_celery_beat',
     'storages',
-    'sendgrid',
 ]
 
 MIDDLEWARE = [
