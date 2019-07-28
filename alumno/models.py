@@ -117,11 +117,10 @@ class SubcomisionPasantiasPPS(models.Model):
 
 
 class Docente(models.Model):
-    numero_registro = models.PositiveIntegerField(primary_key=True)
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=20)
     departamento = models.ForeignKey('Departamento', on_delete=models.DO_NOTHING, null=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(primary_key=True)
     box_oficina = models.CharField(max_length=30)
 
     class Meta:
