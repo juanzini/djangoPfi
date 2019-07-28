@@ -27,6 +27,9 @@
                 {% if postulacion.alumno.plan_de_estudio %}
                     <p><b>Plan de Estudio</b>: <a href="{% url 'descarga-alumno-plan-de-estudio' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
                 {% endif %}
+                {% if postulacion.alumno.plan_de_estudio %}
+                    <p><b>Historia Académica</b>: <a href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><i style="vertical-align: middle;" class="fas fa-file-pdf fa-2x"></i></a></p>
+                {% endif %}
                 {% if postulacion.alumno.comentarios_carrera_visibles %}
                     {% if postulacion.alumno.comentarios_comision_carrera %}
                         <p><b>Comentarios de la Comisi&oacute;n de Carrera</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>

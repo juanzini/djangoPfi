@@ -39,6 +39,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'progreso',
             'descripcion_intereses',
             'descripcion_habilidades',
             'ultima_actualizacion_perfil',
