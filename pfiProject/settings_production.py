@@ -38,6 +38,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_DIRECTORY = '/media/'
 MEDIA_URL = 'https://%s/%s/' % (AWS_PRIVATE_S3_CUSTOM_DOMAIN, MEDIA_DIRECTORY)
 
+AUTO_MIGRATE = True
+
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
