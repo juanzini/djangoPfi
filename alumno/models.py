@@ -53,7 +53,7 @@ class Alumno(models.Model):
     plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,
-                                       content_types='application/pdf', max_file_size=1024 * 1024, null=True, blank=True)
+                                       content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
@@ -66,7 +66,7 @@ class Alumno(models.Model):
     perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024)
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
-                                       MaxValueValidator(100)], default=0)
+                                       MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
 
     class Meta:
@@ -141,6 +141,7 @@ class Pasantia(models.Model):
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
+    numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Pasantia'

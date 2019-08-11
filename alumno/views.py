@@ -950,7 +950,7 @@ class EntrevistaDetailSubcomisionCarreraView(generic.UpdateView):
 
 
 class PasantiaDetailSubcomisionCarreraView(generic.UpdateView):
-    model = Entrevista
+    model = Pasantia
     template_name = 'subcomision_carrera/pasantia_detail.html'
     form_class = PasantiaDetailSubcomisionCarreraForm
 
