@@ -361,8 +361,19 @@ class SubcomisionPasantiasUserEditForm(forms.ModelForm):
 
 class SubcomisionPasantiasEditForm(forms.ModelForm):
     class Meta:
-        model = models.SubcomisionCarrera
+        model = models.SubcomisionPasantiasPPS
         fields = ('docentes',)
+
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',), }
+        js = ('/static/jsAdmin.js',)
+
+    def __init__(self, *args, **kwargs):
+        super(SubcomisionPasantiasEditForm, self).__init__(*args, **kwargs)
+        self.fields['docentes'] = forms.ModelMultipleChoiceField(
+            queryset=models.Docente.objects.filter(departamento=self.instance.departamento).order_by('apellido'),
+            widget=FilteredSelectMultiple("Docentes", is_stacked=False))
+
 
 class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
 

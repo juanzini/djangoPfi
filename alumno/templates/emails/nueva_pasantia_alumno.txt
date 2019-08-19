@@ -1,0 +1,13 @@
+Hola {{user.first_name}} {{user.last_name}}!!
+
+Te escribimos para felicitarte por la pasantia obtenida en {{entrevista.empresa.nombre_fantasia}}!!.
+Nos pone muy contentos ver tu crecimiento y estamos para ayudarte en lo que necesites en esta nueva etapa.
+
+Tene en cuenta que para poder obtener la acreditacion formal de la pasantia en tu carrera deberas realizar los siguientes pasos:
+1-
+2-
+3-
+
+Esperamos que sea todo un éxito!!.
+
+Departamento de Informática, UNSL.

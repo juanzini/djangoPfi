@@ -11,6 +11,10 @@ import re
 class UserManager(UserManager):
     pass
 
+AbstractUser._meta.get_field('email')._unique = True
+AbstractUser._meta.get_field('email').blank = False
+AbstractUser._meta.get_field('email').null = False
+
 class User(AbstractUser):
     AL = 'AL'
     CC = 'CC'
@@ -113,7 +117,7 @@ class SubcomisionPasantiasPPS(models.Model):
         verbose_name_plural = 'SubcomisionesPasantiasPPS'
 
     def __str__(self):
-        return "SubcomisionPasantias " + self.departamento.__str__()
+        return "SubcomisionPasantias - " + self.departamento.__str__()
 
 
 class Docente(models.Model):
@@ -128,7 +132,7 @@ class Docente(models.Model):
         verbose_name_plural = 'Docentes'
 
     def __str__(self):
-        return self.nombre + " " + self.apellido
+        return self.apellido + ", " + self.nombre
 
 
 class Pasantia(models.Model):

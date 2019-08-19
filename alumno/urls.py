@@ -32,7 +32,7 @@ urlpatterns = [
          name='puesto-detail-alumno'),
     path('alumno/postulaciones/nueva', login_required(permissions(views.create_postulacion_alumno, User.AL)),
          name='postulaciones-create-alumno'),
-    path('alumno/postulaciones/eliminar', login_required(permissions(views.delete_postulacion_alumno, User.AL)),
+    path('alumno/postulaciones/eliminar', login_required(permissions(views.delete_postulacion_alumno_view, User.AL)),
          name='postulaciones-delete-alumno'),
     path('alumno/curriculum/<int:pk>', login_required(views.CvDownloadView.as_view()),
          name='descarga-alumno-curriculum'),

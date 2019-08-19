@@ -378,22 +378,27 @@ def create_postulacion_alumno(request):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 @transaction.atomic
-def delete_postulacion_alumno(request):
+def delete_postulacion_alumno_view(request):
     if request.method == 'POST':
         try:
-            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion_id'), alumno=request.user.alumno_user, activa=True)
+            postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion_id'),
+                                                  alumno=request.user.alumno_user,
+                                                  activa=True)
+            delete_postulacion_alumno(postulacion, HttpResponseRedirect(request.META['HTTP_REFERER']))
         except ObjectDoesNotExist:
             return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        if postulacion.entrevista:
-            if postulacion.entrevista.status in ['COA', 'NOA', ]:
-                try:
-                    Pasantia.objects.get(entrevista=postulacion.entrevista)
-                except ObjectDoesNotExist:
-                    cancel_entrevistas_alumno(postulacion.entrevista, None)
-        postulacion.activa = False
-        postulacion.fecha_desestimacion = datetime.now()
-        postulacion.save()
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def delete_postulacion_alumno(postulacion, placeReturn):
+    if postulacion.entrevista:
+        if postulacion.entrevista.status in ['COA', 'NOA', ]:
+            try:
+                Pasantia.objects.get(entrevista=postulacion.entrevista)
+            except ObjectDoesNotExist:
+                cancel_entrevistas_alumno(postulacion.entrevista, None)
+    postulacion.activa = False
+    postulacion.fecha_desestimacion = datetime.now()
+    postulacion.save()
+    return placeReturn
 
 
 class ListEntrevistasAlumnoView(generic.ListView):
@@ -1130,6 +1135,27 @@ class CreatePasantiaView(generic.CreateView):
             "locale": "es",
         })
         return form
+
+    def form_valid(self, form):
+        context = {
+            'user': self.object.entrevista.alumno.user,
+            'entrevista': self.object.entrevista
+        }
+        message = render_to_string(
+            template_name='emails/nueva_pasantia_alumno.txt',
+            context=context
+        )
+        docentes = Docente.objects.filter(comision_docente=self.object.entrevista.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + self.object.entrevista.alumno.user.first_name + "!!", message,
+                             to=[self.object.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        try:
+            email.send()
+        except (SMTPRecipientsRefused, SMTPSenderRefused):
+            None
+        postulaciones = Postulacion.objects.filter(alumno=self.object.entrevista.alumno, activa=True)
+        for postulacion in postulaciones:
+            delete_postulacion_alumno(postulacion, None)
+        return HttpResponseRedirect(self.request.META['HTTP_REFERER'])
 
 
 class AjaxField2View(generic.View):
