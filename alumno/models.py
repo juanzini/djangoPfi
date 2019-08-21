@@ -84,6 +84,7 @@ class Alumno(models.Model):
 class Carrera(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100, primary_key=True)
+    subcomision_carrera = models.OneToOneField('SubcomisionCarrera', on_delete=models.CASCADE, related_name='carrera_comision')
 
     class Meta:
         verbose_name = 'Carrera'
@@ -104,7 +105,7 @@ class SubcomisionCarrera(models.Model):
         verbose_name_plural = 'SubcomisionesCarreras'
 
     def __str__(self):
-        return "SubcomisionCarrera " + self.carrera.__str__()
+        return "Subcomision de Carrera - " + self.carrera.__str__()
 
 
 class SubcomisionPasantiasPPS(models.Model):
@@ -140,7 +141,7 @@ class Pasantia(models.Model):
     fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
-    entrevista = models.ForeignKey('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
+    entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')

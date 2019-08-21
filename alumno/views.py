@@ -390,11 +390,7 @@ def delete_postulacion_alumno_view(request):
 
 def delete_postulacion_alumno(postulacion, placeReturn):
     if postulacion.entrevista:
-        if postulacion.entrevista.status in ['COA', 'NOA', ]:
-            try:
-                Pasantia.objects.get(entrevista=postulacion.entrevista)
-            except ObjectDoesNotExist:
-                cancel_entrevistas_alumno(postulacion.entrevista, None)
+        cancel_entrevistas_alumno(postulacion.entrevista, None)
     postulacion.activa = False
     postulacion.fecha_desestimacion = datetime.now()
     postulacion.save()
@@ -460,23 +456,28 @@ def cancel_entrevistas_alumno_view(request):
     return cancel_entrevistas_alumno(entrevista, HttpResponseRedirect(request.META['HTTP_REFERER']))
 
 def cancel_entrevistas_alumno(entrevista, placeReturn):
-    entrevista.status = 'CAA'
-    entrevista.save()
-    context = {
-        'entrevista': entrevista
-    }
-    message = render_to_string(
-        template_name='emails/cancelacion_entrevista_empresa.txt',
-        context=context
-    )
-    docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
-    email = EmailMessage(entrevista.empresa.nombre_fantasia + " cancelaron una entrevista.", message,
-                         to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
+    if entrevista.status not in ['COA', 'NOA', ]:
+        return placeReturn
     try:
-        email.send()
-    except (SMTPRecipientsRefused, SMTPSenderRefused):
-        None
-    return placeReturn
+        Pasantia.objects.get(entrevista=entrevista)
+    except ObjectDoesNotExist:
+        entrevista.status = 'CAA'
+        entrevista.save()
+        context = {
+            'entrevista': entrevista
+        }
+        message = render_to_string(
+            template_name='emails/cancelacion_entrevista_empresa.txt',
+            context=context
+        )
+        docentes = Docente.objects.filter(comision_docente=entrevista.alumno.carrera.carrera_comision)
+        email = EmailMessage(entrevista.empresa.nombre_fantasia + " cancelaron una entrevista.", message,
+                             to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
+        try:
+            email.send()
+        except (SMTPRecipientsRefused, SMTPSenderRefused):
+            None
+        return placeReturn
 
 @transaction.atomic
 def confirm_entrevistas_alumno_view(request):
@@ -1138,25 +1139,33 @@ class CreatePasantiaView(generic.CreateView):
 
     def form_valid(self, form):
         context = {
-            'user': self.object.entrevista.alumno.user,
-            'entrevista': self.object.entrevista
+            'user': form.instance.entrevista.alumno.user,
+            'entrevista': form.instance.entrevista
         }
         message = render_to_string(
             template_name='emails/nueva_pasantia_alumno.txt',
             context=context
         )
-        docentes = Docente.objects.filter(comision_docente=self.object.entrevista.alumno.carrera.carrera_comision)
-        email = EmailMessage('Felicitaciones ' + self.object.entrevista.alumno.user.first_name + "!!", message,
-                             to=[self.object.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
+                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
-        postulaciones = Postulacion.objects.filter(alumno=self.object.entrevista.alumno, activa=True)
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
         for postulacion in postulaciones:
             delete_postulacion_alumno(postulacion, None)
-        return HttpResponseRedirect(self.request.META['HTTP_REFERER'])
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        for entrevista in entrevistas:
+            cancel_entrevistas_alumno(entrevista, None)
+        return super().form_valid(form)
 
+@transaction.atomic
+def delete_pasantia(request, *args, **kwargs):
+    get_object_or_404(Pasantia, pk=kwargs.get('pk'), entrevista__alumno__carrera__departamento=request.user.pps_user.departamento)
+    Pasantia.objects.get(pk=kwargs.get('pk')).delete()
+    return redirect('pasantias-comision-pasantias')
 
 class AjaxField2View(generic.View):
 

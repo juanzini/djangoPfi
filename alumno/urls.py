@@ -156,6 +156,9 @@ urlpatterns = [
     path('comision_pasantias/pasantias/nueva',
          login_required(permissions(views.CreatePasantiaView.as_view(), User.CP)),
          name='nueva-pasantia-comision-pasantias'),
+    path('comision_pasantias/pasantias/eliminar/<int:pk>',
+         login_required(permissions(views.delete_pasantia, User.CP)),
+         name='eliminar-pasantia-comision-pasantias'),
 
     path('comision_pasantias/pasantias/nueva/tutores',
          login_required(permissions(views.AjaxField2View.as_view(), User.CP)),

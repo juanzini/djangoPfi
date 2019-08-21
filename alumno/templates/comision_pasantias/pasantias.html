@@ -34,7 +34,9 @@
                                 {{ pasantia.fecha_fin }}
                             </td>
                             <td>
-                                {{ pasantia.tutor_docente }}
+                                {% if pasantia.tutor_docente %}
+                                    {{ pasantia.tutor_docente }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

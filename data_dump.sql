@@ -16,12 +16,12 @@ INSERT INTO alumno_departamento VALUES ('Departamento de Informática');
 -- Data for Name: alumno_carrera; Type: TABLE DATA; Schema:  Owner: postgres
 --
 
-INSERT INTO alumno_carrera VALUES ('Ingeniería en Informática', 'Departamento de Informática');
-INSERT INTO alumno_carrera VALUES ('Tecnicatura Universitaria en Redes de Computadoras', 'Departamento de Informática');
-INSERT INTO alumno_carrera VALUES ('Tecnicatura Universitaria en Web', 'Departamento de Informática');
-INSERT INTO alumno_carrera VALUES ('Ingeniería en Computación', 'Departamento de Informática');
-INSERT INTO alumno_carrera VALUES ('Licenciatura en Ciencias de la Computación', 'Departamento de Informática');
-INSERT INTO alumno_carrera VALUES ('Profesorado en Ciencias de la Computación', 'Departamento de Informática');
+INSERT INTO alumno_carrera VALUES ('Ingeniería en Informática', 'Departamento de Informática', NULL);
+INSERT INTO alumno_carrera VALUES ('Tecnicatura Universitaria en Redes de Computadoras', 'Departamento de Informática', NULL);
+INSERT INTO alumno_carrera VALUES ('Tecnicatura Universitaria en Web', 'Departamento de Informática', NULL);
+INSERT INTO alumno_carrera VALUES ('Ingeniería en Computación', 'Departamento de Informática', NULL);
+INSERT INTO alumno_carrera VALUES ('Licenciatura en Ciencias de la Computación', 'Departamento de Informática', NULL);
+INSERT INTO alumno_carrera VALUES ('Profesorado en Ciencias de la Computación', 'Departamento de Informática', NULL);
 
 
 --
@@ -33,7 +33,7 @@ INSERT INTO alumno_user VALUES (32, 'pbkdf2_sha256$150000$EqNh406UkXv6$opLGVpiN/
 INSERT INTO alumno_user VALUES (2, 'pbkdf2_sha256$150000$JZdgq6EU97bM$9XYErbNLCEEsK+Th/sTvIwmchy75+ToivymCON4tRJM=', '2019-08-04 18:30:41.039283-03', 0, 'gaston-zini', 'Gaston', 'Zini', 'gustotongas@hotmail.com', 0, 1, '2019-08-04 18:26:17.469323-03', 'AL');
 INSERT INTO alumno_user VALUES (3, 'pbkdf2_sha256$150000$TItmkh76fRfC$ZsSv+p02KvcPnZ37x7+x+5KiWgewk2XcAGIpnGW9mFk=', NULL, 0, 'sub-tec-red-com', 'SubComision de Tecnicatura', 'Redes de Computadoras', 'sub1@asd.com', 0, 1, '2019-08-04 18:41:08.393093-03', 'CC');
 INSERT INTO alumno_user VALUES (4, 'pbkdf2_sha256$150000$DVYUbWQPXO7v$zPVshYqDUd9jCymLvAQONCmYTDzlCYO3jeEwWhHeN6g=', NULL, 0, 'com-pas', 'Comisión de Pasantías del', 'Departamento de Informática', 'com@asd.com', 0, 1, '2019-08-04 18:44:31.409063-03', 'CP');
-INSERT INTO alumno_user VALUES (5, 'pbkdf2_sha256$150000$RQthrJ8fA0hZ$16RqJXpLvrdP0RbiMB8kbAP5kSKz1SsSEI67EGQak1Y=', NULL, 0, 'mercado-libre', 'Mercadolibre', 'S.R.L', 'empresa1@asd.com', 0, 1, '2019-08-04 18:47:59.262606-03', 'EM');
+INSERT INTO alumno_user VALUES (5, 'pbkdf2_sha256$150000$RQthrJ8fA0hZ$16RqJXpLvrdP0RbiMB8kbAP5kSKz1SsSEI67EGQak1Y=', NULL, 0, 'mercado-libre', 'Mercadolibre', 'S.R.L', 'empresa14@asd.com', 0, 1, '2019-08-04 18:47:59.262606-03', 'EM');
 INSERT INTO alumno_user VALUES (33, 'pbkdf2_sha256$150000$FyUuDWrhxBcw$JI9eUGcqgb5Q+F41Ofc3vUYLWHNeJ8PPqQZ6v3nNCcg=', NULL, 0, 'carlos-dante-scala-necco', 'Carlos Dante', 'Scala Necco', 'carlos-dante-scala-necco@asd.com', 0, 1, '2019-08-11 20:54:45.672803-03', 'AL');
 INSERT INTO alumno_user VALUES (34, 'pbkdf2_sha256$150000$lySzSiquVctf$HaI+ZQKOGGGUFNCNxTPBQUhwEio37nARzGfuHQncwUo=', NULL, 0, 'leandro-troncoso', 'Leandro', 'Troncoso', 'leandro-troncoso@asd.com', 0, 1, '2019-08-11 20:55:55.371717-03', 'AL');
 INSERT INTO alumno_user VALUES (6, 'pbkdf2_sha256$150000$oeWm3FiiXnec$tM6NIRjwm0P2JTYQEm8X/PNTehoAvONICXafa1cfQ3w=', NULL, 0, 'pablo-martin-abaca', 'Pablo Martin', 'Abaca', 'pablomartinabaca@asd.com', 0, 1, '2019-08-10 22:47:35.073564-03', 'AL');
