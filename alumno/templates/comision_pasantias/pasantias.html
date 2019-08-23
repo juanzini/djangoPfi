@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <div><h2>Pasantias
-                <a href="{% url 'nueva-pasantia-comision-pasantias' %}">
+                <a href="{% url 'nueva-pasantia-comision-pasantias' %}?next={{ request.path }}">
                     <button style="display: inline-block; float: right;" type="submit" class="btn btn-success btn-md">Nueva Pasant&iacute;a</button>
                 </a>
             </h2></div>
@@ -22,7 +22,7 @@
                     {% for pasantia in pasantia_list %}
                         <tr data-link="row" class="rowlink">
                             <td>
-                                <a href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}">{{ pasantia.entrevista.alumno }}</a>
+                                <a href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}?next={{ request.path }}">{{ pasantia.entrevista.alumno }}</a>
                             </td>
                             <td>
                                 {{ pasantia.entrevista.empresa }}

@@ -447,8 +447,12 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super(PasantiaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
-        self.fields['tutor_empresa'].disabled = True
+        self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
+            departamento=user.pps_user.departamento)
+        self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
+            empresa=self.instance.entrevista.empresa)
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
 
 
@@ -459,6 +463,7 @@ class PasantiaCreateForm(forms.ModelForm):
             'fecha_inicio',
             'fecha_fin',
             'entrevista',
+            'tutor_docente',
             'tutor_empresa',
             'informe',
             'numero_legajo',
@@ -475,7 +480,8 @@ class PasantiaCreateForm(forms.ModelForm):
             })
         }
 
-        def __init__(self, *args, **kwargs):
-            super(PasantiaCreateForm, self).__init__(*args, **kwargs)
-            self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
-                empresa=self.instance.entrevista.empresa)
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(PasantiaCreateForm, self).__init__(*args, **kwargs)
+        self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
+            departamento=user.pps_user.departamento)

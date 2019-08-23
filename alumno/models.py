@@ -239,6 +239,9 @@ class Empresa(models.Model):
     def get_cantidad_de_pasantes(self):
         return Pasantia.objects.filter(entrevista__empresa=self).count()
 
+    def get_cantidad_de_postulados(self):
+        return Postulacion.objects.filter(puesto__empresa=self, activa=True).count()
+
     def __str__(self):
         return self.user.__str__()
 

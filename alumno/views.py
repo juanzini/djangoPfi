@@ -1054,7 +1054,7 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        return Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento)
+        return Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento, activa=True)
 
 
 class ListAlumnosComisionPasantiasView(generic.ListView):
@@ -1115,6 +1115,11 @@ class PasantiaDetailComisionPasantiasView(generic.UpdateView):
     def get_object(self):
         return Pasantia.objects.get(pk=self.kwargs["pk"])
 
+    def get_form_kwargs(self):
+        kwargs = super(PasantiaDetailComisionPasantiasView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user  # pass the 'user' in kwargs
+        return kwargs
+
     def get_success_url(self):
         return self.request.GET.get('next', '../../pasantias')
 
@@ -1124,6 +1129,11 @@ class CreatePasantiaView(generic.CreateView):
     context_object_name = 'pasantia'
     template_name = 'comision_pasantias/pasantia_create.html'
     success_url = '../pasantias'
+
+    def get_form_kwargs(self):
+        kwargs = super(CreatePasantiaView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user  # pass the 'user' in kwargs
+        return kwargs
 
     def get_form(self):
         form = super(CreatePasantiaView, self).get_form(PasantiaCreateForm)
@@ -1136,6 +1146,9 @@ class CreatePasantiaView(generic.CreateView):
             "locale": "es",
         })
         return form
+
+    def get_success_url(self):
+        return self.request.GET.get('next', '')
 
     def form_valid(self, form):
         context = {
@@ -1165,7 +1178,7 @@ class CreatePasantiaView(generic.CreateView):
 def delete_pasantia(request, *args, **kwargs):
     get_object_or_404(Pasantia, pk=kwargs.get('pk'), entrevista__alumno__carrera__departamento=request.user.pps_user.departamento)
     Pasantia.objects.get(pk=kwargs.get('pk')).delete()
-    return redirect('pasantias-comision-pasantias')
+    return HttpResponseRedirect(request.GET.get('next', ''))
 
 class AjaxField2View(generic.View):
 

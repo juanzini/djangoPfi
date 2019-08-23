@@ -11,8 +11,9 @@
                 {% bootstrap_form form %}
                 {% buttons %}
                     <br>
-                <button type="submit" class="btn btn-success btn-lg">Guardar</button>
-                <a href="{% url 'eliminar-pasantia-comision-pasantias' pasantia.pk %}"><button style="float: right;" class="btn btn-outline-danger btn-lg" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta pasantia?\nLa informacion no se podra recuperar!');">Eliminar</button></a>
+                <button type="submit" class="btn btn-success btn-lg" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
+                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: left;">Atr&aacute;s</button></a>
+                <a href="{% url 'eliminar-pasantia-comision-pasantias' pasantia.pk %}?next={{ request.GET.next }}"><button style="float: right;" class="btn btn-outline-danger btn-lg" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta pasantia?\nLa informacion no se podra recuperar!');">Eliminar</button></a>
                 {% endbuttons %}
             </form>
         </div>

@@ -38,9 +38,7 @@
                     $('#id_tutor_empresa').append($('<option></option>').attr('value', obj.pk).text(obj.fields.nombre + ' ' + obj.fields.apellido ));
                 });
             },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
-            }
+            error: function(jqXHR, textStatus, errorThrown) {}
         });
 
     });

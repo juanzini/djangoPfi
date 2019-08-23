@@ -3,13 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alumno/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/alumnos.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/alumnos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/empresas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/entrevistas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_create.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_create.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantias.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantias.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alumno/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/templates/comision_pasantias/postulaciones.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/alumno/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/alumno/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_dump.sql" beforeDir="false" afterPath="$PROJECT_DIR$/data_dump.sql" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -170,51 +173,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1155</line>
-          <option name="timeStamp" value="87" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1156</line>
-          <option name="timeStamp" value="88" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1157</line>
-          <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1161</line>
-          <option name="timeStamp" value="90" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1140</line>
-          <option name="timeStamp" value="91" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1144</line>
-          <option name="timeStamp" value="92" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1141</line>
-          <option name="timeStamp" value="94" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1149</line>
-          <option name="timeStamp" value="95" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1148</line>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
           <line>393</line>
           <option name="timeStamp" value="97" />
         </line-breakpoint>
@@ -222,31 +180,6 @@
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
           <line>458</line>
           <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1158</line>
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1159</line>
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1160</line>
-          <option name="timeStamp" value="101" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1165</line>
-          <option name="timeStamp" value="103" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1166</line>
-          <option name="timeStamp" value="104" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

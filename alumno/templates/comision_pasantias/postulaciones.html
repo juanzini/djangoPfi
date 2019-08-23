@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Postulaciones</h2>
+            <h2>Postulaciones Activas</h2>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -12,37 +12,30 @@
                         <th>Empresa</th>
                         <th>Fecha de Postulación</th>
                         <th>Entrevista Asignada</th>
-                        <th>Confirmación Asistencia</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ postulacion.puesto }}</a>
+                                <a href="{% url 'detail-alumno' %}">{{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}</a>
                             </td>
                             <td>
-                                {{ postulacion.puesto.empresa }}
+                                {{ postulacion.puesto.get_nombre_display }}
+                            </td>
+                            <td>
+                                {{ postulacion.puesto.empresa.nombre_fantasia }}
                             </td>
                             <td>
                                 {{ postulacion.fecha }}
                             </td>
                             <td>
                                 {% if postulacion.entrevista %}
-                                {{ postulacion.entrevista.fecha }}
+                                    Si
                                 {% else %}
-                                No Posee
+                                    No Posee
                                 {% endif %}
                             </td>
-                            {% if postulacion.entrevista %}
-                            <td>
-                                {% if postulacion.entrevista.confirmada_alumno %}
-                                Botón desconfirmar
-                                {% else %}
-                                Botón confirmar
-                                {% endif %}
-                            </td>
-                            {% endif %}
                         </tr>
                     {% endfor %}
                 </tbody>
