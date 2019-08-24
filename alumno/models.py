@@ -6,6 +6,7 @@ from pytz import UTC
 from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Count
 import re
 
 class UserManager(UserManager):
@@ -83,8 +84,8 @@ class Alumno(models.Model):
 
 class Carrera(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=100, primary_key=True)
-    subcomision_carrera = models.OneToOneField('SubcomisionCarrera', on_delete=models.CASCADE, related_name='carrera_comision')
+    nombre = models.CharField(max_length=100)
+    activa = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Carrera'
@@ -93,6 +94,15 @@ class Carrera(models.Model):
 
     def __str__(self):
         return self.nombre.__str__()
+
+    def get_cantidad_de_alumnos(self):
+        return Alumno.objects.filter(carrera=self).count()
+
+    def get_cantidad_de_pasantias(self):
+        return Pasantia.objects.filter(entrevista__alumno__carrera=self).count()
+
+    def get_cantidad_de_docentes_en_subcomision(self):
+        return SubcomisionCarrera.objects.annotate(total=Count('docentes')).get(carrera=self).total
 
 
 class SubcomisionCarrera(models.Model):
@@ -302,7 +312,7 @@ class Postulacion(models.Model):
 
 
 class Departamento(models.Model):
-    nombre = models.CharField(max_length=50, primary_key=True)
+    nombre = models.CharField(max_length=50, unique=True)
 
     class Meta:
         verbose_name = 'Departamento'

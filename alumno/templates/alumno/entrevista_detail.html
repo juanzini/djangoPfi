@@ -35,7 +35,7 @@
                                 <form style="display: inline-flex" class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-confirm' %}">
                                     {% csrf_token %}
                                     <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                    <button style="display: in-block" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" class="btn btn-outline-success btn-sm" type="submit">Confirmar Asistencia</button>
+                                    <button style="display: in-block" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" class="btn btn-outline-primary btn-sm" type="submit">Confirmar Asistencia</button>
                                 </form>
                                 <form style="display: inline-flex" class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
                                     {% csrf_token %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Carreras
+                <a href="{% url 'nueva-carrera-comision-pasantias' %}">
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Carrera</button>
+                </a></h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad de alumnos</th>
+                        <th>Cantidad de docentes en la subcomisi&oacute;n</th>
+                        <th>Cantidad de pasant&iacute;as</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for carrera in carrera_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'carrera-detail-comision-pasantias' carrera.pk %}">{{ carrera.nombre }}</a>
+                            </td>
+                            <td style="text-align: center;">
+                                {{ carrera.get_cantidad_de_alumnos }}
+                            </td>
+                            <td style="text-align: center;">
+                                {{ carrera.get_cantidad_de_docentes_en_subcomision }}
+                            </td>
+                            <td style="text-align: center;">
+                                {{ carrera.get_cantidad_de_pasantias }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination carrera_list size="small" pages_to_show=5 %}</div>
+        </div>
+    </div>
+{% endblock %}

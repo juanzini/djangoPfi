@@ -2,14 +2,20 @@
 {% load bootstrap4 %}
 
 {% block content %}
+    {{ subcomision_carrera_form.media }}
     <div class="row">
         <div class="col">
-            <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/empresa/pasantias"> Pasant&iacute;as </a></h6>
-            <h2>Pasant&iacute;a de {{ pasantia.entrevista.alumno.user.first_name }} {{pasantia.entrevista.alumno.user.last_name}}</h2>
+            <h2>Nueva Carrera</h2>
             <hr>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
+                {% bootstrap_form carrera_form %}
+                {% bootstrap_form user_form %}
+                <div class="row">
+                    <div class="col">
+                        {% bootstrap_form subcomision_carrera_form show_label=False %}
+                    </div>
+                </div>
                 {% buttons %}
                     <br>
                     <button type="submit" class="btn btn-primary btn-lg">Guardar</button>

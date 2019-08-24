@@ -122,8 +122,6 @@ urlpatterns = [
 
     # -------------------COMISION PASANTIA--------------------
 
-    path('comision_pasantias/index', login_required(permissions(views.IndexComisionPsantiasView.as_view(), User.CP)),
-         name='index-comision-pasantias'),
     path('comision_pasantias/edit', login_required(permissions(views.edit_comision_pasantias, User.CP)),
          name='edit-comision-pasantias'),
     path('comision_pasantias/entrevistas',
@@ -159,7 +157,18 @@ urlpatterns = [
     path('comision_pasantias/pasantias/eliminar/<int:pk>',
          login_required(permissions(views.delete_pasantia, User.CP)),
          name='eliminar-pasantia-comision-pasantias'),
-
+    path('comision_pasantias/carreras',
+         login_required(permissions(views.ListCarrerasComisionPasantiasView.as_view(), User.CP)),
+         name='carreras-comision-pasantias'),
+    path('comision_pasantias/carreras/<int:pk>/',
+         login_required(permissions(views.edit_carrera, User.CP)),
+         name='carrera-detail-comision-pasantias'),
+    path('comision_pasantias/carreras/nueva/',
+         login_required(permissions(views.create_carrera, User.CP)),
+         name='nueva-carrera-comision-pasantias'),
+    path('comision_pasantias/carreras/eliminar/<int:pk>',
+         login_required(permissions(views.delete_carrera, User.CP)),
+         name='eliminar-carrera-comision-pasantias'),
     path('comision_pasantias/pasantias/nueva/tutores',
          login_required(permissions(views.AjaxField2View.as_view(), User.CP)),
          name='ajax-get-tutor-empresa'),

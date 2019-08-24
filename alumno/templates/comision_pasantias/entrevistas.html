@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load bootstrap4 %}
 {% block content %}
     <div class="row">
         <div class="col">
@@ -68,6 +68,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination entrevista_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}

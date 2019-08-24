@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.admin import UserAdmin
 from bootstrap_datepicker_plus import DateTimePickerInput
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 class AlumnoForm(forms.ModelForm):
 
@@ -208,6 +209,11 @@ class AlumnoCreateForm(forms.ModelForm):
             'descripcion_habilidades',
         )
 
+    def __init__(self, *args, **kwargs):
+        super(AlumnoCreateForm, self).__init__(*args, **kwargs)
+        self.fields['carrera'].required = True
+        self.fields['carrera'].queryset = models.Carrera.objects.filter(activa=True)
+
 class UserCreateForm(RegistrationForm):
     class Meta(RegistrationForm):
         model = models.User
@@ -225,10 +231,10 @@ class UserCreateForm(RegistrationForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
 
-class AlumnoUserEditForm(forms.ModelForm):
+class UserEditForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('first_name', 'last_name', 'username', 'email')
 
 class AlumnoEditForm(forms.ModelForm):
     class Meta:
@@ -258,7 +264,6 @@ class SubcomisionCarreraUserEditForm(forms.ModelForm):
         self.fields['email'].disabled = True
         self.fields['username'].disabled = True
 
-from django.contrib.admin.widgets import FilteredSelectMultiple
 class SubcomisionCarreraEditForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionCarrera
@@ -271,6 +276,20 @@ class SubcomisionCarreraEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraEditForm, self).__init__(*args, **kwargs)
         self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=self.instance.carrera.departamento), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
+
+class SubcomisionCarreraCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.SubcomisionCarrera
+        fields = ('docentes',)
+
+    class Media:
+        css = {'all': ('/static/admin/css/widgets.css',), }
+        js = ('/static/jsAdmin.js',)
+
+    def __init__(self, user, *args, **kwargs):
+        super(SubcomisionCarreraCreateForm, self).__init__(*args, **kwargs)
+        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=user.pps_user.departamento), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
+
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
@@ -359,7 +378,7 @@ class SubcomisionPasantiasUserEditForm(forms.ModelForm):
         self.fields['email'].disable = True
         self.fields['username'].required = True
 
-class SubcomisionPasantiasEditForm(forms.ModelForm):
+class SubcomisionPasantiasForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionPasantiasPPS
         fields = ('docentes',)
@@ -369,7 +388,7 @@ class SubcomisionPasantiasEditForm(forms.ModelForm):
         js = ('/static/jsAdmin.js',)
 
     def __init__(self, *args, **kwargs):
-        super(SubcomisionPasantiasEditForm, self).__init__(*args, **kwargs)
+        super(SubcomisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['docentes'] = forms.ModelMultipleChoiceField(
             queryset=models.Docente.objects.filter(departamento=self.instance.departamento).order_by('apellido'),
             widget=FilteredSelectMultiple("Docentes", is_stacked=False))
@@ -382,6 +401,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'progreso',
             'perfil',
             'curriculum',
             'plan_de_estudio',
@@ -421,6 +441,15 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
         self.fields['empresa'].widget.attrs['readonly'] = True
         self.fields['resultado'].widget.attrs['readonly'] = True
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+
+class CarreraCreateComisionPasantiasForm(forms.ModelForm):
+    class Meta:
+        model = models.Carrera
+        fields = ('nombre',)
+
+    def __init__(self, *args, **kwargs):
+        super(CarreraCreateComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['nombre'].required = True
 
 class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
     class Meta():

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-
+{% load bootstrap4 %}
 {% block content %}
     <div class="row">
         <div class="col">
             <div><h2>Pasantias
                 <a href="{% url 'nueva-pasantia-comision-pasantias' %}?next={{ request.path }}">
-                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-success btn-md">Nueva Pasant&iacute;a</button>
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Pasant&iacute;a</button>
                 </a>
             </h2></div>
             <table class="table table-sm table-hover">
@@ -42,6 +42,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination pasantia_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}

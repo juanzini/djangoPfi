@@ -12,7 +12,7 @@
       </li>
       <li class="nav-item dropdown {% if request.resolver_match.url_name == 'puestos-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'entrevistas-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'alumnos-comision-pasantias' or request.resolver_match.url_name == 'empresas-comision-pasantias' or request.resolver_match.url_name == 'pasantias-comision-pasantias' %}active{% endif %}">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Acciones
+            Ver
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{% url 'pasantias-comision-pasantias' %}">Pasant&iacute;as</a>
@@ -22,13 +22,15 @@
               <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'alumnos-comision-pasantias' %}">Alumnos</a>
                 <a class="dropdown-item" href="{% url 'empresas-comision-pasantias' %}">Empresas</a>
+              <div class="dropdown-divider"></div>
+                 <a class="dropdown-item" href="{% url 'carreras-comision-pasantias' %}">Carreras</a>
           </div>
       </li>
 
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'logout' %}">
       {% csrf_token %}
-      <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&iacute;on?');" class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerrar Sesi&oacute;n</button>
+      <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&iacute;on?');" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Cerrar Sesi&oacute;n</button>
     </form>
   </div>
     </div>
