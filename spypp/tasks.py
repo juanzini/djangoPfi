@@ -6,7 +6,7 @@ from django.core.mail import EmailMessage
 from django.core.serializers import serialize
 from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 
-from alumno.models import Postulacion, Docente
+from spypp.models import Postulacion, Docente
 
 TIMEOUTDAYS = 60
 

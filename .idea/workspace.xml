@@ -3,6 +3,114 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/middlewares.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/static/color-scheme.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/static/jsAdmin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/tasks.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/contacto.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/edit_obligado.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/empresas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/entrevista_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/entrevistas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/postulaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/alumno/puesto_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/alumno_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/alumnos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/carrera_create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/carrera_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/carreras.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/empresas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/entrevista_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/entrevistas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantia_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/pasantias.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/postulaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/comision_pasantias/puestos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/activation_complete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/activation_email_body.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/activation_email_subject.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/activation_failed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/registration_complete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/django_registration/registration_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/aceptacion_pasantia_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/cancelacion_entrevista_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/cancelacion_entrevista_empresa.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/confirmacion_entrevista_empresa.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/desestimacion_postulacion_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/nueva_entrevista_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/nueva_pasantia_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/nueva_pasantia_empresa.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/postulacion_por_vencer.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/emails/reachazo_pasantia_alumno.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/alumno_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/contacto.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/entrevista_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/entrevista_nueva.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/entrevista_nueva_existente.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/entrevistas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/pasantia_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/pasantias.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/postulaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/puesto_create.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/puesto_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/empresa/puestos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/navbar/alumno.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/navbar/empresa.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/navbar/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/navbar/subcomisionCarrera.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/navbar/subcomisionPasantiasPPS.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/logged_out.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_change_done.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_change_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset_complete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset_confirm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset_done.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset_email.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/registration/password_reset_subject.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/alumno_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/alumnos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/empresa_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/empresas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/entrevista_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/entrevistas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/pasantia_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/pasantias.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/postulaciones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/puesto_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templates/subcomision_carrera/puestos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templatetags/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/templatetags/tags.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/alumno/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ultimo_dump.sql" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -173,52 +281,52 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1206</line>
+          <line>1208</line>
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1220</line>
+          <line>1222</line>
           <option name="timeStamp" value="126" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1223</line>
+          <line>1225</line>
           <option name="timeStamp" value="127" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1203</line>
+          <line>1205</line>
           <option name="timeStamp" value="128" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1202</line>
+          <line>1204</line>
           <option name="timeStamp" value="131" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1231</line>
+          <line>1233</line>
           <option name="timeStamp" value="132" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1235</line>
+          <line>1237</line>
           <option name="timeStamp" value="133" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1217</line>
+          <line>1219</line>
           <option name="timeStamp" value="140" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1215</line>
+          <line>1217</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
-          <line>1216</line>
+          <line>1218</line>
           <option name="timeStamp" value="146" />
         </line-breakpoint>
       </breakpoints>

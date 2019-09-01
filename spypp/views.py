@@ -1172,6 +1172,8 @@ class CreatePasantiaView(generic.CreateView):
         entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
         for entrevista in entrevistas:
             cancel_entrevistas_alumno(entrevista, None)
+        form.instance.entrevista.pasantia_aceptada = True
+        form.instance.entrevista.save()
         return super().form_valid(form)
 
 @transaction.atomic

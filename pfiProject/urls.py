@@ -24,5 +24,5 @@ import private_storage.urls
 urlpatterns = [
     path('private-media/', include(private_storage.urls)),
     path('admin/', admin.site.urls),
-    path('', include('alumno.urls')),
+    path('', include('spypp.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

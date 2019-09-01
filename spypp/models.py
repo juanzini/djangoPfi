@@ -52,7 +52,6 @@ class Alumno(models.Model):
         return 'perfiles/{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
     numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
-    carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
     curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
@@ -73,6 +72,7 @@ class Alumno(models.Model):
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
+    carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = 'Alumno'

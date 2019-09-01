@@ -32,7 +32,7 @@ PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 # Application definition
 
 INSTALLED_APPS = [
-    'alumno.apps.AlumnoConfig',
+    'spypp.apps.AlumnoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,9 +57,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'alumno.middlewares.LocaleMiddleware',
-    'alumno.middlewares.LastUserActivityMiddleware',
-    'alumno.middlewares.LastUserUpdateProfile'
+    'spypp.middlewares.LocaleMiddleware',
+    'spypp.middlewares.LastUserActivityMiddleware',
+    'spypp.middlewares.LastUserUpdateProfile'
 ]
 
 LAST_ACTIVITY_INTERVAL_SECS = 300
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL = 'alumno.User'
+AUTH_USER_MODEL = 'spypp.User'
 REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
 ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de un día; usted puede, por supuesto, usar un valor diferente.
 REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
