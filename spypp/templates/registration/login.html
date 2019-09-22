@@ -15,10 +15,10 @@
             {% bootstrap_form form %}
             {% buttons %}
                 <br>
-                <button type="submit" class="btn btn-primary btn-md">Iniciar</button>
+                <button type="submit" class="btn btn-primary btn-md">Iniciar Sesi&oacute;n</button>
+                <a href="{% url 'create-alumno' %}"><button class="btn btn-outline-success btn-md" type="button" style="float: right;">Registrarme</button></a>
             {% endbuttons %}
         </form>
-        <a href="{% url 'create-alumno' %}"> <button type="submit" class="btn btn-primary btn-md">Registrarme</button> </a>
     </div>
 </div>
 {% endblock %}
