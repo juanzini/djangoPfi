@@ -433,7 +433,7 @@ class ListContactoAlumnoView(generic.ListView):
             subcomision = SubcomisionCarrera.objects.get(carrera=carrera)
         except ObjectDoesNotExist:
             return None
-        return getPage(self.request, subcomision.docente.all(), 20)
+        return getPage(self.request, subcomision.docentes.all(), 20)
 
 class DetailEntrevistaAlumnoView(generic.UpdateView):
     model = Entrevista
@@ -542,7 +542,7 @@ class ListEntrevistasEmpresaView(generic.ListView):
                 default=Value(1),
                 output_field=IntegerField()))
         if len(entrevistas) == 0:
-            return None
+            entrevistas = []
         order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
         entrevistas_sortered = sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
         return getPage(self.request, entrevistas_sortered, 20)

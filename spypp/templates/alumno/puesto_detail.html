@@ -44,7 +44,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="puesto_id" value="{{ puesto.pk }}">
                                 <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?');" class="btn btn-primary btn-md" type="submit">Postularme</button>
-                            <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: right;">Atr&aacute;s</button></a>
+                            <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
                             </form>
                         {% endif %}
                     {% else %}

@@ -18,9 +18,9 @@
                 </div>
                 {% buttons %}
                     <br>
-                    <button type="submit" class="btn btn-primary btn-lg" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
-                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-lg" type="button" style="float: left;">Atr&aacute;s</button></a>
-                    <a href="{% url 'eliminar-carrera-comision-pasantias' carrera_form.instance.pk %}?next=/comision_pasantias/carreras"><button style="float: right;" class="btn btn-outline-danger btn-lg" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta carrera?');">Eliminar</button></a>
+                    <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
+                    <a href="{% url 'eliminar-carrera-comision-pasantias' carrera_form.instance.pk %}?next=/comision_pasantias/carreras"><button style="float: right;" class="btn btn-outline-danger btn-md" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta carrera?');">Eliminar</button></a>
                 {% endbuttons %}
             </form>
         </div>

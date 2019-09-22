@@ -7,8 +7,8 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
                             <th>Apellido</th>
+                            <th>Nombre</th>
                             <th>Mail</th>
                             <th>Box</th>
                         </tr>
@@ -17,10 +17,10 @@
                         {% if docente_list %}
                             {% for docente in docente_list %}
                                 <tr>
-                                    <td>{{ docente.nombre }}</td>
                                     <td>{{ docente.apellido }}</td>
-                                    <td><a href="mailto:{{docente.mail}}" mail>
-                                        <i class="fas fa-envelope"></i></a> {{ docente.mail }}</td>
+                                    <td>{{ docente.nombre }}</td>
+                                    <td><a href="mailto:{{docente.email}}" mail>
+                                        <i class="fas fa-envelope"></i></a> {{ docente.email }}</td>
                                     <td>{{ docente.box_oficina }}</td>
                                 </tr>
                             {% endfor %}
