@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Tutores
+                <a href="{% url 'nuevo-tutor-empresa' %}?next={{ request.path }}">
+                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nuevo Tutor</button>
+                </a>
+            </h2>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tutor in tutores_list %}
+                        <tr data-link="row" class="rowlink">
+                            <td>
+                                <a href="{% url 'tutores-detail-empresa' tutor.pk %}">{{ tutor.apellido }}</a>
+                            </td>
+                            <td>
+                                {{ tutor.nombre }}
+                            </td>
+                            <td>
+                                {{ tutor.cargo }}
+                            </td>
+                            <td>
+                                {{ tutor.mail }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination tutores_list size="small" pages_to_show=5 %}</div>
+        </div>
+    </div>
+{% endblock %}

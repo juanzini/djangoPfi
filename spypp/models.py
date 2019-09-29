@@ -150,7 +150,7 @@ class Pasantia(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
-    tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.DO_NOTHING, null=True, blank=True)
+    tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.SET_NULL, null=True, blank=True)
     entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)

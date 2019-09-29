@@ -166,6 +166,15 @@ class PasantiaDetailEmpresaForm(forms.ModelForm):
         self.fields['tutor_docente'].disabled = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
+class TutorEmpresaDetailEmpresaForm(forms.ModelForm):
+    class Meta():
+        model = models.TutorEmpresa
+        fields = (
+            'apellido',
+            'nombre',
+            'cargo',
+            'mail',
+        )
 
 class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
     class Meta():

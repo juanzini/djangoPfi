@@ -3,14 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/registration/logged_out.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/registration/logged_out.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/registration/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/registration/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,23 +34,23 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/alumno/templates/emails" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/spypp/templates/empresa" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
-      <recent name="$PROJECT_DIR$/pfiProject" />
-      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
-      <recent name="$PROJECT_DIR$/alumno/templates/alumno" />
-      <recent name="$PROJECT_DIR$/alumno/templates" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/alumno/static" />
       <recent name="$PROJECT_DIR$/alumno" />
       <recent name="$PROJECT_DIR$/pfiProject" />
       <recent name="$PROJECT_DIR$/alumno/templatetags" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
+      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
+      <recent name="$PROJECT_DIR$/pfiProject" />
+      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
+      <recent name="$PROJECT_DIR$/alumno/templates/alumno" />
     </key>
   </component>
   <component name="RunDashboard">

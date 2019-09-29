@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/empresa/tutores"> Tutores </a></h6>
+            <h2>{{ tutor.apellido }} {{tutor.nombre}}</h2>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
+                    <a href="{% url 'eliminar-tutor-empresa' tutor.pk %}"><button class="btn btn-outline-danger btn-md" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este tutor?');" style="float: right;">Eliminar</button></a>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

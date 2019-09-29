@@ -15,7 +15,7 @@ from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditF
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
     PasantiaDetailSubcomisionCarreraForm, SubcomisionCarreraCreateForm
 from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, EntrevistaDetailEmpresaForm, \
-    PasantiaDetailEmpresaForm
+    PasantiaDetailEmpresaForm, TutorEmpresaDetailEmpresaForm
 from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
@@ -557,6 +557,14 @@ class ListPasantiasEmpresaView(generic.ListView):
             F('tutor_empresa').asc(), 'fecha_inicio')
         return getPage(self.request, pasantias, 20)
 
+class ListTutoresEmpresaView(generic.ListView):
+    template_name = 'empresa/tutores.html'
+    context_object_name = 'tutores_list'
+
+    def get_queryset(self):
+        tutores = TutorEmpresa.objects.filter(Q(empresa=self.request.user.empresa_user))
+        return getPage(self.request, tutores, 20)
+
 
 class DetailEntrevistaEmpresaView(generic.UpdateView):
     model = Entrevista
@@ -608,6 +616,33 @@ class DetailPasantiaEmpresaView(generic.UpdateView):
     def form_valid(self, form):
         form.instance.empresa = self.request.user.empresa_user
         return super(DetailPasantiaEmpresaView, self).form_valid(form)
+
+
+class CreateTutorView(generic.CreateView):
+    model = TutorEmpresa
+    context_object_name = 'puesto'
+    fields = ['apellido', 'nombre', 'cargo', 'mail']
+    template_name = 'empresa/tutores_create.html'
+
+    def form_valid(self, form):
+        tutor = form.save(commit=False)
+        try:
+            TutorEmpresa.objects.get(pk=tutor.mail, empresa=self.request.user.empresa_user)
+            form.add_error('mail', forms.ValidationError("Ya existe un tutor con este mail."))
+            return super(CreatePuestoView, self).form_invalid(form)
+        except ObjectDoesNotExist:
+            tutor.empresa = self.request.user.empresa_user
+            tutor.save()
+        return redirect('tutores-empresa')
+
+
+class DetailTutoresEmpresaView(generic.UpdateView):
+    model = TutorEmpresa
+    template_name = 'empresa/tutores_detail.html'
+    context_object_name = 'tutor'
+    form_class = TutorEmpresaDetailEmpresaForm
+    success_url = '../../tutores'
+
 
 @transaction.atomic
 def cancel_entrevistas_empresa_view(request):
@@ -814,6 +849,12 @@ def delete_puesto_empresa(request, *args, **kwargs):
     puesto.activo = False
     puesto.save()
     return redirect('puestos-empresa')
+
+@transaction.atomic
+def delete_tutor_empresa(request, *args, **kwargs):
+    puesto = get_object_or_404(TutorEmpresa, pk=kwargs.get('pk'), empresa=request.user.empresa_user)
+    puesto.delete()
+    return redirect('tutores-empresa')
 
 
 class DetailPuestoEmpresaView(generic.UpdateView):
