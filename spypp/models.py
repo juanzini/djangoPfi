@@ -237,8 +237,9 @@ class Empresa(models.Model):
     url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=logo_upload_path, max_file_size=1024 * 1024)
-    nombre_fantasia=models.CharField(max_length=200, blank=False, null=False)
+    nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre de Fantasía")
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
+    activa = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
 
     class Meta:
@@ -253,7 +254,7 @@ class Empresa(models.Model):
         return Postulacion.objects.filter(puesto__empresa=self, activa=True).count()
 
     def __str__(self):
-        return self.user.__str__()
+        return self.nombre_fantasia.__str__()
 
 
 class Puesto(models.Model):

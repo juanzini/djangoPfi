@@ -19,6 +19,7 @@ from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, Entrevis
 from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
+from .forms import EmpresaCreateComisionPasantiasForm, UserEmpresaCreateForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
@@ -349,10 +350,12 @@ def create_postulacion_alumno(request):
                 postulacion.save()
                 nuevaPostulacion = True
         except ObjectDoesNotExist:
-            postulacion = Postulacion.objects.create(puesto=Puesto.objects.get(pk=request.POST.get('puesto_id')),
-                                       alumno=request.user.alumno_user)
-            nuevaPostulacion = True
-        if nuevaPostulacion:
+            puesto = Puesto.objects.get(pk=request.POST.get('puesto_id'))
+            if not puesto.empresa.activa :
+                postulacion = Postulacion.objects.create(puesto=Puesto.objects.get(pk=puesto),
+                                           alumno=request.user.alumno_user)
+                nuevaPostulacion = True
+        if nuevaPostulacion :
             context = {
                 'user': postulacion.alumno.user,
                 'postulacion': postulacion
@@ -414,7 +417,7 @@ class ListPuestosAlumnoView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__departamento=self.request.user.alumno_user.carrera.departamento)
+        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         for puesto in puestos:
             try:
                 puesto.postulacion = Postulacion.objects.get(puesto=puesto, alumno=self.request.user.alumno_user)
@@ -970,7 +973,7 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
+        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
         return getPage(self.request, puestos, 20)
 
 
@@ -1108,8 +1111,40 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento)
+        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento, activa=True)
         return getPage(self.request, empresas, 20)
+    
+    
+@transaction.atomic
+def create_empresa(request):
+    if request.method == 'POST':
+        empresa_form = EmpresaCreateComisionPasantiasForm(request.POST)
+        user_form = UserEmpresaCreateForm(request.POST)
+        if user_form.is_valid() and empresa_form.is_valid():
+            try:
+                empresa = Empresa.objects.get(nombre_fantasia=empresa_form.cleaned_data.get('nombre_fantasia'), departamento=request.user.pps_user.departamento)
+                empresa.activa = True
+                empresa.save()
+                new_user_form = UserEmpresaCreateForm(user_form.cleaned_data, instance=User.objects.get(pk=empresa.user.pk))
+                new_user = new_user_form.save(commit=False)
+                new_user.is_active = True
+                new_user.save()
+            except ObjectDoesNotExist:
+                empresa = empresa_form.save(commit=False)
+                empresa.departamento = request.user.pps_user.departamento
+                user = user_form.save(commit=False)
+                user.tipo = User.EM
+                user.save()
+                empresa.user = user
+                empresa.save()
+            return redirect('empresas-comision-pasantias')
+    else:
+        empresa_form = EmpresaCreateComisionPasantiasForm()
+        user_form = UserEmpresaCreateForm()
+    return render(request, 'comision_pasantias/empresa_create.html', {
+        'empresa_form': empresa_form,
+        'user_form': user_form,
+    })
 
 
 class ListPuestosComisionPasantiasView(generic.ListView):
@@ -1117,7 +1152,7 @@ class ListPuestosComisionPasantiasView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__departamento=self.request.user.pps_user.departamento)
+        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.pps_user.departamento)
         return getPage(self.request, puestos, 20)
 
 

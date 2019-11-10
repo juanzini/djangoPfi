@@ -28,7 +28,7 @@
     "6 p.m.": "6 p.m.",
     "April": "Abril",
     "August": "Agosto",
-    "Available %s": "%s del Departamento",
+    "Available %s": "Lista de %s",
     "Cancel": "Cancelar",
     "Choose": "Elegir",
     "Choose a Date": "Elija una fecha",

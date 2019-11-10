@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    {{ subcomision_carrera_form.media }}
+    <div class="row">
+        <div class="col">
+            <h2>Nueva Empresa</h2>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form empresa_form %}
+                {% bootstrap_form user_form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -240,6 +240,20 @@ class UserCreateForm(RegistrationForm):
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
 
+
+class UserEmpresaCreateForm(RegistrationForm):
+    class Meta(RegistrationForm):
+        model = models.User
+        fields = (
+            'username',
+            'email',
+            'password1',
+            'password2',
+        )
+    def __init__(self, *args, **kwargs):
+        super(UserEmpresaCreateForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = models.User
@@ -459,6 +473,16 @@ class CarreraCreateComisionPasantiasForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CarreraCreateComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['nombre'].required = True
+
+
+class EmpresaCreateComisionPasantiasForm(forms.ModelForm):
+    class Meta:
+        model = models.Empresa
+        fields = ('nombre_fantasia',)
+
+    def __init__(self, *args, **kwargs):
+        super(EmpresaCreateComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['nombre_fantasia'].required = True
 
 class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
     class Meta():

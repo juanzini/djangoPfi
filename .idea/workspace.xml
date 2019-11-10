@@ -5,10 +5,12 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/static/jsAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/static/jsAdmin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/jsAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/jsAdmin.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,23 +36,23 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/spypp/templates/empresa" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/spypp/templates/comision_pasantias" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/spypp/templates/comision_pasantias" />
+      <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
+      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
+      <recent name="$PROJECT_DIR$/pfiProject" />
+      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/alumno/static" />
       <recent name="$PROJECT_DIR$/alumno" />
       <recent name="$PROJECT_DIR$/pfiProject" />
       <recent name="$PROJECT_DIR$/alumno/templatetags" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
-      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
-      <recent name="$PROJECT_DIR$/pfiProject" />
-      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
-      <recent name="$PROJECT_DIR$/alumno/templates/alumno" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -226,6 +228,36 @@
           <url>file://$PROJECT_DIR$/alumno/views.py</url>
           <line>1218</line>
           <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1119</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1120</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1134</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1137</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1138</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>1139</line>
+          <option name="timeStamp" value="155" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
