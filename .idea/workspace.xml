@@ -2,15 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/migrations/0001_initial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/static/jsAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/static/jsAdmin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/jsAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/jsAdmin.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -40,19 +55,19 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/spypp/templates/comision_pasantias" />
-      <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
-      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
-      <recent name="$PROJECT_DIR$/pfiProject" />
-      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/alumno/static" />
       <recent name="$PROJECT_DIR$/alumno" />
       <recent name="$PROJECT_DIR$/pfiProject" />
       <recent name="$PROJECT_DIR$/alumno/templatetags" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/spypp/templates/comision_pasantias" />
+      <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
+      <recent name="$PROJECT_DIR$/alumno/templates/emails" />
+      <recent name="$PROJECT_DIR$/pfiProject" />
+      <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
     </key>
   </component>
   <component name="RunDashboard">

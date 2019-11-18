@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+                <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
+                <h2 style="margin-bottom: 20px; margin-left: 2rem;">
+                    {% if puesto.empresa.url %}
+                    <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
+                    {% else %}
+                    {{ puesto.empresa.nombre_fantasia }}
+                    {% endif %}
+                </h2>
+            </div>
+                {% if puesto.get_nombre_display %}
+                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span>
+                {% endif %}
+                {% if puesto.descripcion_actividades %}
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span>
+                {% endif %}
+                {% if puesto.conocimientos_requeridos %}
+                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span>
+                {% endif %}
+                {% if puesto.horario %}
+                    <span><b>Horario</b>: {{ puesto.horario }}</span>
+                {% endif %}
+                {% if puesto.rentada %}
+                    <span><b>Rentado</b>: Si</span>
+                {% else %}
+                    <span><b>Rentado</b>: No</span>
+                {% endif %}
+                {% buttons %}
+                <br>
+                {% if not puesto.activo %}
+                    Este puesto ya no se encuentra disponible
+                {% endif %}
+                {% endbuttons %}
+        </div>
+    </div>
+{% endblock %}

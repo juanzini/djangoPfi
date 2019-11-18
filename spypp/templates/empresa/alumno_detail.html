@@ -32,10 +32,10 @@
                 {% endif %}
                 {% if postulacion.alumno.comentarios_carrera_visibles %}
                     {% if postulacion.alumno.comentarios_comision_carrera %}
-                        <p><b>Comentarios de la Comisi&oacute;n de Carrera</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
+                        <p><b>Comentarios de la Subcomisi&oacute;n de Pr&aacute;ctica</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
                     {% endif %}
                     {% if postulacion.alumno.comentarios_comision_pps %}
-                        <p><b>Comentarios de la Comisi&oacute;n de PPS</b>: {{postulacion.alumno.comentarios_comision_pps}</p>
+                        <p><b>Comentarios de la Comisi&oacute;n general de Pasant&iacute;asb>: {{postulacion.alumno.comentarios_comision_pps}</p>
                     {% endif %}
                 {% endif %}
                 {% buttons %}
@@ -46,37 +46,41 @@
                       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Entrevista Generada</button>
                     </form>
                 {% else %}
-                    {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
-                        {% if postulacion.entrevista.status == NOC %}
-                            <p>Se le generó una entrevista que  <b style="color:red;">no fue confirmada por el alumno</b></p>
-                        {% elif postulacion.entrevista.status == CAA %}
-                            <p style="color:red;">Se le generó una entrevista que fue <b style="color:red;">cancelada por el alumno</b></p>
+                    {% if postulacion.activa %}
+                        {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
+                            {% if postulacion.entrevista.status == NOC %}
+                                <p>Se le generó una entrevista que  <b style="color:red;">no fue confirmada por el alumno</b></p>
+                            {% elif postulacion.entrevista.status == CAA %}
+                                <p style="color:red;">Se le generó una entrevista que fue <b style="color:red;">cancelada por el alumno</b></p>
+                            {% else %}
+                                <p>Se le generó una entrevista que fue <b style="color:red;">cancelada por la empresa</b></p>
+                            {% endif %}
+                            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                              {% csrf_token %}
+                                <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                              <button class="btn btn-warning my-2 my-sm-0" type="submit">Regenerar Entrevista</button>
+                            </form>
+                            <br>
+                            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                              {% csrf_token %}
+                                <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                              <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
+                            </form>
                         {% else %}
-                            <p>Se le generó una entrevista que fue <b style="color:red;">cancelada por la empresa</b></p>
+                            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                              {% csrf_token %}
+                                <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                            </form>
+                            <br>
+                            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                              {% csrf_token %}
+                                <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                              <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
+                            </form>
                         {% endif %}
-                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
-                          {% csrf_token %}
-                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                          <button class="btn btn-warning my-2 my-sm-0" type="submit">Regenerar Entrevista</button>
-                        </form>
-                        <br>
-                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
-                          {% csrf_token %}
-                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
-                        </form>
                     {% else %}
-                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
-                          {% csrf_token %}
-                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Generar Entrevista</button>
-                        </form>
-                        <br>
-                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
-                          {% csrf_token %}
-                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                          <button class="btn btn-danger my-2 my-sm-0" type="submit">Desestimar Postulacion</button>
-                        </form>
+                        <p>La postulaci&oacute;n de este alumno <b style="color:red;">no est&aacute; activa</b></p>
                     {% endif %}
                 {% endif %}
                 {% endbuttons %}

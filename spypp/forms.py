@@ -19,6 +19,7 @@ class AlumnoForm(forms.ModelForm):
             'numero_registro',
             'carrera',
             'perfil',
+            'telefono',
             'curriculum',
             'plan_de_estudio',
             'historia_academica',
@@ -40,6 +41,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         fields = (
             'numero_registro',
             'carrera',
+            'telefono',
             'progreso',
             'descripcion_intereses',
             'descripcion_habilidades',
@@ -58,6 +60,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         super(AlumnoDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['carrera'].disabled = True
         self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
+        self.fields['telefono'].widget.attrs['readonly'] = True
         self.fields['descripcion_habilidades'].widget.attrs['readonly'] = True
         self.fields['ultima_actualizacion_perfil'].widget.attrs['readonly'] = True
         self.fields['ultima_postulacion'].widget.attrs['readonly'] = True
@@ -180,6 +183,7 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
     class Meta():
         model = models.Pasantia
         fields = (
+            'status',
             'fecha_inicio',
             'fecha_fin',
             'tutor_docente',
@@ -192,6 +196,8 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
+        if not self.instance.practica_plan_de_estudio:
+            self.fields['status'].widget.disabled = True
         self.fields['fecha_inicio'].widget.attrs['readonly'] = True
         self.fields['fecha_fin'].widget.attrs['readonly'] = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
@@ -211,6 +217,7 @@ class AlumnoCreateForm(forms.ModelForm):
             'numero_registro',
             'carrera',
             'perfil',
+            'telefono',
             'curriculum',
             'plan_de_estudio',
             'historia_academica',
@@ -241,7 +248,7 @@ class UserCreateForm(RegistrationForm):
         self.fields['last_name'].required = True
 
 
-class UserEmpresaCreateForm(RegistrationForm):
+class UserWithoutNameCreateForm(RegistrationForm):
     class Meta(RegistrationForm):
         model = models.User
         fields = (
@@ -251,7 +258,7 @@ class UserEmpresaCreateForm(RegistrationForm):
             'password2',
         )
     def __init__(self, *args, **kwargs):
-        super(UserEmpresaCreateForm, self).__init__(*args, **kwargs)
+        super(UserWithoutNameCreateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
 
 class UserEditForm(forms.ModelForm):
@@ -262,7 +269,7 @@ class UserEditForm(forms.ModelForm):
 class AlumnoEditForm(forms.ModelForm):
     class Meta:
         model = models.Alumno
-        fields = ('perfil', 'curriculum', 'plan_de_estudio', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'telefono', 'curriculum', 'plan_de_estudio', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -426,6 +433,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
             'carrera',
             'progreso',
             'perfil',
+            'telefono',
             'curriculum',
             'plan_de_estudio',
             'historia_academica',
@@ -488,6 +496,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
     class Meta():
         model = models.Pasantia
         fields = (
+            'status',
             'fecha_inicio',
             'fecha_fin',
             'tutor_docente',

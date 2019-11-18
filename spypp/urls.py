@@ -183,5 +183,7 @@ urlpatterns = [
     path('comision_pasantias/pasantias/nueva/tutores',
          login_required(permissions(views.AjaxField2View.as_view(), User.CP)),
          name='ajax-get-tutor-empresa'),
+    path('comision_pasantias/puestos/<int:pk>', login_required(permissions(views.DetailPustoAlumnoView.as_view(), User.AL)),
+         name='puesto-detail-alumno'),
 
 ]

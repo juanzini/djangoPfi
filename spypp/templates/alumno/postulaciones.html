@@ -34,8 +34,8 @@
                                     {% if postulacion.entrevista.status == 'CAE' %}
                                         <span style="color:red;">Cancelada por la empresa</span>
                                     {% else %}
-                                        {% if postulacion.entrevista.status == 'COA' %}
-                                            {% if postulacion.entrevista.is_past_due %}
+                                        {% if postulacion.entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                                            {% if postulacion.entrevista.is_past_due or entrevista.status == 'REA' %}
                                                 <span style="color:black;"> REALIZADA </span>
                                             {% else %}
                                                 <span style="color:green;"> ACTIVA </span>

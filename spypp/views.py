@@ -19,7 +19,7 @@ from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, Entrevis
 from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
-from .forms import EmpresaCreateComisionPasantiasForm, UserEmpresaCreateForm
+from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
@@ -539,7 +539,7 @@ class ListEntrevistasEmpresaView(generic.ListView):
 
     def get_queryset(self):
         entrevistas = Entrevista.objects.filter(
-            Q(empresa=self.request.user.empresa_user) & Q(entrevista_postulacion__activa=True) & ~Q(alumno__condicion_acreditacion=None)).annotate(
+            Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None)).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
@@ -676,7 +676,7 @@ class ListPostulacionesEmpresaView(generic.ListView):
 
     def get_queryset(self):
         postulaciones = Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)) & (Q(activa=True))).order_by(
+            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by(
             F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
         return getPage(self.request, postulaciones, 20)
 
@@ -1119,13 +1119,13 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
 def create_empresa(request):
     if request.method == 'POST':
         empresa_form = EmpresaCreateComisionPasantiasForm(request.POST)
-        user_form = UserEmpresaCreateForm(request.POST)
+        user_form = UserWithoutNameCreateForm(request.POST)
         if user_form.is_valid() and empresa_form.is_valid():
             try:
                 empresa = Empresa.objects.get(nombre_fantasia=empresa_form.cleaned_data.get('nombre_fantasia'), departamento=request.user.pps_user.departamento)
                 empresa.activa = True
                 empresa.save()
-                new_user_form = UserEmpresaCreateForm(user_form.cleaned_data, instance=User.objects.get(pk=empresa.user.pk))
+                new_user_form = UserWithoutNameCreateForm(user_form.cleaned_data, instance=User.objects.get(pk=empresa.user.pk))
                 new_user = new_user_form.save(commit=False)
                 new_user.is_active = True
                 new_user.save()
@@ -1140,7 +1140,7 @@ def create_empresa(request):
             return redirect('empresas-comision-pasantias')
     else:
         empresa_form = EmpresaCreateComisionPasantiasForm()
-        user_form = UserEmpresaCreateForm()
+        user_form = UserWithoutNameCreateForm()
     return render(request, 'comision_pasantias/empresa_create.html', {
         'empresa_form': empresa_form,
         'user_form': user_form,
@@ -1154,6 +1154,16 @@ class ListPuestosComisionPasantiasView(generic.ListView):
     def get_queryset(self):
         puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.pps_user.departamento)
         return getPage(self.request, puestos, 20)
+
+
+class DetailPustoComisionPasantiasView(generic.TemplateView):
+    template_name = 'comision_pasantias/puesto_detail.html'
+    context_object_name = 'puesto'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPustoComisionPasantiasView, self).get_context_data(**kwargs)
+        context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"], empresa__departamento=self.request.user.pps_user.departamento)
+        return context
 
 
 class ListPasantiasComisionPasantiasView(generic.ListView):
@@ -1280,14 +1290,14 @@ class CarreraDetailComisionPasantiasView(generic.UpdateView):
 def create_carrera(request):
     if request.method == 'POST':
         carrera_form = CarreraCreateComisionPasantiasForm(request.POST)
-        user_form = UserCreateForm(request.POST)
+        user_form = UserWithoutNameCreateForm(request.POST)
         subcomision_carrera_form = SubcomisionCarreraCreateForm(request.user, request.POST)
         if user_form.is_valid() and subcomision_carrera_form.is_valid() and carrera_form.is_valid():
             try:
                 carrera = Carrera.objects.get(nombre=carrera_form.cleaned_data.get('nombre'), departamento=request.user.pps_user.departamento)
                 carrera.activa = True
                 carrera.save()
-                new_user_form = UserCreateForm(user_form.cleaned_data, instance=User.objects.get(pk=carrera.carrera_comision.user.pk))
+                new_user_form = UserWithoutNameCreateForm(user_form.cleaned_data, instance=User.objects.get(pk=carrera.carrera_comision.user.pk))
                 new_user = new_user_form.save(commit=False)
                 new_user.is_active = True
                 new_user.save()
@@ -1296,7 +1306,7 @@ def create_carrera(request):
                 new_subcomision_form.save()
             except ObjectDoesNotExist:
                 try:
-                    RegistrationView.as_view(form_class=UserCreateForm)(request)
+                    RegistrationView.as_view(form_class=UserWithoutNameCreateForm)(request)
                 except (SMTPRecipientsRefused, SMTPSenderRefused):
                     pass
                 subcomision_carrera = subcomision_carrera_form.save(commit=False)
@@ -1309,7 +1319,7 @@ def create_carrera(request):
             return redirect('carreras-comision-pasantias')
     else:
         carrera_form = CarreraCreateComisionPasantiasForm()
-        user_form = UserCreateForm()
+        user_form = UserWithoutNameCreateForm()
         subcomision_carrera_form = SubcomisionCarreraCreateForm(request.user)
     return render(request, 'comision_pasantias/carrera_create.html', {
         'carrera_form': carrera_form,

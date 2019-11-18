@@ -13,6 +13,7 @@
                     <tr>
                         <th>Alumno</th>
                         <th>Empresa</th>
+                        <th>Carrera</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha de fin</th>
                         <th>Tutor Docente</th>
@@ -26,6 +27,9 @@
                             </td>
                             <td>
                                 {{ pasantia.entrevista.empresa }}
+                            </td>
+                            <td>
+                                {{ pasantia.entrevista.alumno.carrera }}
                             </td>
                             <td>
                                 {{ pasantia.fecha_inicio }}

@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
+from phonenumber_field.modelfields import PhoneNumberField
 import re
 
 class UserManager(UserManager):
@@ -62,15 +63,16 @@ class Alumno(models.Model):
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
-    condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación')
-    expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True)
+    condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación de práctica del plan de estudio?')
+    expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True, verbose_name='Justificación de acreditación o su negativa')
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
     perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
-                            upload_to=perfil_upload_path, max_file_size=1024 * 1024)
+                            upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
+    telefono = PhoneNumberField(blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 
@@ -115,7 +117,7 @@ class SubcomisionCarrera(models.Model):
         verbose_name_plural = 'SubcomisionesCarreras'
 
     def __str__(self):
-        return "Subcomision de Carrera - " + self.carrera.__str__()
+        return "Subcomisión de Práctica - " + self.carrera.__str__()
 
 
 class SubcomisionPasantiasPPS(models.Model):
@@ -154,9 +156,17 @@ class Pasantia(models.Model):
     entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
     numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
+    practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
+    STATUS_CHOICES = [
+        'Finalizada',
+        'Documentación pendiente',
+        'En curso',
+        'Sin iniciar'
+    ]
+    status = models.CharField(choices=STATUS_CHOICES, default='Sin iniciar')
 
     class Meta:
         verbose_name = 'Pasantia'
@@ -188,8 +198,8 @@ class Entrevista(models.Model):
     lugar = models.CharField(max_length=200, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     pasantia_aceptada = models.BooleanField(blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
     NOA = 'NOA'
     COA = 'COA'
     CAE = 'CAE'
