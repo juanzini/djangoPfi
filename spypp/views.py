@@ -881,7 +881,7 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     model = Puesto
     template_name = 'empresa/puesto_detail.html'
     context_object_name = 'puesto'
-    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado', 'activo']
     success_url = '../../puestos'
 
     def get_object(self):
