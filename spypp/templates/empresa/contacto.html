@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{ contacto.nombre}}</td>
                             <td>{{ contacto.apellido }}</td>
-                            <td><a href="mailto:{{contacto.email}}" mail>
+                            <td><a href="mailto:{{contacto.user.email}}" mail>
                                 <i class="fas fa-envelope"></i></a> {{ contacto.email }}</td>
                         </tr>
                     {% endif %}
@@ -43,7 +43,7 @@
                 {% for contacto in contactos %}
                     {% if contacto|classname == "SubcomisionPasantiasPPS" %}
                         <tr>
-                            <td><a href="mailto:{{contacto.email}}" mail>
+                            <td><a href="mailto:{{contacto.user.email}}" mail>
                                 <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
                         </tr>
                     {% endif %}
@@ -69,7 +69,7 @@
                     {% if contacto|classname == "SubcomisionCarrera" %}
                         <tr>
                             <td>{{ contacto.carrera }}</td>
-                            <td><a href="mailto:{{contacto.email}}" mail>
+                            <td><a href="mailto:{{contacto.user.email}}" mail>
                                 <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
                         </tr>
                     {% endif %}
