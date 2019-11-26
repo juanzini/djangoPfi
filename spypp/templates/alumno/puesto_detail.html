@@ -15,21 +15,24 @@
                 </h2>
             </div>
                 {% if puesto.get_nombre_display %}
-                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span>
+                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span><br>
                 {% endif %}
                 {% if puesto.descripcion_actividades %}
-                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span>
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span>
+                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span><br>
                 {% endif %}
                 {% if puesto.horario %}
-                    <span><b>Horario</b>: {{ puesto.horario }}</span>
+                    <span><b>Horario</b>: {{ puesto.horario }}</span><br>
                 {% endif %}
                 {% if puesto.rentada %}
-                    <span><b>Rentado</b>: Si</span>
+                    <span><b>Rentado</b>: Si</span><br>
                 {% else %}
-                    <span><b>Rentado</b>: No</span>
+                    <span><b>Rentado</b>: No</span><br>
+                {% endif %}
+                {% if puesto.fecha_inactivacion %}
+                    <span><b>Fecha l&iacute;mite para postularse</b>: {{puesto.fecha_inactivacion}}</span><br>
                 {% endif %}
                 {% buttons %}
                 <br>

@@ -9,6 +9,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from datetime import timedelta as td
 
 from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
@@ -417,13 +418,20 @@ class ListPuestosAlumnoView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
+        to_be_deleted = []
         puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         for puesto in puestos:
             try:
-                puesto.postulacion = Postulacion.objects.get(puesto=puesto, alumno=self.request.user.alumno_user)
+                if puesto.fecha_inactivacion < date.today():
+                    puesto.activo = False
+                    puesto.save()
+                puesto.postulacion = Postulacion.objects.get(puesto=puesto, alumno=self.request.user.alumno_user, activa=True)
             except ObjectDoesNotExist:
-                puesto.postulacion = None
-        return getPage(self.request, puestos, 20)
+                if puesto.activo:
+                    puesto.postulacion = None
+                else:
+                    to_be_deleted.append(puesto.pk)
+        return getPage(self.request, puestos.filter(~Q(pk__in=to_be_deleted)), 20)
 
 
 class ListContactoAlumnoView(generic.ListView):
@@ -632,7 +640,7 @@ class CreateTutorView(generic.CreateView):
         try:
             TutorEmpresa.objects.get(pk=tutor.mail, empresa=self.request.user.empresa_user)
             form.add_error('mail', forms.ValidationError("Ya existe un tutor con este mail."))
-            return super(CreatePuestoView, self).form_invalid(form)
+            return super(CreateTutorView, self).form_invalid(form)
         except ObjectDoesNotExist:
             tutor.empresa = self.request.user.empresa_user
             tutor.save()
@@ -686,7 +694,7 @@ class ListPuestosEmpresaView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa=self.request.user.empresa_user, activo=True)
+        puestos = Puesto.objects.filter(empresa=self.request.user.empresa_user)
         return getPage(self.request, puestos, 20)
 
 
@@ -834,7 +842,7 @@ class CreatePuestoView(generic.CreateView):
             try:
                 puestoDb = Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user, activo=False)
                 puestoDb.descripcion_actividades = puesto.descripcion_actividades
-                puestoDb.conocimientos_requeridos =  puesto.conocimientos_requeridos
+                puestoDb.conocimientos_requeridos = puesto.conocimientos_requeridos
                 puestoDb.horario = puesto.horario
                 puestoDb.rentado = puesto.rentado
                 puestoDb.activo = True
@@ -846,9 +854,18 @@ class CreatePuestoView(generic.CreateView):
             puesto.save()
         return redirect('puestos-empresa')
 
+
+@transaction.atomic
+def active_puesto_empresa(request, *args, **kwargs):
+    puesto = get_object_or_404(Puesto, pk=kwargs.get('pk'), empresa=request.user.empresa_user)
+    puesto.activo = True
+    puesto.fecha_inactivacion = datetime.today() + td(days=15)
+    puesto.save()
+    return redirect('puestos-empresa')
+
 @transaction.atomic
 def delete_puesto_empresa(request, *args, **kwargs):
-    puesto = get_object_or_404(Puesto, pk=kwargs.get('pk'), empresa=request.user.empresa_user, activo=True)
+    puesto = get_object_or_404(Puesto, pk=kwargs.get('pk'), empresa=request.user.empresa_user)
     puesto.activo = False
     puesto.save()
     return redirect('puestos-empresa')

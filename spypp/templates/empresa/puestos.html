@@ -12,6 +12,8 @@
                         <th>&Aacute;rea</th>
                         <th>Horario</th>
                         <th>Rentada</th>
+                        <th>Activo</th>
+                        <th>Fecha de Desactivaci&oacute;n</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +30,19 @@
                                     Si
                                 {% else %}
                                     No
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if puesto.activo %}
+                                    Si <a href="{% url 'deactive-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="submit" class="btn btn-sm btn-outline-danger py-0">Desactivar</button></a>
+                                {% else %}
+                                    No <a href="{% url 'active-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="submit" class="btn btn-sm btn-outline-success py-0">Activar</button></a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if puesto.activo %}
+                                    {{ puesto.fecha_inactivacion }}
+                                {% else %}
                                 {% endif %}
                             </td>
                         </tr>

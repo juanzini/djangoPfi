@@ -2,28 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/middlewares.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/puestos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/puestos.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
     </list>
@@ -246,32 +230,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1119</line>
+          <line>1136</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1120</line>
+          <line>1137</line>
           <option name="timeStamp" value="148" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1134</line>
+          <line>1151</line>
           <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1137</line>
+          <line>1154</line>
           <option name="timeStamp" value="153" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1138</line>
+          <line>1155</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1139</line>
+          <line>1156</line>
           <option name="timeStamp" value="155" />
         </line-breakpoint>
       </breakpoints>

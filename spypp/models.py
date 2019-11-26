@@ -8,6 +8,7 @@ from private_storage.fields import PrivateFileField
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 from phonenumber_field.modelfields import PhoneNumberField
+from datetime import timedelta as td
 import re
 
 class UserManager(UserManager):
@@ -160,13 +161,13 @@ class Pasantia(models.Model):
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
     numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
     practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
-    STATUS_CHOICES = [
-        'Finalizada',
-        'Documentación pendiente',
-        'En curso',
-        'Sin iniciar'
-    ]
-    status = models.CharField(choices=STATUS_CHOICES, default='Sin iniciar')
+    STATUS_CHOICES = (
+        ("FINALIZADA", "Finalizada"),
+        ("DOCUMENTACION PENDIENTE", "Documentación pendiente"),
+        ("EN CURSO", "En curso"),
+        ("SIN INICIAR", "Sin iniciar")
+    )
+    status = models.CharField(max_length=23, choices=STATUS_CHOICES, default="SIN INICIAR")
 
     class Meta:
         verbose_name = 'Pasantia'
@@ -291,6 +292,7 @@ class Puesto(models.Model):
     conocimientos_requeridos = models.TextField(max_length=1000)
     horario = models.CharField(max_length=100)
     rentado = models.BooleanField(default=False, blank=False, null=False)
+    fecha_inactivacion = models.DateField(default=datetime.today() + td(days=15))
     activo = models.BooleanField(default=True)
 
     class Meta:

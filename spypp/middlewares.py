@@ -5,6 +5,7 @@ from .models import User
 from .views import edit_ultima_actualizacion, edit_alumno
 from django.contrib.auth import logout
 from django.utils import translation
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class LastUserActivityMiddleware:
@@ -54,8 +55,11 @@ class LastUserUpdateProfile(object):
         return response
 
     def process_request(self, request):
-        if request.user.is_authenticated and request.user.tipo == User.AL and not request.user.is_superuser:
-            last_update = request.user.alumno_user.ultima_actualizacion_perfil
+        if request.user.is_authenticated and request.user.tipo == User.AL and not request.user.is_superuser and not request.user.is_staff:
+            try:
+                last_update = request.user.alumno_user.ultima_actualizacion_perfil
+            except ObjectDoesNotExist:
+                last_update = datetime.now()
 
             too_old_time = datetime.now() - td(days=365)
             if 'guardar' in request.POST:
