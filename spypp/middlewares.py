@@ -59,12 +59,12 @@ class LastUserUpdateProfile(object):
             try:
                 last_update = request.user.alumno_user.ultima_actualizacion_perfil
             except ObjectDoesNotExist:
-                last_update = datetime.now
+                last_update = datetime.now().date()
 
             too_old_time = datetime.now() - td(days=365)
             if 'guardar' in request.POST:
                 return edit_alumno(request)
-            if not last_update or last_update.date() < too_old_time.date():
+            if not last_update or last_update < too_old_time.date():
                 return edit_ultima_actualizacion(request, True)
         return None
 
