@@ -329,7 +329,7 @@ class DetailPustoAlumnoView(generic.TemplateView):
         try:
             context['postulacion'] = Postulacion.objects.get(puesto=context['puesto'],
                                                              alumno=self.request.user.alumno_user)
-            context['is_available'] = context['postulacion'].fecha_desestimacion is None or context['postulacion'].fecha_desestimacion < (date.today() - timedelta(days=60))
+            context['is_available'] = context['postulacion'].fecha_desestimacion is None or context['postulacion'].fecha_desestimacion < (datetime.now().date() - timedelta(days=60))
             if not context['is_available']:
                 context['next_day'] = context['postulacion'].fecha_desestimacion + timedelta(days=60)
             if not context['postulacion'].activa:
@@ -346,7 +346,7 @@ def create_postulacion_alumno(request):
         try:
             nuevaPostulacion = False
             postulacion = Postulacion.objects.get(puesto=request.POST.get('puesto_id'), alumno=request.user.alumno_user)
-            if postulacion.fecha_desestimacion is None or postulacion.fecha_desestimacion < (date.today() - timedelta(days=60)):
+            if postulacion.fecha_desestimacion is None or postulacion.fecha_desestimacion < (datetime.now().date() - timedelta(days=60)):
                 postulacion.activa = True
                 postulacion.save()
                 nuevaPostulacion = True
@@ -422,7 +422,7 @@ class ListPuestosAlumnoView(generic.ListView):
         puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         for puesto in puestos:
             try:
-                if puesto.fecha_inactivacion < date.today():
+                if puesto.fecha_inactivacion < datetime.now().date():
                     puesto.activo = False
                     puesto.save()
                 puesto.postulacion = Postulacion.objects.get(puesto=puesto, alumno=self.request.user.alumno_user, activa=True)
@@ -684,7 +684,7 @@ class ListPostulacionesEmpresaView(generic.ListView):
 
     def get_queryset(self):
         postulaciones = Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by(
+            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by('-activa',
             F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
         return getPage(self.request, postulaciones, 20)
 
@@ -751,7 +751,7 @@ def delete_postulacion_empresa(request):
                     request.GET['entrevista_id'] = postulacion.entrevista.pk
                     cancel_entrevistas_empresa_view(request)
             postulacion.activa = False
-            postulacion.fecha_desestimacion = date.today
+            postulacion.fecha_desestimacion = datetime.now().date()
             postulacion.save()
             context = {
                 'user': postulacion.alumno.user,

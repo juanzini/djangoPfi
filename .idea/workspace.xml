@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/spypp/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/middlewares.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -250,6 +252,21 @@
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
           <line>1156</line>
           <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>745</line>
+          <option name="timeStamp" value="165" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>747</line>
+          <option name="timeStamp" value="166" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spypp/views.py</url>
+          <line>748</line>
+          <option name="timeStamp" value="167" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

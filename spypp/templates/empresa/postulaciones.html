@@ -9,6 +9,7 @@
                     <tr>
                         <th>Puesto</th>
                         <th>Alumno</th>
+                        <th>Estado</th>
                         <th>Fecha de Postulación</th>
                         <th>Estado Entrevista</th>
                         <th>Fecha Entrevista</th>
@@ -22,6 +23,13 @@
                             </td>
                             <td>
                                 {{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}
+                            </td>
+                            <td>
+                                {% if postulacion.activa %}
+                                <span style="color:green;">Activa</span>
+                                {% else %}
+                                <span style="color:red;">Inactiva</span>
+                                {% endif %}
                             </td>
                             <td>
                                 {{ postulacion.fecha }}
