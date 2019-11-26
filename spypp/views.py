@@ -885,7 +885,7 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     success_url = '../../puestos'
 
     def get_object(self):
-        return get_object_or_404(Puesto, pk=self.kwargs["pk"], activo=True)
+        return get_object_or_404(Puesto, pk=self.kwargs["pk"])
 
 
 # ------------------------------------------------------------------------------------------------------------
