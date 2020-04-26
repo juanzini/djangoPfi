@@ -9,18 +9,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import timedelta as td
-import uuid
 import re
-
 
 class UserManager(UserManager):
     pass
 
-
 AbstractUser._meta.get_field('email')._unique = True
 AbstractUser._meta.get_field('email').blank = False
 AbstractUser._meta.get_field('email').null = False
-
 
 class User(AbstractUser):
     AL = 'AL'
@@ -50,13 +46,10 @@ class Alumno(models.Model):
 
     def curriculum_upload_path(instance, filename):
         return 'curriculums/{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
-
     def plan_upload_path(instance, filename):
         return 'planes_de_estudio/{0}-{1}-{2}'.format("plan", instance.user.username, filename)
-
     def historia_upload_path(instance, filename):
         return 'historias_academicas/{0}-{1}-{2}'.format("historia", instance.user.username, filename)
-
     def perfil_upload_path(instance, filename):
         return 'perfiles/{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
@@ -64,25 +57,22 @@ class Alumno(models.Model):
     curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
-                                       content_types='application/pdf', max_file_size=1024 * 1024)
+                                  content_types='application/pdf', max_file_size=1024 * 1024)
     historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,
-                                          content_types='application/pdf', max_file_size=1024 * 1024)
+                                       content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
-    condicion_acreditacion = models.NullBooleanField(
-        verbose_name='Está en condición de acreditación de práctica del plan de estudio?')
-    expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True,
-                                               verbose_name='Justificación de acreditación o su negativa')
+    condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación de práctica del plan de estudio?')
+    expedicion_acreditacion = models.TextField(max_length=500, null=True, blank=True, verbose_name='Justificación de acreditación o su negativa')
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
-    comentarios_carrera_visibles = models.BooleanField(default=False,
-                                                       verbose_name='Comentarios visibles para las empresas')
+    comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
     perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
-                              upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
+                            upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
-                                                    MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
+                                       MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
     telefono = PhoneNumberField(blank=True, null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
@@ -167,10 +157,8 @@ class Pasantia(models.Model):
     entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True,
-                                           verbose_name='Comentarios para la Comisión general de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True,
-                                                verbose_name='Comentarios de la Comisión general de Pasantías')
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
     numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
     practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
     STATUS_CHOICES = (
@@ -211,10 +199,8 @@ class Entrevista(models.Model):
     lugar = models.CharField(max_length=200, blank=False, null=False)
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     pasantia_aceptada = models.BooleanField(blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True,
-                                           verbose_name='Comentarios para la Comisión general de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True,
-                                                verbose_name='Comentarios de la Comisión general de Pasantías')
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
     NOA = 'NOA'
     COA = 'COA'
     CAE = 'CAE'
@@ -283,7 +269,7 @@ class Empresa(models.Model):
 
 
 class Puesto(models.Model):
-    puesto_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    puesto_id = models.AutoField(primary_key=True)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
     BE = 'BE'
     FE = 'FE'
@@ -315,7 +301,7 @@ class Puesto(models.Model):
         unique_together = (("empresa", "nombre"),)
 
     def get_cantidad_alumnos(self):
-        return Postulacion.objects.filter(puesto=self, activa=True).count()
+        return Postulacion.objects.filter(puesto=self,activa=True).count()
 
     def __str__(self):
         return self.empresa.__str__() + ' ' + self.nombre.__str__()
@@ -324,8 +310,7 @@ class Puesto(models.Model):
 class Postulacion(models.Model):
     puesto = models.ForeignKey('Puesto', on_delete=models.DO_NOTHING)
     alumno = models.ForeignKey('Alumno', on_delete=models.DO_NOTHING)
-    entrevista = models.OneToOneField('Entrevista', on_delete=models.SET_NULL, null=True, blank=True,
-                                      related_name='entrevista_postulacion')
+    entrevista = models.OneToOneField('Entrevista', on_delete=models.SET_NULL, null=True, blank=True, related_name='entrevista_postulacion')
     fecha = models.DateField(default=date.today)
     fecha_desestimacion = models.DateField(blank=True, null=True)
     activa = models.BooleanField(default=True)
@@ -336,7 +321,7 @@ class Postulacion(models.Model):
         unique_together = (("puesto", "alumno"),)
 
     def __str__(self):
-        return self.puesto.empresa.__str__() + " - " + self.puesto.__str__() + " - " + self.alumno.__str__()
+        return self.puesto.empresa.__str__() + " - " + self.puesto.__str__() +" - " + self.alumno.__str__()
 
 
 class Departamento(models.Model):
