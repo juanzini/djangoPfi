@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/contacto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/jaz.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/jaz.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +25,10 @@
   <component name="ProjectId" id="1OedXbA7pS8GHwzHbgOVRwCdCpi" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
@@ -46,18 +51,6 @@
       <recent name="$PROJECT_DIR$/pfiProject" />
       <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager">
     <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python">
@@ -140,13 +133,46 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1080" height="232" key="GridCell.Tab.0.bottom" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.0.center" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.0.left" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.0.right" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.1.bottom" timestamp="1583702750082">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750082" />
+    <state width="1080" height="232" key="GridCell.Tab.1.center" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.1.left" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
+    <state width="1080" height="232" key="GridCell.Tab.1.right" timestamp="1583702750081">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="1080" height="232" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
