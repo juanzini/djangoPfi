@@ -9,6 +9,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import timedelta as td
+import uuid
 import re
 
 class UserManager(UserManager):
@@ -269,7 +270,7 @@ class Empresa(models.Model):
 
 
 class Puesto(models.Model):
-    puesto_id = models.AutoField(primary_key=True)
+    puesto_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
     BE = 'BE'
     FE = 'FE'
