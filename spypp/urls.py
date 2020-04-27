@@ -91,7 +91,7 @@ urlpatterns = [
          name='deactive-puesto-empresa'),
     path('empresa/puestos/eliminar/<int:pk>', login_required(permissions(views.delete_puesto_empresa, User.EM)),
          name='eliminar-puesto-empresa'),
-    path('empresa/puestos/detalle/<int:pk>', login_required(permissions(views.DetailPuestoEmpresaView.as_view(), User.EM)),
+    path('empresa/puestos/detalle/<pk>', login_required(permissions(views.DetailPuestoEmpresaView.as_view(), User.EM)),
          name='puesto-detail-empresa'),
 
     # -------------------SUBCOMISION CARRERA--------------------
