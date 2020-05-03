@@ -1,23 +1,19 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %}
-{% load bootstrap4 %}
-
+{% load material_form %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col">
-        <h2>Iniciar Sesi&oacute;n</h2>
-        <hr>
+    <div class="container col m4" style="min-width:21em;">
+        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b></h5>
+        <br>
         <form method="post" class="form">
             {% csrf_token %}
-            {% bootstrap_form form %}
-            {% buttons %}
-                <br>
-                <button type="submit" class="btn btn-primary btn-md">Iniciar Sesi&oacute;n</button>
-                <a href="{% url 'create-alumno' %}"><button class="btn btn-outline-success btn-md" type="button" style="float: right;">Registrarme</button></a>
-            {% endbuttons %}
+            {% form form=form %}{% endform %}
+                <button type="submit" style="background-color:green;" class="btn btn-md">Iniciar Sesi&oacute;n</button>
+                <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right; background-color:#004884;">Registrarme</button></a>
         </form>
     </div>
 </div>

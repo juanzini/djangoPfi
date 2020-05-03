@@ -1,22 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-left: -1em;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:#004884; align-items:center; display:inline-flex;">
     <div class="container">
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item {% if request.resolver_match.url_name == 'index-alumno' %}active{% endif %}">
-        <a class="nav-link" href="http://www.dirinfo.unsl.edu.ar/">Volver al Departamento</a>
-      </li>
-    </ul>
-    {% if not request.resolver_match.url_name == 'login' %}
-      <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'login' %}">
-      {% csrf_token %}
-      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Iniciar Sesi&oacute;n</button>
-    </form>
-    {% endif %}
-  </div>
+      <a class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img style="margin-top:-0.4em" height="60em" width="60em" src="http://www.dirinfo.unsl.edu.ar/static/images/logo.png"></a>
+      {% if not request.resolver_match.url_name == 'login' %}
+          <a href="{% url 'login' %}"><button class="btn my-2 my-sm-0" type="submit" style="background-color:green; float: right; padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
+      {% endif %}
     </div>
 </nav>
