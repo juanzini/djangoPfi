@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'material.theme.red',
     'material',
     'django_celery_results',
     'django_registration',
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'storages',
     'phonenumber_field',
 ]
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

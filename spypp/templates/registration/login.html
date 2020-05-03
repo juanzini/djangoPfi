@@ -12,8 +12,8 @@
         <form method="post" class="form">
             {% csrf_token %}
             {% form form=form %}{% endform %}
-                <button type="submit" style="background-color:green;" class="btn btn-md">Iniciar Sesi&oacute;n</button>
-                <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right; background-color:#004884;">Registrarme</button></a>
+                <button type="submit" class="btn btn-md">Iniciar Sesi&oacute;n</button>
+                <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right;">Registrarme</button></a>
         </form>
     </div>
 </div>
