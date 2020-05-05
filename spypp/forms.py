@@ -8,7 +8,6 @@ from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.admin import UserAdmin
-from bootstrap_datepicker_plus import DateTimePickerInput
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from material import *
 
@@ -392,12 +391,6 @@ class EntrevistaCreateForm(forms.ModelForm):
     class Meta():
         model = models.Entrevista
         fields = ['fecha', 'lugar']
-        widgets = {
-            'fecha': DateTimePickerInput(options={
-                    "format": "DD/MM/YYYY HH:mm",
-                    "locale": "es",
-                }),
-        }
         
 class EntrevistaExistenteCreateForm(forms.ModelForm):
     class Meta:
@@ -516,16 +509,6 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
             'comentarios_empresa',
             'comentarios_comision_pps',
         )
-        widgets = {
-            'fecha_inicio': DateTimePickerInput(options={
-                "format": "DD/MM/YYYY HH:mm",
-                "locale": "es",
-            }),
-            'fecha_fin': DateTimePickerInput(options={
-                "format": "DD/MM/YYYY HH:mm",
-                "locale": "es",
-            })
-        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -550,16 +533,6 @@ class PasantiaCreateForm(forms.ModelForm):
             'numero_legajo',
             'comentarios_comision_pps',
         )
-        widgets = {
-            'fecha_inicio': DateTimePickerInput(options={
-                "format": "DD/MM/YYYY HH:mm",
-                "locale": "es",
-            }),
-            'fecha_fin': DateTimePickerInput(options={
-                "format": "DD/MM/YYYY HH:mm",
-                "locale": "es",
-            })
-        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

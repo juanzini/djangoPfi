@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'material',
     'django_celery_results',
     'django_registration',
-    'bootstrap_datepicker_plus',
     'django_cleanup.apps.CleanupConfig',
     'private_storage',
     'django_celery_beat',

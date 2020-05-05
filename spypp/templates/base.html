@@ -1,4 +1,5 @@
 {% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 {% include 'material/includes/material_css.html' %}
 {% include 'material/includes/material_js.html' %}
 
@@ -6,9 +7,8 @@
 <html lang="es">
     <head>
         <link href="{% static 'color-scheme.css' %}" rel="stylesheet" media="screen" />
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
         <title>{% block title %}{% endblock %}</title>
         <style>
         html,body { height: 100%;  margin: 0; }
@@ -55,11 +55,16 @@
             background-color:green;
         }
 
+        .dropdown-content li>a,
+        .dropdown-content li>span {
+            color: #004884;
+        }
+
         .btn:visited{
-          background-color: #004884
+          background-color: #004884;
         }
         .btn:hover {
-          background-color: skyblue
+          background-color: skyblue;
         }
         .btn:active{
           background-color: skyblue;
@@ -67,7 +72,7 @@
         .btn:focus{
           background-color: blue;
         }
-        
+
         #id_username,
         #id_password2{
           margin-bottom: 1em;
@@ -75,9 +80,6 @@
 </style>
     </head>
     <body style="min-width:24em;">
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <!-- Navbar -->
             {% if request.user.tipo == 'AL' %}
                 {% include "navbar/alumno.html" %}
@@ -114,6 +116,7 @@
         <!-- /.site-footer -->
 
         <!-- Scripts -->
-        {% block script %}{% endblock %}
+        {% block script %}
+        {% endblock %}
     </body>
 </html>
