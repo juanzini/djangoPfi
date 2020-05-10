@@ -15,9 +15,9 @@
                 </thead>
                 <tbody>
                     {% for entrevista in entrevista_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'entrevista-detail-alumno' entrevista.id %}">
                             <td>
-                                <a href="{% url 'entrevista-detail-alumno' entrevista.id %}">{{ entrevista.empresa.nombre_fantasia }}</a>
+                                {{ entrevista.empresa.nombre_fantasia }}
                             </td>
                             <td>
                                 {{ entrevista.entrevista_postulacion.puesto.get_nombre_display }}

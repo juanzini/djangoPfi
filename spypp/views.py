@@ -199,6 +199,8 @@ def permissions(function, typeUser):
 
 def redirect_view(request):
     if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return HttpResponseRedirect('/admin')
         if request.user.tipo == User.AL:
             return HttpResponseRedirect(reverse('edit-alumno'))
         if request.user.tipo == User.EM:
@@ -399,8 +401,17 @@ class ListEntrevistasAlumnoView(generic.ListView):
 
     def get_queryset(self):
         entrevistas = Entrevista.objects.filter(
-            Q(alumno=self.request.user.alumno_user) & (~Q(alumno__condicion_acreditacion=None)))
-        return getPage(self.request, entrevistas, 20)
+            Q(alumno=self.request.user.alumno_user) & (~Q(alumno__condicion_acreditacion=None))).annotate(
+            pasantia_aceptada_undefined=Case(
+                When(status='REA', pasantia_aceptada=None, then=Value(0)),
+                default=Value(1),
+                output_field=IntegerField()))
+        if len(entrevistas) == 0:
+            entrevistas = []
+        order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
+        entrevistas_sortered = sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
+
+        return getPage(self.request, entrevistas_sortered, 20)
 
 
 class ListPostulacionesAlumnoView(generic.ListView):
@@ -1381,7 +1392,7 @@ class AjaxField2View(generic.View):
         return HttpResponse(data, content_type="application/json")
 
 def getPage(request, list, size):
-    paginator = Paginator(list, size)  # Show 25 contacts per page
+    paginator = Paginator(list, size)
 
     page = request.GET.get('page')
     try:

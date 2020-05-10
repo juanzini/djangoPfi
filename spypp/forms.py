@@ -1,7 +1,7 @@
 from django_registration.forms import RegistrationForm
+from material.base import *
 
 from . import models
-# from material import *
 from datetime import timedelta as td
 from datetime import datetime
 from django import forms
@@ -206,11 +206,11 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
 class AlumnoCreateForm(forms.ModelForm):
-#    layout = Layout(Row('numero_registro', 'telefono'),
- #                   'carrera',
- #                   Row('perfil', 'curriculum'),
- #                   Row('historia_academica', 'plan_de_estudio'),
-  #                  'descripcion_intereses','descripcion_habilidades')
+    layout = Layout(Row('numero_registro', 'telefono'),
+                   'carrera',
+                   Row('perfil', 'curriculum'),
+                   Row('historia_academica', 'plan_de_estudio'),
+                   'descripcion_intereses','descripcion_habilidades')
     class Meta:
         model = models.Alumno
         fields = (
@@ -231,10 +231,10 @@ class AlumnoCreateForm(forms.ModelForm):
         self.fields['carrera'].queryset = models.Carrera.objects.filter(activa=True)
 
 class UserCreateForm(RegistrationForm):
-#    layout = Layout('username', 'email',
-#                    Row('password1', 'password2'),
-#                    Fieldset('Datos Personales',
- #                            Row('first_name', 'last_name')))
+    layout = Layout('username', 'email',
+                   Row('password1', 'password2'),
+                   Fieldset('Datos Personales',
+                            Row('first_name', 'last_name')))
     class Meta(RegistrationForm):
         model = models.User
         fields = (

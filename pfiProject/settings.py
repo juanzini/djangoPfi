@@ -33,7 +33,6 @@ PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 INSTALLED_APPS = [
     'material',
-    'material.admin',
     'spypp.apps.AlumnoConfig',
     'django.contrib.admin',
     'django.contrib.auth',

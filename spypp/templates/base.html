@@ -77,6 +77,15 @@
         #id_password2{
           margin-bottom: 1em;
         }
+
+
+        .table-row{
+            cursor:pointer;
+        }
+
+        .table-row:hover {
+            background-color: white;
+        }
 </style>
     </head>
     <body style="min-width:24em;">
@@ -117,6 +126,13 @@
 
         <!-- Scripts -->
         {% block script %}
+        <script>
+            $(document).ready(function($) {
+            $(".table-row").click(function() {
+                    window.document.location = $(this).data("href");
+                });
+            });
+        </script>
         {% endblock %}
     </body>
 </html>
