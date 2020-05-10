@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'material.theme.red',
+    'bootstrap4',
     'material',
     'django_celery_results',
     'django_registration',
