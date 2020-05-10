@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,19 +33,19 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/alumno/static" />
-      <recent name="$PROJECT_DIR$/alumno" />
-      <recent name="$PROJECT_DIR$/pfiProject" />
-      <recent name="$PROJECT_DIR$/alumno/templatetags" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/spypp/templates/comision_pasantias" />
       <recent name="$PROJECT_DIR$/spypp/templates/empresa" />
       <recent name="$PROJECT_DIR$/alumno/templates/emails" />
       <recent name="$PROJECT_DIR$/pfiProject" />
       <recent name="$PROJECT_DIR$/alumno/templates/subcomision_carrera" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/alumno/static" />
+      <recent name="$PROJECT_DIR$/alumno" />
+      <recent name="$PROJECT_DIR$/pfiProject" />
+      <recent name="$PROJECT_DIR$/alumno/templatetags" />
     </key>
   </component>
   <component name="RunManager">
