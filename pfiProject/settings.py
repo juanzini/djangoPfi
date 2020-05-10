@@ -32,6 +32,8 @@ PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 # Application definition
 
 INSTALLED_APPS = [
+    'material',
+    'material.admin',
     'spypp.apps.AlumnoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,9 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'material.theme.red',
     'bootstrap4',
-    'material',
     'django_celery_results',
     'django_registration',
     'django_cleanup.apps.CleanupConfig',

@@ -16,8 +16,8 @@ from .models import Alumno
 from .models import User
 
 
-from .forms import AlumnoFormAdmin
-from .forms import MyUserCreateAdmin
+from .admin_forms import AlumnoFormAdmin
+from .admin_forms import MyUserCreateAdmin
 
 # Register your models here.
 admin.site.register(Carrera)

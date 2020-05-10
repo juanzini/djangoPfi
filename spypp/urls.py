@@ -1,4 +1,4 @@
-from django.urls import path, include, reverse
+from django.urls import path, include
 from . import views
 from .views import permissions
 from .models import User

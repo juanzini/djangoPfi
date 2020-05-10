@@ -1,15 +1,13 @@
 from django_registration.forms import RegistrationForm
 
 from . import models
+from material import *
 from datetime import timedelta as td
 from datetime import datetime
 from django import forms
-from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
-from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin.widgets import FilteredSelectMultiple
-from material import *
 
 class AlumnoForm(forms.ModelForm):
 
@@ -207,9 +205,6 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
         self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
 
-class AlumnoFormAdmin(admin.ModelAdmin):
-    form = AlumnoForm
-
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
                     'carrera',
@@ -347,44 +342,6 @@ class MyUserCreateForm(UserCreationForm):
         self.fields['email'].required = True
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
-
-class MyUserCreateAdmin(UserAdmin):
-    add_form = MyUserCreateForm
-    form = MyUserChangeForm
-    prepopulated_fields = {'username': ('first_name', 'last_name', )}
-
-    list_display = ['username', 'first_name', 'last_name', 'email', ]
-
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': (
-                'first_name',
-                'last_name',
-                'username',
-                'email',
-                'password1',
-                'password2',
-                'tipo',
-                'is_active'
-            ),
-        }),
-    )
-
-    fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': (
-                'first_name',
-                'last_name',
-                'username',
-                'email',
-                'password',
-                'tipo',
-                'is_active'
-            ),
-        }),
-    )
 
 class EntrevistaCreateForm(forms.ModelForm):
 
