@@ -29,7 +29,6 @@ from django.db import transaction
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
-from bootstrap_datepicker_plus import DatePickerInput
 from django.db.models import Q, F
 from private_storage.views import PrivateStorageDetailView
 from django.db.models import Case, When, Value, IntegerField
@@ -1240,14 +1239,6 @@ class CreatePasantiaView(generic.CreateView):
 
     def get_form(self):
         form = super(CreatePasantiaView, self).get_form(PasantiaCreateForm)
-        form.fields['fecha_inicio'].widget = DatePickerInput(options={
-            "format": "DD/MM/YYYY",
-            "locale": "es",
-        })
-        form.fields['fecha_fin'].widget = DatePickerInput(options={
-            "format": "DD/MM/YYYY",
-            "locale": "es",
-        })
         return form
 
     def get_success_url(self):

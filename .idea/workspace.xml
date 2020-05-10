@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,42 +144,46 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1080" height="232" key="GridCell.Tab.0.bottom" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.0.bottom" timestamp="1588640544635">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.0.center" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544635" />
+    <state width="1396" height="231" key="GridCell.Tab.0.center" timestamp="1588640544635">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.0.left" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544635" />
+    <state width="1396" height="231" key="GridCell.Tab.0.left" timestamp="1588640544634">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.0.right" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544634" />
+    <state width="1396" height="231" key="GridCell.Tab.0.right" timestamp="1588640544635">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.1.bottom" timestamp="1583702750082">
+    <state width="1396" height="231" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544635" />
+    <state width="1396" height="231" key="GridCell.Tab.1.bottom" timestamp="1588640544565">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750082" />
-    <state width="1080" height="232" key="GridCell.Tab.1.center" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544565" />
+    <state width="1396" height="231" key="GridCell.Tab.1.center" timestamp="1588640544565">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.1.left" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544565" />
+    <state width="1396" height="231" key="GridCell.Tab.1.left" timestamp="1588640544565">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state width="1080" height="232" key="GridCell.Tab.1.right" timestamp="1583702750081">
+    <state width="1396" height="231" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544565" />
+    <state width="1396" height="231" key="GridCell.Tab.1.right" timestamp="1588640544565">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1080" height="232" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1583702750081" />
-    <state x="776" y="294" width="618" height="518" key="find.popup" timestamp="1587950419388">
+    <state width="1396" height="231" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1588640544565" />
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588643799727">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="776" y="294" width="618" height="518" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1587950419388" />
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1588643799727" />
+    <state x="776" y="294" width="907" height="682" key="find.popup" timestamp="1588641468599">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="776" y="294" width="907" height="682" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1588641468599" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -251,47 +260,47 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1136</line>
+          <line>1135</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1137</line>
+          <line>1136</line>
           <option name="timeStamp" value="148" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1151</line>
+          <line>1150</line>
           <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1154</line>
+          <line>1153</line>
           <option name="timeStamp" value="153" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1155</line>
+          <line>1154</line>
           <option name="timeStamp" value="154" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>1156</line>
+          <line>1155</line>
           <option name="timeStamp" value="155" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>745</line>
+          <line>744</line>
           <option name="timeStamp" value="165" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>747</line>
+          <line>746</line>
           <option name="timeStamp" value="166" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>748</line>
+          <line>747</line>
           <option name="timeStamp" value="167" />
         </line-breakpoint>
       </breakpoints>

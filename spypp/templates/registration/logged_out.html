@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% csrf_token %}
 {% block content %}
-<div class="row">
-        <div class="col">
-            <h1> Desconectado </h1> <span> Su sesi&oacute;n finaliz&oacute; correctamente. </span>
-        </div>
-    </div>
+<head>
+  <meta http-equiv="Refresh" content="0; URL={% url 'login' %}">
+</head>
 {% endblock %}

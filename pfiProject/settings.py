@@ -39,16 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap4',
+    'material.theme.red',
+    'material',
     'django_celery_results',
     'django_registration',
-    'bootstrap_datepicker_plus',
     'django_cleanup.apps.CleanupConfig',
     'private_storage',
     'django_celery_beat',
     'storages',
     'phonenumber_field',
 ]
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -175,10 +177,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-
-BOOTSTRAP4 = {
-    'include_jquery': True,
-}
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'

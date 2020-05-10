@@ -1,34 +1,69 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-left: -1em;">
-    <div class="container">
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item {% if request.resolver_match.url_name == 'edit-alumno' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
-      </li>
-      <li class="nav-item dropdown {% if request.resolver_match.url_name == 'empresa-alumno' or request.resolver_match.url_name == 'postulaciones-alumno' or request.resolver_match.url_name == 'entrevistas-alumno'  %}active{% endif %}">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Acciones
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'entrevistas-alumno' %}">Mis Entrevistas</a>
-          <a class="dropdown-item" href="{% url 'postulaciones-alumno' %}">Mis Postulaciones</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{% url 'empresas-alumno' %}">Buscar Pasant&iacute;as</a>
-        </div>
-      </li>
-      <li class="nav-item {% if request.resolver_match.url_name == 'contacto-alumno' %}active{% endif %}">
-        <a class="nav-link" href="{% url 'contacto-alumno' %}">Contacto</a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&oacute;n?');" class="btn btn-outline-primary my-2 my-sm-0" type="submit">Cerrar Sesi&oacute;n</button>
-    </form>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:#004884; align-items:center;align-items:center; display:inline-flex;">
+  <div class="container">
+    <div class="nav-wrapper">
+          <a class="brand-logo" style="position:relative !important;" href="http://www.dirinfo.unsl.edu.ar/"><img height="60em" width="60em" src="http://www.dirinfo.unsl.edu.ar/static/images/logo.png"></a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            <li>
+              <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
+            </li>
+            <li>
+              <a class="dropdown-trigger" href="#!" data-target="dropdownAlumno">
+                Acciones<i class="material-icons right">arrow_drop_down</i>
+              </a>
+            </li>
+            <li>
+              <a class="nav-link" href="{% url 'contacto-alumno' %}">Contacto</a>
+            </li>
+            <li>
+              <a onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&oacute;n?');" class="nav-link" href="{% url 'logout' %}">
+                <i class="material-icons left" style="color:red;">power_settings_new</i>
+              </a>
+            </li>
+          </ul>
     </div>
+  </div>
 </nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li>
+      <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
+    </li>
+    <li>
+      <a class="dropdown-trigger" href="#!" data-target="dropdownAlumno2">
+        Acciones<i class="material-icons right">arrow_drop_down</i>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" href="{% url 'contacto-alumno' %}">Contacto</a>
+    </li>
+    <li>
+      <a onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&oacute;n?');" class="nav-link" href="{% url 'logout' %}">
+          <i class="material-icons" style="color:red;">power_settings_new</i><span style="margin-left:-1em;">Cerrar Sesi&oacute;n</span>
+      </a>
+    </li>
+</ul>
+
+<ul id="dropdownAlumno" class="dropdown-content">
+  <li><a class="dropdown-item" href="{% url 'entrevistas-alumno' %}">Entrevistas</a></li>
+  <li class="divider"></li>
+  <li><a class="dropdown-item" href="{% url 'postulaciones-alumno' %}">Postulaciones</a></li>
+  <li class="divider"></li>
+  <li><a class="dropdown-item" href="{% url 'empresas-alumno' %}">Pasant&iacute;as</a></li>
+</ul>
+
+<ul id="dropdownAlumno2" class="dropdown-content">
+  <li><a class="dropdown-item" href="{% url 'entrevistas-alumno' %}">Entrevistas</a></li>
+  <li class="divider"></li>
+  <li><a class="dropdown-item" href="{% url 'postulaciones-alumno' %}">Postulaciones</a></li>
+  <li class="divider"></li>
+  <li><a class="dropdown-item" href="{% url 'empresas-alumno' %}">Pasant&iacute;as</a></li>
+</ul>
+
+<script type="text/javascript">
+    $(".dropdown-trigger").dropdown();
+
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>
