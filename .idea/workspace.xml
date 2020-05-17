@@ -3,21 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/edit_obligado.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/edit_obligado.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevista_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevista_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/registration/password_change_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/registration/password_change_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ultimo_dump_sqlite.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ultimo_dump_sqlite.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,10 +185,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="615" y="188" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1589132895760" />
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1589751281689">
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1589755030519">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1589751281689" />
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1589755030519" />
     <state x="777" y="294" width="907" height="682" key="find.popup" timestamp="1589131440770">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
