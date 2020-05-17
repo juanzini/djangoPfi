@@ -4,8 +4,8 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Mi Perfil</h2>
-            <hr>
+            <h4>Mi Perfil</h4>
+            <br>
             <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% form form=user_form %}{% endform %}

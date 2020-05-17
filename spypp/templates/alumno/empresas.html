@@ -2,8 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Ofertas</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Ofertas</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -16,9 +16,9 @@
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' puesto.pk %}">
                             <td>
-                                <a href="{% url 'puesto-detail-alumno' puesto.pk %}">{{ puesto.empresa.nombre_fantasia }}</a>
+                                {{ puesto.empresa.nombre_fantasia }}
                             </td>
                             <td>
                                 {{ puesto.get_nombre_display }}
@@ -26,10 +26,10 @@
                             <td>
                                 {{ puesto.horario }}
                             </td>
-                            <td align="center">
+                            <td style="text-align: center;">
                                 {% if puesto.rentado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                             </td>
-                            <td align="center">
+                            <td style="text-align: center;">
                                 {% if puesto.postulacion %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                             </td>
                         </tr>

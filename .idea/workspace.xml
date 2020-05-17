@@ -2,16 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pfiProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfiProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/contacto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/edit_obligado.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/edit_obligado.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/empresas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevista_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevista_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/entrevistas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/puesto_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/registration/password_change_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/registration/password_change_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ultimo_dump_sqlite.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ultimo_dump_sqlite.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,46 +161,46 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="899" y="311" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1589132528897" />
-    <state width="1386" height="292" key="GridCell.Tab.0.bottom" timestamp="1589132898898">
+    <state width="713" height="130" key="GridCell.Tab.0.bottom" timestamp="1589748955900">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898898" />
-    <state width="1386" height="292" key="GridCell.Tab.0.center" timestamp="1589132898897">
+    <state width="713" height="130" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1589748955900" />
+    <state width="713" height="130" key="GridCell.Tab.0.center" timestamp="1589748955900">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898897" />
-    <state width="1386" height="292" key="GridCell.Tab.0.left" timestamp="1589132898897">
+    <state width="713" height="130" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1589748955900" />
+    <state width="713" height="130" key="GridCell.Tab.0.left" timestamp="1589748955899">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898897" />
-    <state width="1386" height="292" key="GridCell.Tab.0.right" timestamp="1589132898897">
+    <state width="713" height="130" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1589748955899" />
+    <state width="713" height="130" key="GridCell.Tab.0.right" timestamp="1589748955900">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898897" />
-    <state width="1386" height="292" key="GridCell.Tab.1.bottom" timestamp="1589132898825">
+    <state width="713" height="130" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1589748955900" />
+    <state width="713" height="130" key="GridCell.Tab.1.bottom" timestamp="1589148231317">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898825" />
-    <state width="1386" height="292" key="GridCell.Tab.1.center" timestamp="1589132898824">
+    <state width="713" height="130" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1589148231317" />
+    <state width="713" height="130" key="GridCell.Tab.1.center" timestamp="1589148231317">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898824" />
-    <state width="1386" height="292" key="GridCell.Tab.1.left" timestamp="1589132898824">
+    <state width="713" height="130" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1589148231317" />
+    <state width="713" height="130" key="GridCell.Tab.1.left" timestamp="1589148231317">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898824" />
-    <state width="1386" height="292" key="GridCell.Tab.1.right" timestamp="1589132898825">
+    <state width="713" height="130" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1589148231317" />
+    <state width="713" height="130" key="GridCell.Tab.1.right" timestamp="1589148231317">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1386" height="292" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1589132898825" />
+    <state width="713" height="130" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1589148231317" />
     <state x="615" y="188" key="SettingsEditor" timestamp="1589132895760">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="615" y="188" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1589132895760" />
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588643799727">
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1589751281689">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1588643799727" />
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1589751281689" />
     <state x="777" y="294" width="907" height="682" key="find.popup" timestamp="1589131440770">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>

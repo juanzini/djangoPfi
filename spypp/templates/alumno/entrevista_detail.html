@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     <div class="row">
         <div class="col">
-            <h6 style="margin-top:-30px;margin-bottom:20px;"><a href="/alumno/entrevistas"> Entrevistas </a></h6>
-            <h2>Entrevista con <a href="{% url 'puesto-detail-alumno' entrevista.entrevista_postulacion.puesto.pk %}">{{ entrevista.empresa.nombre_fantasia }}</a></h2>
+            <h4>Entrevista con <a href="{% url 'puesto-detail-alumno' entrevista.entrevista_postulacion.puesto.pk %}">{{ entrevista.empresa.nombre_fantasia }}</a></h4>
+                Estado:
                 {% if entrevista.status == 'CAA' %}
                     <span style="color:red;">Cancelada por el alumno</span>
                 {% else %}
@@ -21,44 +21,50 @@
                                 {% endif %}
                             {% else %}
                                 <span style="color:green;"> ACTIVA </span>
-                                <form class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
-                                  {% csrf_token %}
-                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
-                                </form>
                             {% endif %}
                         {% else %}
                             {% if entrevista.is_past_due %}
                                 <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
                             {% else %}
                                 <span style="color:orange;">A la espera de confirmación del Alumno</span>
-                                <form style="display: inline-flex" class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-confirm' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                    <button style="display: in-block" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" class="btn btn-outline-primary btn-sm" type="submit">Confirmar Asistencia</button>
-                                </form>
-                                <form style="display: inline-flex" class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                    <button style="display: in-block" onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
-                                </form>
                             {% endif %}
                         {% endif %}
                     {% endif %}
                 {% endif %}
-            <hr>
+            <br>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form exclude="resultado" %}
-                <div class="form-group">
-                    <label for="id_resultado">Resultado</label>
-                    <textarea name="resultado" cols="40" rows="10" maxlength="1000" readonly="" class="form-control" placeholder="" title="" id="id_resultado">
-                    </textarea>
-                </div>
-                {% buttons %}
-                    <br>
-                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
-                {% endbuttons %}
+                {% form form=form %}{% endform %}
+                <form style="display: inline-flex" class="form" method="get" action="#">
+                </form>
+                    {% if entrevista.status != 'CAA' %}
+                        {% if entrevista.status != 'CAE' %}
+                            {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                                {% if not entrevista.is_past_due and entrevista.status != 'REA' %}
+                                    <form class="form" method="get" action="{% url 'alumno-entrevista-cancel' %}">
+                                      {% csrf_token %}
+                                      <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                      <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-small" type="cancel" style="float: left">Cancelar</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                {% if not entrevista.is_past_due %}
+                                    <form style="display: inline-flex" class="form" method="get" action="{% url 'alumno-entrevista-confirm' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                        <button style="display: in-block; float: left" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" type="submit" class="btn btn-small">Confirmar Asistencia</button>
+                                    </form>
+                                    <form style="display: inline-flex" class="form" method="get" action="{% url 'alumno-entrevista-cancel' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
+                                        <button style="display: in-block; float: left; margin-left: 0.5em;" onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" type="cancel" class="btn btn-small">Cancelar</button>
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-small" type="button" style="float: right; margin-left: 1em;">Atr&aacute;s</button></a>
             </form>
         </div>
     </div>

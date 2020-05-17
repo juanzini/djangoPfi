@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link href="{% static 'color-scheme.css' %}" rel="stylesheet" media="screen" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
@@ -53,6 +54,10 @@
 
         .btn[type=submit] {
             background-color:green;
+        }
+
+        .btn[type=cancel] {
+            background-color:red;
         }
 
         .dropdown-content li>a,
@@ -109,8 +114,9 @@
 
         <!-- begin The Footer -->
         <footer class="site-footer" style="border-top: 0px solid;">
-        <div class="container" style="margin-top: 20px; margin-bottom: 20px;">
-                <div class="col-md-5" style="margin-left: -1em;">
+        <div class="container" style="margin-bottom: 20px;">
+            <div class="row">
+                <div class="col" style="width: 100%;">
                     <div id="contact" class="footer-widget">
                         <h4 class="footer-widget-title">Departamento de Informática</h4>
                         <span>Universidad Nacional de San Luis<br>Ejército de Los Andes 950 - Bloque II - 1 Piso - Oficina Nº12<br /> San Luis, Argentina - CP 5700<br>+54-266-4520300 int 2133<br>Línea Directa +54-266-4520331<br>secinfo@unsl.edu.ar

@@ -26,7 +26,7 @@ INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, hi
 INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (25,3027817,'curriculums/curriculum-federico-gabriel-reylova-curriculum.pdf','planes_de_estudio/plan-federico-gabriel-reylova-plan_de_estudio.pdf','historias_academicas/historia-federico-gabriel-reylova-historia_academica.pdf','Desarrollo de videojuegos','Escribo 50 palabras por minuto.','2019-08-11',NULL,NULL,'','Alumno con alto rendimiento en el desarrollo de videojuegos.',1,'','perfiles/perfil-federico-gabriel-reylova-perfil.jpeg',0,30,4);
 INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (26,3028616,'curriculums/curriculum-elias-martin-schiel-curriculum.pdf','planes_de_estudio/plan-elias-martin-schiel-plan_de_estudio.pdf','historias_academicas/historia-elias-martin-schiel-historia_academica.pdf','','','2019-08-11',NULL,NULL,'','',0,'','perfiles/perfil-elias-martin-schiel-perfil.jpeg',0,31,6);
 INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (27,3037110,'curriculums/curriculum-maria-silvia-sofia-saieg-curriculum.pdf','planes_de_estudio/plan-maria-silvia-sofia-saieg-plan_de_estudio.pdf','historias_academicas/historia-maria-silvia-sofia-saieg-historia_academica.pdf','','','2019-08-11',NULL,NULL,'','',0,'','',0,32,6);
-INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (28,3027912,'curriculums/curriculum-carlos-dante-scala-necco-curriculum.pdf','planes_de_estudio/plan-carlos-dante-scala-necco-plan_de_estudio.pdf','historias_academicas/historia-carlos-dante-scala-necco-historia_academica.pdf','','','2019-08-11',NULL,NULL,'','',0,'','perfiles/perfil-carlos-dante-scala-necco-perfil.jpeg',0,33,1);
+INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (28,3027912,'curriculums/curriculum-carlos-dante-scala-necco-curriculum.pdf','planes_de_estudio/plan-carlos-dante-scala-necco-plan_de_estudio.pdf','historias_academicas/historia-carlos-dante-scala-necco-historia_academica.pdf','','','2019-08-11',NULL,NULL,'','',0,'','perfiles/perfil-carlos-dante-scala-necco-perfil.jpeg',0,33,1);git
 INSERT INTO "spypp_alumno" (id, numero_registro, curriculum, plan_de_estudio, historia_academica, descripcion_intereses, descripcion_habilidades, ultima_actualizacion_perfil, ultima_postulacion, condicion_acreditacion, expedicion_acreditacion, comentarios_comision_carrera, comentarios_carrera_visibles, comentarios_comision_pps, perfil, progreso, user_id, carrera_id) VALUES (29,3019916,'curriculums/curriculum-leandro-troncoso-curriculum.pdf','planes_de_estudio/plan-leandro-troncoso-plan_de_estudio.pdf','historias_academicas/historia-leandro-troncoso-historia_academica.pdf','','','2019-08-11',NULL,NULL,'','',0,'','',0,34,1);
 INSERT INTO "spypp_carrera" VALUES (1,'Tecnicatura Universitaria en Redes de Computadoras',1,1);
 INSERT INTO "spypp_carrera" VALUES (3,'Tecnicatura Universitaria en Web',1,1);
@@ -34,15 +34,15 @@ INSERT INTO "spypp_carrera" VALUES (4,'Ingeniería en Computación',1,1);
 INSERT INTO "spypp_carrera" VALUES (5,'Licenciatura en Ciencias de la Computación',1,1);
 INSERT INTO "spypp_carrera" VALUES (6,'Profesorado en Ciencias de la Computación',1,1);
 INSERT INTO "spypp_carrera" VALUES (10,'Ingenieria en Informatica',1,1);
-INSERT INTO "spypp_postulacion" VALUES (1,'2019-08-21','2019-08-21',0,1,1,1);
-INSERT INTO "spypp_postulacion" VALUES (2,'2019-08-21','2019-08-21',0,1,2,2);
-INSERT INTO "spypp_postulacion" VALUES (3,'2019-08-21','2019-08-21',0,1,3,3);
-INSERT INTO "spypp_pasantia" VALUES (19,'2019-08-20','2019-08-24','',NULL,NULL,'',NULL,3,'docente5@asd.com','tutordos@asd.com');
-INSERT INTO "spypp_puesto" VALUES (1,'BE','programará todo el día','sql
+INSERT INTO "spypp_postulacion" VALUES (1,'2019-08-21','2019-08-21',0,1,1,'7521162e-5408-41be-aefe-eb78f3333a85');
+INSERT INTO "spypp_postulacion" VALUES (2,'2019-08-21','2019-08-21',0,1,2,'8f8b9eec-f60c-4120-9bad-d838fd57e4a1');
+INSERT INTO "spypp_postulacion" VALUES (3,'2019-08-21','2019-08-21',0,1,3,'01280ee7-b27d-4249-883a-f5beb9fb13d3');
+INSERT INTO "spypp_pasantia" VALUES (19,'2019-08-20','2019-08-24',NULL,NULL,NULL,NULL,NULL,1,'FINALIZADA',3,'docente5@asd.com','tutordos@asd.com');
+INSERT INTO "spypp_puesto" VALUES ('7521162e-5408-41be-aefe-eb78f3333a85','BE','programará todo el día','sql
 java
-go','lunes a viernes de 8 a 17hs',1,1,1);
-INSERT INTO "spypp_puesto" VALUES (2,'FE','nada','nada','lunes',1,1,2);
-INSERT INTO "spypp_puesto" VALUES (3,'QA','nada','adan','viernes',1,1,5);
+go','lunes a viernes de 8 a 17hs',1,'2020-05-30',1,1);
+INSERT INTO "spypp_puesto" VALUES ('8f8b9eec-f60c-4120-9bad-d838fd57e4a1','FE','nada','nada','lunes',1,'2020-05-30',1,2);
+INSERT INTO "spypp_puesto" VALUES ('01280ee7-b27d-4249-883a-f5beb9fb13d3','QA','nada','adan','viernes',1,'2020-05-30',1,5);
 INSERT INTO "spypp_subcomisioncarrera_docentes" VALUES (1,1,'docente1@asd.com');
 INSERT INTO "spypp_subcomisioncarrera_docentes" VALUES (3,1,'docente2@asd.com');
 INSERT INTO "spypp_subcomisioncarrera_docentes" VALUES (6,3,'docente3@asd.com');
@@ -71,20 +71,20 @@ INSERT INTO "spypp_tutorempresa" VALUES ('Tutor','Dos','DOs','tutordos@asd.com',
 INSERT INTO "spypp_entrevista" VALUES (1,'2019-08-22 00:55:18','aca','',NULL,'','','CAA',1,1);
 INSERT INTO "spypp_entrevista" VALUES (2,'2019-08-23 02:55:50','alla','',NULL,'','','CAA',1,2);
 INSERT INTO "spypp_entrevista" VALUES (3,'2019-08-21 02:56:14','ada','',NULL,'','','REA',1,5);
-INSERT INTO "spypp_empresa" VALUES (1,'Mercadolibre es una e-commerce','https://jobs.mercadolibre.com/?locale=es_ES','logos/logo-mercado-libre-ml.jpg','Mercadolibre S.R.L.',1,5);
-INSERT INTO "spypp_empresa" VALUES (2,'Descripción de la Empresa','https://www.raona.com/','logos/logo-raona-srl-Raona.jpg','Raona',1,35);
-INSERT INTO "spypp_empresa" VALUES (3,'Descripcion de la empresa','http://www.beclever.com.ar/','logos/logo-be-clever-BeCleaver.jpg','Be Clever',1,36);
-INSERT INTO "spypp_empresa" VALUES (4,'descripcion de la empresa','http://gpf-soluciones.com.ar/','logos/logo-gpf-soluciones-GPFSoluciones.jpg','GPF Soluciones',1,37);
-INSERT INTO "spypp_empresa" VALUES (5,'descripcion de la empresa','http://www.runaid.com.ar/index_es.html','logos/logo-runa-id-RunaID.jpg','Runa ID',1,38);
-INSERT INTO "spypp_empresa" VALUES (6,'descripcion de la empresa','https://cat-technologies.com/','logos/logo-cat-technologies-Cat.jpg','Cat Technologies',1,39);
-INSERT INTO "spypp_empresa" VALUES (7,'descripcion de la empresa','http://coradir.com.ar/','logos/logo-coradir-sa-Coradir.jpg','Coradir S.A.',1,40);
-INSERT INTO "spypp_empresa" VALUES (8,'descripcion de la empresa','https://www.unitech-corp.com/','logos/logo-unitech-sa-Unitech.jpg','Unitech',1,41);
-INSERT INTO "spypp_empresa" VALUES (9,'descripcion de la empresa','http://www.alasit.com/','logos/logo-alas-it-AlasIT.jpg','Alas IT',1,42);
-INSERT INTO "spypp_empresa" VALUES (10,'descripcion de la empresa','https://latam.ctinsuretech.com/es/','','Inworx',1,43);
-INSERT INTO "spypp_empresa" VALUES (11,'descripcion de la empresa','http://www.aridosoftware.com/','logos/logo-arido-software-Arido.jpg','Árido Software',1,44);
-INSERT INTO "spypp_empresa" VALUES (12,'descripcion de la empresa','http://www.gruposlots.com.ar','','Grupo Slots',1,45);
-INSERT INTO "spypp_empresa" VALUES (13,'descripcion de la empresa','http://www.edesalenergia.com.ar/','','Edesal S.A.',1,46);
-INSERT INTO "spypp_empresa" VALUES (14,'descripcion de la empresa','http://transpuntanosl.com.ar/','','Transpuntano',1,47);
+INSERT INTO "spypp_empresa" VALUES (1,'Mercadolibre es una e-commerce','https://jobs.mercadolibre.com/?locale=es_ES','logos/logo-mercado-libre-ml.jpg','Mercadolibre S.R.L.',1,1,5);
+INSERT INTO "spypp_empresa" VALUES (2,'Descripción de la Empresa','https://www.raona.com/','logos/logo-raona-srl-Raona.jpg','Raona',1,1,35);
+INSERT INTO "spypp_empresa" VALUES (3,'Descripcion de la empresa','http://www.beclever.com.ar/','logos/logo-be-clever-BeCleaver.jpg','Be Clever',1,1,36);
+INSERT INTO "spypp_empresa" VALUES (4,'descripcion de la empresa','http://gpf-soluciones.com.ar/','logos/logo-gpf-soluciones-GPFSoluciones.jpg','GPF Soluciones',1,1,37);
+INSERT INTO "spypp_empresa" VALUES (5,'descripcion de la empresa','http://www.runaid.com.ar/index_es.html','logos/logo-runa-id-RunaID.jpg','Runa ID',1,1,38);
+INSERT INTO "spypp_empresa" VALUES (6,'descripcion de la empresa','https://cat-technologies.com/','logos/logo-cat-technologies-Cat.jpg','Cat Technologies',1,1,39);
+INSERT INTO "spypp_empresa" VALUES (7,'descripcion de la empresa','http://coradir.com.ar/','logos/logo-coradir-sa-Coradir.jpg','Coradir S.A.',1,1,40);
+INSERT INTO "spypp_empresa" VALUES (8,'descripcion de la empresa','https://www.unitech-corp.com/','logos/logo-unitech-sa-Unitech.jpg','Unitech',1,1,41);
+INSERT INTO "spypp_empresa" VALUES (9,'descripcion de la empresa','http://www.alasit.com/','logos/logo-alas-it-AlasIT.jpg','Alas IT',1,1,42);
+INSERT INTO "spypp_empresa" VALUES (10,'descripcion de la empresa','https://latam.ctinsuretech.com/es/','','Inworx',1,1,43);
+INSERT INTO "spypp_empresa" VALUES (11,'descripcion de la empresa','http://www.aridosoftware.com/','logos/logo-arido-software-Arido.jpg','Árido Software',1,1,44);
+INSERT INTO "spypp_empresa" VALUES (12,'descripcion de la empresa','http://www.gruposlots.com.ar','','Grupo Slots',1,1,45);
+INSERT INTO "spypp_empresa" VALUES (13,'descripcion de la empresa','http://www.edesalenergia.com.ar/','','Edesal S.A.',1,1,46);
+INSERT INTO "spypp_empresa" VALUES (14,'descripcion de la empresa','http://transpuntanosl.com.ar/','','Transpuntano',1,1,47);
 INSERT INTO "spypp_docente" VALUES ('Rubén Gerardo','APOLLONI','docente1@asd.com','1',1);
 INSERT INTO "spypp_docente" VALUES ('Berta Elena','GARCÍA','docente2@asd.com','2',1);
 INSERT INTO "spypp_docente" VALUES ('Jesús Francisco','AGUIRRE','docente3@asd.com','5',1);

@@ -4,7 +4,7 @@
 {% block content %}
     <div class="row">
         <div class="col m6">
-            <h5>Alta de Usuario</h5>
+            <h4>Alta de Usuario</h4>
             <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% form form=user_form %}{% endform %}

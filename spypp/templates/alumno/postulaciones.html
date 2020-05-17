@@ -2,8 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Postulaciones</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Postulaciones</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -16,9 +16,9 @@
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
                             <td>
-                                <a href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">{{ postulacion.puesto.empresa.nombre_fantasia }}</a>
+                                {{ postulacion.puesto.empresa.nombre_fantasia }}
                             </td>
                             <td>
                                 {{ postulacion.puesto.get_nombre_display }}
@@ -49,7 +49,7 @@
                                             {% if postulacion.entrevista.is_past_due %}
                                                 <span style="color:black;"> Se excedi&oacute; la fecha y el alumno no confirm&oacute;</span>
                                             {% else %}
-                                                <span style="color:orange;">A la espera de confirmación de Alumno</span>
+                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
@@ -59,10 +59,10 @@
                             {% endif %}
                             </td>
                             <td>
-                            {% if postulacion.entrevista %}
-                                {{ postulacion.entrevista.fecha }}
-                            {% else %}
-                            {% endif %}
+                                {% if postulacion.entrevista %}
+                                    {{ postulacion.entrevista.fecha }}
+                                {% else %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -72,3 +72,4 @@
         </div>
     </div>
 {% endblock %}
+

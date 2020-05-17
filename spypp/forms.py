@@ -141,10 +141,9 @@ class EntrevistaDetailAlumnoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailAlumnoForm, self).__init__(*args, **kwargs)
-        self.fields['fecha'].widget.attrs['readonly'] = True
-        self.fields['lugar'].widget.attrs['readonly'] = True
-        self.fields['resultado'].widget.attrs['readonly'] = True
-
+        self.fields['fecha'].disabled = True
+        self.fields['lugar'].disabled = True
+        self.fields['resultado'].disabled = True
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
     class Meta():
@@ -266,11 +265,18 @@ class UserWithoutNameCreateForm(RegistrationForm):
         self.fields['email'].required = True
 
 class UserEditForm(forms.ModelForm):
+    layout = Layout('email',
+                    Row('first_name', 'last_name'))
     class Meta:
         model = models.User
         fields = ('first_name', 'last_name', 'username', 'email')
 
 class AlumnoEditForm(forms.ModelForm):
+    layout = Layout(Row('telefono'),
+                    Row('perfil', 'curriculum'),
+                    Row('historia_academica', 'plan_de_estudio'),
+                    'descripcion_intereses', 'descripcion_habilidades')
+
     class Meta:
         model = models.Alumno
         fields = ('perfil', 'telefono', 'curriculum', 'plan_de_estudio', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
