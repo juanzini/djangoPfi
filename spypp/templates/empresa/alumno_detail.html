@@ -3,8 +3,8 @@
 
 {% block content %}
     <div class="row">
-        <div class="col">
-            <div style="margin-bottom: 20px; display: flex; align-items: center;">
+        <div class="col" style="width: 100%;">
+            <div style="display: flex; align-items: center;">
                 {% if postulacion.alumno.perfil %} <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
                 {% else %} <i class="far fa-user fa-4x"></i>
                 {% endif %}

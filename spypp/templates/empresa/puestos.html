@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load material_form %}
 {% block content %}
     <div class="row">
-        <div class="col">
+        <div class="col" style="width: 100%;">
             <h2>Puestos Ofrecidos <a href="{% url 'nuevo-puesto-empresa' %}">
                     <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nuevo Puesto</button>
                 </a></h2>
@@ -13,14 +14,15 @@
                         <th>Horario</th>
                         <th>Rentada</th>
                         <th>Activo</th>
+                        <th>Acci&oacute;n</th>
                         <th>Fecha de Desactivaci&oacute;n</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'puesto-detail-empresa' puesto.pk %}">
                             <td>
-                                <a href="{% url 'puesto-detail-empresa' puesto.pk %}">{{ puesto.get_nombre_display }}</a>
+                                {{ puesto.get_nombre_display }}
                             </td>
                             <td>
                                 {{ puesto.horario }}
@@ -34,9 +36,16 @@
                             </td>
                             <td>
                                 {% if puesto.activo %}
-                                    Si <a href="{% url 'deactive-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="submit" class="btn btn-sm btn-outline-danger py-0">Desactivar</button></a>
+                                    Si
                                 {% else %}
-                                    No <a href="{% url 'active-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="submit" class="btn btn-sm btn-outline-success py-0">Activar</button></a>
+                                    No
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if puesto.activo %}
+                                    <a href="{% url 'deactive-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="cancel" class="btn-small">Desactivar</button></a>
+                                {% else %}
+                                    <a href="{% url 'active-puesto-empresa' puesto.pk %}"><button style="font-size: 0.7em; margin-top: -0.25em;" type="submit" class="btn-small">Activar</button></a>
                                 {% endif %}
                             </td>
                             <td>

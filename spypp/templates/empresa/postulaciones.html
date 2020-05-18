@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load material_form %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Postulaciones</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Postulaciones</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -17,9 +18,9 @@
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'alumno-detail-empresa' postulacion.pk %}">
                             <td>
-                                <a href="{% url 'alumno-detail-empresa' postulacion.pk %}">{{ postulacion.puesto.get_nombre_display }}</a>
+                                {{ postulacion.puesto.get_nombre_display }}
                             </td>
                             <td>
                                 {{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}
@@ -50,7 +51,7 @@
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn-small" type="cancel">Cancelar</button>
                                                 </form>
                                             {% endif %}
                                         {% else %}
@@ -66,7 +67,7 @@
                                 <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Generar Entrevista</button>
+                                  <button class="btn-small" type="submit">Generar Entrevista</button>
                                 </form>
                             {% endif %}
                             </td>

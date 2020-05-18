@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load material_form %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Entrevistas</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Entrevistas</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -16,9 +17,9 @@
                 </thead>
                 <tbody>
                     {% for entrevista in entrevista_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'entrevista-detail-empresa' entrevista.id %}">
                             <td>
-                                <a href="{% url 'entrevista-detail-empresa' entrevista.id %}">{{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}</a>
+                                {{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}
                             </td>
                             <td>
                                 {{ entrevista.fecha }}
@@ -45,7 +46,7 @@
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn-small" type="cancel">Cancelar</button>
                                                 </form>
                                             {% endif %}
                                         {% else %}
@@ -56,7 +57,7 @@
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn-small" type="cancel">Cancelar</button>
                                                 </form>
                                             {% endif %}
                                         {% endif %}

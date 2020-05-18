@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load material_form %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Tutores
+        <div class="col" style="width: 100%;">
+            <h4>Tutores
                 <a href="{% url 'nuevo-tutor-empresa' %}?next={{ request.path }}">
                     <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nuevo Tutor</button>
                 </a>
-            </h2>
+            </h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -19,9 +20,9 @@
                 </thead>
                 <tbody>
                     {% for tutor in tutores_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'tutores-detail-empresa' tutor.pk %}">
                             <td>
-                                <a href="{% url 'tutores-detail-empresa' tutor.pk %}">{{ tutor.apellido }}</a>
+                                {{ tutor.apellido }}
                             </td>
                             <td>
                                 {{ tutor.nombre }}

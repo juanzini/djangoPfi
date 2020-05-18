@@ -1,60 +1,27 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Editar Perfil</h2>
-            <hr>
+            <h4>Mi Perfil</h4>
+            <br>
             <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% bootstrap_form user_form %}
-                <div class="form-group"><label for="id_logo">Logo (.png o .jpg)</label>
-                    <div class="row bootstrap4-multi-input">
-                      <div class="col-12">
-                        <div class="input-group mb-3" style="margin-bottom : 0rem !important;">
-                            <div class="input-group-prepend">
-                            <span class="input-group-text">Nombre de Archivo:</span>
-                          </div>
-                          <div class="custom-file">
-                            <input type="file" name="logo" class="custom-file-input" id="id_logo">
-                            <label class="custom-file-label" for="id_logo" data-browse="Buscar">Nada seleccionado</label>
-                          </div>
-                        </div>
-                          {% if user.empresa_user.logo %}
-                          <span style="margin-bottom : 0rem !important; font-size: 14px; margin-left: 0.4rem;">Actualmente: <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' user.empresa_user.pk %}"/><br></span>
-                          {% endif %}
-                      </div>
+                {% form form=user_form %}{% endform %}
+                {% form form=empresa_form %}{% endform %}
+                {% if user.empresa_user.logo %}
+                    <div class="row">
+                         <div class="col">
+                             <span style="margin-bottom : 0rem !important; font-size: 14px; margin-left: 0.4rem; vertical-align:middle;">Actualmente:</span>
+                             <img style="vertical-align:middle;" height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' user.empresa_user.pk %}"/>
+                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="id_url">URL</label>
-                    <input type="text" name="url" value="{% if user.empresa_user.url %}{{user.empresa_user.url}}{% endif %}" maxlength="200" class="form-control" placeholder="URL" id="id_url">
-                </div>
-                {% bootstrap_form empresa_form exclude="logo,url" %}
-                {% buttons %}
+                {% endif %}
                     <br>
                     <button type="submit" class="btn btn-primary btn-md">Guardar</button>
                     <a href="/accounts/password_change"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Cambiar Contrase&ntilde;a</button></a>
-                {% endbuttons %}
             </form>
         </div>
     </div>
-
-<style>
-    .custom-file-label::after {
-        content: "Buscar" !important;
-    }
-</style>
-
-<script>
-    $('.custom-file-input').on('change', function() {
-   let fileName = $(this).val().split('\\').pop();
-   if (!fileName) {
-        $(this).next('.custom-file-label').addClass("selected").html("Nada seleccionado");
-    } else {
-        $(this).next('.custom-file-label').addClass("selected").html(fileName);
-   }
-});
-</script>
 {% endblock %}

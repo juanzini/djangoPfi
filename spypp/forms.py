@@ -284,11 +284,11 @@ class AlumnoEditForm(forms.ModelForm):
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ('username', 'email')
+        fields = ['email',]
+
     def __init__(self, *args, **kwargs):
         super(EmpresaUserEditForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
-        self.fields['username'].required = True
 
 class EmpresaEditForm(forms.ModelForm):
     class Meta:
