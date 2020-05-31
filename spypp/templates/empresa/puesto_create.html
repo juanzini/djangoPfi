@@ -1,20 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
 {{ form.media }}
     <div class="row">
         <div class="col">
-            <h2>Nuevo Puesto</h2>
-            <hr>
+            <h4>Nuevo Puesto</h4>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
+                {% form form=form %}{% endform %}
                     <br>
                     <button type="submit" class="btn btn-primary btn-md">Guardar</button>
                     <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
-                {% endbuttons %}
             </form>
         </div>
     </div>

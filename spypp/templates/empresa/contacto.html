@@ -2,24 +2,23 @@
 {% load tags %}
 {% block content %}
     <div class="row">
-        <div class="col" style="width: 100%;">
-            <h4>Director del departamento</h4>
+         <div class="col" style="width: 100%;">
+             <h4>Subcomisiones de Pr&aacute;cticas por Carrera</h4>
+             <p style="margin-top:-0.5em;"><b>Para cuestiones de una pasantía o alumno en particular</b></p>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
+                        <th>Carrera</th>
                         <th>Mail</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for contacto in contactos %}
-                    {% if contacto|classname == "Docente" %}
+                    {% if contacto|classname == "SubcomisionCarrera" %}
                         <tr>
-                            <td>{{ contacto.nombre}}</td>
-                            <td>{{ contacto.apellido }}</td>
+                            <td>{{ contacto.carrera }}</td>
                             <td><a href="mailto:{{contacto.user.email}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ contacto.email }}</td>
+                                <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -53,23 +52,24 @@
     </div>
     <br>
     <div class="row">
-         <div class="col" style="width: 100%;">
-             <h4>Subcomisiones de Pr&aacute;cticas por Carrera</h4>
-             <p style="margin-top:-0.5em;"><b>Para cuestiones de una pasantía o alumno en particular</b></p>
+        <div class="col" style="width: 100%;">
+            <h4>Director del departamento</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Carrera</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
                         <th>Mail</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for contacto in contactos %}
-                    {% if contacto|classname == "SubcomisionCarrera" %}
+                    {% if contacto|classname == "Docente" %}
                         <tr>
-                            <td>{{ contacto.carrera }}</td>
+                            <td>{{ contacto.nombre}}</td>
+                            <td>{{ contacto.apellido }}</td>
                             <td><a href="mailto:{{contacto.user.email}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
+                                <i class="fas fa-envelope"></i></a> {{ contacto.email }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}

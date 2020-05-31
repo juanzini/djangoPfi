@@ -1,20 +1,19 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     {{ form.media }}
     <div class="row">
-        <div class="col">
-            <h2>Pasant&iacute;a para el &aacute;rea de {{ puesto.get_nombre_display }}</h2>
+        <div class="col m4">
+            <h4>Pasant&iacute;a</h4>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
-                    <br>
+                {% form form=form %}{% endform %}
+                <br>
                 <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                <a href="{% url 'eliminar-puesto-empresa' puesto.pk %}"><button class="btn btn-outline-danger btn-md" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este puesto ofercido?');">Eliminar</button></a>
+                <a href="{% url 'eliminar-puesto-empresa' puesto.pk %}"><button class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este puesto ofercido?');">Eliminar</button></a>
                 <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button" style="float: right;">Atr&aacute;s</button>
-                {% endbuttons %}
             </form>
         </div>
     </div>

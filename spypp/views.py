@@ -742,7 +742,7 @@ class PostulacionDetailEmpresaView(generic.DetailView):
 
     def get_object(self):
         try:
-            return Postulacion.objects.get(pk=self.kwargs["pk"], puesto__empresa=self.request.user.empresa_user, activa=True)
+            return Postulacion.objects.get(pk=self.kwargs["pk"], puesto__empresa=self.request.user.empresa_user)
         except ObjectDoesNotExist:
             try:
                 return Postulacion.objects.get(alumno__pk=self.kwargs["pk"],
