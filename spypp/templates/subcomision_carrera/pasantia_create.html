@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+{{ form.media }}
+    <div class="row">
+        <div class="col">
+            <h2>Nueva Pasant&iacute;a</h2>
+            <hr>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% buttons %}
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                {% endbuttons %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">$(document).ready(function() {
+
+    $("#id_tutor_empresa").empty();
+    $("#id_tutor_empresa").append($('<option value="" selected="">---------</option>'));
+
+    $("#id_entrevista").change(function(){
+
+        $.ajax({
+            url: "{% url 'ajax-get-tutor-empresa' %}",
+            type: 'GET',
+            data:  {entrevista_id: $("#id_entrevista").val()},
+            dataType: "json",
+            success: function(data){
+                $("#id_tutor_empresa").empty();
+                $("#id_tutor_empresa").append($('<option value="" selected="">---------</option>'));
+                $.each(data, function(idx, obj) {
+                    $('#id_tutor_empresa').append($('<option></option>').attr('value', obj.pk).text(obj.fields.nombre + ' ' + obj.fields.apellido ));
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+
+    });
+});</script>
+{% endblock %}

@@ -1017,7 +1017,9 @@ class AlumnoDetailSubcomisionCarreraView(generic.UpdateView):
     model = Alumno
     template_name = 'subcomision_carrera/alumno_detail.html'
     form_class = AlumnoDetailSubcomisionCarreraForm
-    success_url = '../../alumnos'
+
+    def get_success_url(self):
+        return self.request.POST.get('next', '/')
 
     def get_object(self):
         return Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])

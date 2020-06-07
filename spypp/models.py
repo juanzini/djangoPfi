@@ -83,7 +83,7 @@ class Alumno(models.Model):
         verbose_name_plural = 'Alumnos'
 
     def __str__(self):
-        return str(self.user.__str__())
+        return self.user.last_name.__str__() + ", " + self.user.first_name.__str__()
 
 
 class Carrera(models.Model):
@@ -147,7 +147,7 @@ class Docente(models.Model):
         verbose_name_plural = 'Docentes'
 
     def __str__(self):
-        return self.apellido + ", " + self.nombre
+        return self.apellido.__str__().upper() + " " + self.nombre
 
 
 class Pasantia(models.Model):
@@ -158,8 +158,8 @@ class Pasantia(models.Model):
     entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
     numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
-    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
+    comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión General de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión General de Pasantías')
     numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
     practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
     STATUS_CHOICES = (
@@ -201,7 +201,7 @@ class Entrevista(models.Model):
     resultado = models.TextField(max_length=1000, blank=True, null=True)
     pasantia_aceptada = models.BooleanField(blank=True, null=True)
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión general de Pasantías')
-    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión general de Pasantías')
+    comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión de Pasantías')
     NOA = 'NOA'
     COA = 'COA'
     CAE = 'CAE'

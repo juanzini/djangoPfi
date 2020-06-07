@@ -2,23 +2,23 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Entrevistas</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Entrevistas</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Alumno</th>
                         <th>Empresa</th>
                         <th>Fecha</th>
-                        <th>Notificado Alumno</th>
-                        <th>Confirmada Alumno</th>
+                        <th>Estado</th>
+                        <th>Pasant&iacute;a</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for entrevista in entrevista_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'entrevista-detail-subcomision-carrera' entrevista.pk %}">
                             <td>
-                                <a href="{% url 'entrevista-detail-subcomision-carrera' entrevista.pk %}">{{ entrevista.alumno }}</a>
+                                {{ entrevista.alumno }}
                             </td>
                             <td>
                                 {{ entrevista.empresa }}
@@ -27,16 +27,37 @@
                                 {{ entrevista.fecha }}
                             </td>
                             <td>
-                                {{ entrevista.notificado_alumno }}
+                                {% if entrevista.status == 'CAA' %}
+                                    <span style="color:red;">Cancelada por el alumno</span>
+                                {% else %}
+                                    {% if entrevista.status == 'CAE' %}
+                                        <span style="color:red;">Cancelada por la empresa</span>
+                                    {% else %}
+                                        {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
+                                            {% if entrevista.is_past_due or entrevista.status == 'REA' %}
+                                                {% if entrevista.resultado %}
+                                                    <span> Realizada, con respuesta </span>
+                                                {% else %}
+                                                    <span> Realizada, sin respuesta </span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span style="color:green;"> ACTIVA </span>
+                                            {% endif %}
+                                        {% else %}
+                                            {% if entrevista.is_past_due %}
+                                                <span style="color:red;">Se excedi&oacute; la fecha y no confirm&oacute;</span>
+                                            {% else %}
+                                                <span style="color:orange;">A la espera de confirmación</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
                             </td>
                             <td>
-                                {{ entrevista.confirmada_alumno }}
-                            </td>
-                            <td class="rowlink-skip">
                             {% if entrevista.pasantia %}
-                                <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}">Pansatía</a>
+                                <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}"><button class="btn-small" type="button">Detalle</button></a>
                             {% else %}
-                                Crear Pasant&iacute;a
+                                <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}"><button class="btn-small" type="submit">Crear</button></a>
                             {% endif %}
                             </td>
                         </tr>

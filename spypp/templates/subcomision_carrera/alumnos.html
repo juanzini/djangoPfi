@@ -2,13 +2,13 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Alumnos</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Alumnos</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
                         <th>Apellido</th>
+                        <th>Nombre</th>
                         <th>Carrera</th>
                         <th>Email</th>
                         <th style="white-space: nowrap;">Comentarios Visibles</th>
@@ -16,12 +16,12 @@
                 </thead>
                 <tbody>
                     {% for alumno in alumno_list %}
-                        <tr data-link="row" class="rowlink">
-                            <td>
-                                <a href="{% url 'alumno-detail-subcomision-carrera' alumno.numero_registro %}">{{ alumno.user.first_name }}</a>
-                            </td>
+                        <tr class="table-row" data-href="{% url 'alumno-detail-subcomision-carrera' alumno.numero_registro %}">
                             <td>
                                 {{ alumno.user.last_name }}
+                            </td>
+                            <td>
+                                {{ alumno.user.first_name }}
                             </td>
                             <td>
                                 {{ alumno.carrera.nombre }}
@@ -30,7 +30,11 @@
                                 {{ alumno.user.email }}
                             </td>
                             <td>
-                                {{ alumno.comentarios_carrera_visibles }}
+                                {% if alumno.comentarios_carrera_visibles %}
+                                    <i class="material-icons">check</i>
+                                {% else %}
+                                    <i class="material-icons">close</i>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

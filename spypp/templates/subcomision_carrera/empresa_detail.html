@@ -1,25 +1,35 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     <div class="row">
-        <div class="col">
-             <div style="margin-bottom: 20px; display: flex; align-items: center;">
-                 {% if empresa.logo %} <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' empresa.pk %}"/>
-                 {% else %} <i class="far fa-user fa-4x"></i>
-                 {% endif %}
-                <h2 style="margin-left: 2rem; margin-left: 2rem;">
-                    {{ empresa.nombre_fantasia }}
-                </h2>
-             </div>
-            <form method="post" class="form">
-                {% csrf_token %}
-                {% bootstrap_form form exclude='logo,nombre_fantasia' %}
-                {% buttons %}
-                    <br>
-                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
-                {% endbuttons %}
-            </form>
+        <div class="col m8">
+             <div class="col m8" style="display: flex; align-items: center;">
+                    {% if empresa.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' empresa.pk %}"/>
+                    {% else %}
+                        <i class="far fa-user fa-4x"></i>
+                    {% endif %}
+                    <div style="align-items: center; display:  inline; margin-left: 2rem;">
+                        <div class="row" style="margin-bottom: 0px; margin-top: 0px;">
+                            <h4 style="margin-bottom: 0px;">
+                                {% if empresa.url %}
+                                    <a href="{{ empresa.url }}" target="_blank">{{ empresa.nombre_fantasia }}</a>
+                                {% else %}
+                                    {{ empresa.nombre_fantasia }}
+                                {% endif %}
+                            </h4>
+                        </div>
+                    </div>
+            </div>
+            <div class="col m8" style="margin-top: 2em;">
+                <form method="post" class="form">
+                    {% csrf_token %}
+                    {% form form=form %}{% endform %}
+                        <br>
+                        <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

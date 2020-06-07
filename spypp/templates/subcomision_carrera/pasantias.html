@@ -2,8 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Pasantias</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Pasantias</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -16,9 +16,9 @@
                 </thead>
                 <tbody>
                     {% for pasantia in pasantia_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'pasantia-detail-subcomision-carrera' pasantia.pk %}">
                             <td>
-                                <a href="{% url 'pasantia-detail-subcomision-carrera' pasantia.pk %}">{{ pasantia.entrevista.alumno }}</a>
+                                {{ pasantia.entrevista.alumno }}
                             </td>
                             <td>
                                 {{ pasantia.entrevista.empresa }}

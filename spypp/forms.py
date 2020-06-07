@@ -33,6 +33,16 @@ class AlumnoForm(forms.ModelForm):
         )
 
 class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
+    layout = Layout(Row('numero_registro', 'carrera'),
+                    Row('telefono', 'progreso'),
+                    'descripcion_intereses',
+                    'descripcion_habilidades',
+                    Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
+                    'condicion_acreditacion',
+                    'expedicion_acreditacion',
+                    'comentarios_carrera_visibles',
+                    'comentarios_comision_carrera',
+                    'comentarios_comision_pps')
 
     class Meta():
         model = models.Alumno
@@ -51,38 +61,36 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
             'comentarios_carrera_visibles',
             'comentarios_comision_pps',
         )
-        widgets = {
-            'carrera': forms.TextInput,
-        }
     def __init__(self, *args, **kwargs):
         super(AlumnoDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['carrera'].disabled = True
-        self.fields['descripcion_intereses'].widget.attrs['readonly'] = True
-        self.fields['telefono'].widget.attrs['readonly'] = True
-        self.fields['descripcion_habilidades'].widget.attrs['readonly'] = True
-        self.fields['ultima_actualizacion_perfil'].widget.attrs['readonly'] = True
-        self.fields['ultima_postulacion'].widget.attrs['readonly'] = True
-        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+        self.fields['descripcion_intereses'].disabled = True
+        self.fields['telefono'].disabled = True
+        self.fields['descripcion_habilidades'].disabled = True
+        self.fields['ultima_actualizacion_perfil'].disabled = True
+        self.fields['ultima_postulacion'].disabled = True
+        self.fields['comentarios_comision_pps'].disabled = True
 
 class EmpresaDetailSubcomisionCarreraForm(forms.ModelForm):
 
     class Meta():
         model = models.Empresa
         fields = (
-            'nombre_fantasia',
             'descripcion',
-            'logo',
-            'url'
         )
     def __init__(self, *args, **kwargs):
         super(EmpresaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
-        self.fields['nombre_fantasia'].disabled = True
         self.fields['descripcion'].disabled = True
-        self.fields['logo'].disabled = True
-        self.fields['url'].disabled = True
 
 
 class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
+    layout = Layout(Row('empresa', 'alumno'),
+                    Row('status', 'fecha'),
+                    'pasantia_aceptada',
+                    'resultado',
+                    'comentarios_empresa',
+                    'comentarios_comision_pps')
+
     class Meta():
         model = models.Entrevista
         fields = (
@@ -98,10 +106,12 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
-        self.fields['alumno'].widget.attrs['readonly'] = True
-        self.fields['empresa'].widget.attrs['readonly'] = True
-        self.fields['resultado'].widget.attrs['readonly'] = True
-        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+        self.fields['alumno'].disabled = True
+        self.fields['empresa'].disabled = True
+        self.fields['resultado'].disabled = True
+        self.fields['comentarios_empresa'].disabled = True
+        if self.instance.alumno.condicion_acreditacion:
+            self.fields['comentarios_comision_pps'].disabled = True
         self.fields['status'].disabled = True
         self.fields['pasantia_aceptada'].disabled = True
 
@@ -177,6 +187,13 @@ class TutorEmpresaDetailEmpresaForm(forms.ModelForm):
         )
 
 class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
+    layout = Layout(Row('empresa', 'status'),
+                    Row('fecha_inicio', 'fecha_fin'),
+                    Row('tutor_empresa', 'tutor_docente'),
+                    Row('numero_legajo', 'informe'),
+                    'comentarios_empresa', 'comentarios_comision_pps')
+    empresa = forms.CharField(label='Empresa')
+
     class Meta():
         model = models.Pasantia
         fields = (
@@ -194,15 +211,17 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(PasantiaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         if not self.instance.practica_plan_de_estudio:
-            self.fields['status'].widget.disabled = True
-        self.fields['fecha_inicio'].widget.attrs['readonly'] = True
-        self.fields['fecha_fin'].widget.attrs['readonly'] = True
+            self.fields['status'].disabled = True
+            self.fields['fecha_inicio'].disabled = True
+            self.fields['fecha_fin'].disabled = True
+            self.fields['informe'].disabled = True
+            self.fields['numero_legajo'].disabled = True
+            self.fields['comentarios_comision_pps'].disabled = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
                 empresa=self.instance.entrevista.empresa)
-        self.fields['informe'].widget.attrs['readonly'] = True
-        self.fields['numero_legajo'].widget.attrs['readonly'] = True
-        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
-        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+        self.fields['comentarios_empresa'].disabled = True
+        self.fields['empresa'].initial = self.instance.entrevista.empresa.__str__()
+        self.fields['empresa'].disabled = True
 
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),

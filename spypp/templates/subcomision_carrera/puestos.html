@@ -2,29 +2,33 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Puestos Ofrecidos</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Puestos Ofrecidos</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Empresa</th>
                         <th>Puesto</th>
-                        <th>Descripci&oacute;n</th>
+                        <th>Rentado</th>
                         <th>Cantidad de Alumnos Postulados</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'puesto-detail-subcomision-carrera' puesto.pk %}">
                             <td>
                                 {{ puesto.empresa }}
                             </td>
                             <td>
-                                <a href="{% url 'puesto-detail-subcomision-carrera' puesto.pk %}">{{ puesto.get_nombre_display }}</a>
+                                {{ puesto.get_nombre_display }}
                             </td>
                             <td>
-                                {{ puesto.horario }}
+                                {% if puesto.rentado %}
+                                    <i class="material-icons">check</i>
+                                {% else %}
+                                    <i class="material-icons">close</i>
+                                {% endif %}
                             </td>
                             <td>
                                 {{ puesto.get_cantidad_alumnos }}
