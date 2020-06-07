@@ -411,7 +411,7 @@ class ListEntrevistasAlumnoView(generic.ListView):
         order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
         entrevistas_sortered = sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
 
-        return getPage(self.request, entrevistas_sortered, 20)
+        return getPage(self.request, entrevistas_sortered, 10)
 
 
 class ListPostulacionesAlumnoView(generic.ListView):
@@ -420,7 +420,7 @@ class ListPostulacionesAlumnoView(generic.ListView):
 
     def get_queryset(self):
         postulaciones = Postulacion.objects.filter(Q(alumno=self.request.user.alumno_user) & (Q(entrevista__isnull=False) | (Q(entrevista__isnull=True) & Q(activa=True))))
-        return getPage(self.request, postulaciones, 20)
+        return getPage(self.request, postulaciones, 10)
 
 
 class ListPuestosAlumnoView(generic.ListView):
@@ -441,7 +441,7 @@ class ListPuestosAlumnoView(generic.ListView):
                     puesto.postulacion = None
                 else:
                     to_be_deleted.append(puesto.pk)
-        return getPage(self.request, puestos.filter(~Q(pk__in=to_be_deleted)), 20)
+        return getPage(self.request, puestos.filter(~Q(pk__in=to_be_deleted)), 10)
 
 
 class ListContactoAlumnoView(generic.ListView):
@@ -454,7 +454,7 @@ class ListContactoAlumnoView(generic.ListView):
             subcomision = SubcomisionCarrera.objects.get(carrera=carrera)
         except ObjectDoesNotExist:
             return None
-        return getPage(self.request, subcomision.docentes.all(), 20)
+        return getPage(self.request, subcomision.docentes.all(), 10)
 
 class DetailEntrevistaAlumnoView(generic.UpdateView):
     model = Entrevista
@@ -566,7 +566,7 @@ class ListEntrevistasEmpresaView(generic.ListView):
             entrevistas = []
         order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
         entrevistas_sortered = sorted(entrevistas, key=lambda x: (x.pasantia_aceptada_undefined, order.index(x.status), x.fecha))
-        return getPage(self.request, entrevistas_sortered, 20)
+        return getPage(self.request, entrevistas_sortered, 10)
 
 
 class ListPasantiasEmpresaView(generic.ListView):
@@ -576,7 +576,7 @@ class ListPasantiasEmpresaView(generic.ListView):
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(Q(entrevista__empresa=self.request.user.empresa_user)).order_by(
             F('tutor_empresa').asc(), 'fecha_inicio')
-        return getPage(self.request, pasantias, 20)
+        return getPage(self.request, pasantias, 10)
 
 class ListTutoresEmpresaView(generic.ListView):
     template_name = 'empresa/tutores.html'
@@ -584,7 +584,7 @@ class ListTutoresEmpresaView(generic.ListView):
 
     def get_queryset(self):
         tutores = TutorEmpresa.objects.filter(Q(empresa=self.request.user.empresa_user))
-        return getPage(self.request, tutores, 20)
+        return getPage(self.request, tutores, 10)
 
 
 class DetailEntrevistaEmpresaView(generic.UpdateView):
@@ -696,7 +696,7 @@ class ListPostulacionesEmpresaView(generic.ListView):
         postulaciones = Postulacion.objects.filter(
             Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by('-activa',
             F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
-        return getPage(self.request, postulaciones, 20)
+        return getPage(self.request, postulaciones, 10)
 
 
 class ListPuestosEmpresaView(generic.ListView):
@@ -705,7 +705,7 @@ class ListPuestosEmpresaView(generic.ListView):
 
     def get_queryset(self):
         puestos = Puesto.objects.filter(empresa=self.request.user.empresa_user)
-        return getPage(self.request, puestos, 20)
+        return getPage(self.request, puestos, 10)
 
 
 class ListContactoEmpresaView(generic.ListView):
@@ -732,7 +732,7 @@ class ListContactoEmpresaView(generic.ListView):
             None
         if not contactos:
             return None
-        return getPage(self.request, contactos, 20)
+        return getPage(self.request, contactos, 10)
 
 
 class PostulacionDetailEmpresaView(generic.DetailView):
@@ -954,7 +954,7 @@ class ListEntrevistasSubcomisionCarreraView(generic.ListView):
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
-        return getPage(self.request, entrevistas, 20)
+        return getPage(self.request, entrevistas, 10)
 
     def get_pasantia(self):
         try:
@@ -974,7 +974,7 @@ class ListPostulacionesSubcomisionCarreraView(generic.ListView):
 
     def get_queryset(self):
         postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
-        return getPage(self.request, postulaciones, 20)
+        return getPage(self.request, postulaciones, 10)
 
 
 class ListAlumnosSubcomisionCarreraView(generic.ListView):
@@ -983,7 +983,7 @@ class ListAlumnosSubcomisionCarreraView(generic.ListView):
 
     def get_queryset(self):
         alumnos = Alumno.objects.filter(carrera=self.request.user.carrera_user.carrera)
-        return getPage(self.request, alumnos, 20)
+        return getPage(self.request, alumnos, 10)
 
 
 class ListEmpresasSubcomisionCarreraView(generic.ListView):
@@ -992,7 +992,7 @@ class ListEmpresasSubcomisionCarreraView(generic.ListView):
 
     def get_queryset(self):
         empresas = Empresa.objects.filter(departamento=(self.request.user.carrera_user.carrera).departamento)
-        return getPage(self.request, empresas, 20)
+        return getPage(self.request, empresas, 10)
 
 
 class ListPuestosSubcomisionCarreraView(generic.ListView):
@@ -1001,7 +1001,7 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
 
     def get_queryset(self):
         puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
-        return getPage(self.request, puestos, 20)
+        return getPage(self.request, puestos, 10)
 
 
 class ListPasantiasSubcomisionCarreraView(generic.ListView):
@@ -1010,7 +1010,7 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
 
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera))
-        return getPage(self.request, pasantias, 20)
+        return getPage(self.request, pasantias, 10)
 
 
 class AlumnoDetailSubcomisionCarreraView(generic.UpdateView):
@@ -1103,7 +1103,7 @@ class ListEntrevistasComisionPasantiasView(generic.ListView):
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
-        return getPage(self.request, entrevistas, 20)
+        return getPage(self.request, entrevistas, 10)
 
     def get_pasantia(self):
         try:
@@ -1123,7 +1123,7 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         postulaciones = Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento, activa=True)
-        return getPage(self.request, postulaciones, 20)
+        return getPage(self.request, postulaciones, 10)
 
 
 class ListAlumnosComisionPasantiasView(generic.ListView):
@@ -1132,7 +1132,7 @@ class ListAlumnosComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         alumnos = Alumno.objects.filter(carrera__departamento=self.request.user.pps_user.departamento)
-        return getPage(self.request, alumnos, 20)
+        return getPage(self.request, alumnos, 10)
 
 
 class ListEmpresasComisionPasantiasView(generic.ListView):
@@ -1141,7 +1141,7 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento, activa=True)
-        return getPage(self.request, empresas, 20)
+        return getPage(self.request, empresas, 10)
     
     
 @transaction.atomic
@@ -1182,7 +1182,7 @@ class ListPuestosComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.pps_user.departamento)
-        return getPage(self.request, puestos, 20)
+        return getPage(self.request, puestos, 10)
 
 
 class DetailPustoComisionPasantiasView(generic.TemplateView):
@@ -1202,7 +1202,7 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(
             entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento)
-        return getPage(self.request, pasantias, 20)
+        return getPage(self.request, pasantias, 10)
 
 
 class AlumnoDetailComisionPasantiasView(generic.UpdateView):
@@ -1296,7 +1296,7 @@ class ListCarrerasComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         carreras = Carrera.objects.filter(departamento=self.request.user.pps_user.departamento,activa=True)
-        return getPage(self.request, carreras, 20)
+        return getPage(self.request, carreras, 10)
 
 class CarreraDetailComisionPasantiasView(generic.UpdateView):
     model = Carrera

@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumno_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumno_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/alumnos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/empresa_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/empresa_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/empresas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/entrevista_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/entrevista_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/entrevistas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/pasantia_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/pasantia_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/pasantias.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/pasantias.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/postulaciones.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/puesto_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/puesto_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/puestos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/subcomision_carrera/puestos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -208,10 +188,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1591557372913" />
-    <state x="777" y="294" width="907" height="682" key="find.popup" timestamp="1591558130754">
+    <state x="777" y="294" width="907" height="682" key="find.popup" timestamp="1591558144946">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="777" y="294" width="907" height="682" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1591558130754" />
+    <state x="777" y="294" width="907" height="682" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1591558144946" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
