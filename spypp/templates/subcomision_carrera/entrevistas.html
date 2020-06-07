@@ -57,7 +57,7 @@
                             {% if entrevista.pasantia %}
                                 <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}"><button class="btn-small" type="button">Detalle</button></a>
                             {% else %}
-                                <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}"><button class="btn-small" type="submit">Crear</button></a>
+                                <a href="#"><button class="btn-small" type="submit">Crear</button></a>
                             {% endif %}
                             </td>
                         </tr>
