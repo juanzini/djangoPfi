@@ -9,12 +9,12 @@
             </li>
             <li class="{% if request.resolver_match.url_name == 'puestos-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'entrevistas-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'alumnos-subcomision-carrera' or request.resolver_match.url_name == 'empresas-subcomision-carrera' or request.resolver_match.url_name == 'pasantias-subcomision-carrera' %}active{% endif %}">
               <a class="dropdown-trigger" href="#!" data-target="dropdownSubcomision">
-                Acciones<i class="material-icons right">arrow_drop_down</i>
+                Gesti&oacute;n<i class="material-icons right">arrow_drop_down</i>
               </a>
             </li>
             <li>
               <a onClick="javascript: return confirm('¿Est&aacute; seguro que desea cerrar sesi&oacute;n?');" class="nav-link" href="{% url 'logout' %}">
-                <i class="material-icons left" style="color:red;">power_settings_new</i>
+                <i class="material-icons left">power_settings_new</i>
               </a>
             </li>
           </ul>
@@ -24,11 +24,11 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li>
-      <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
+      <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">La Subcomisi&oacute;n</a>
     </li>
     <li>
       <a class="dropdown-trigger" href="#!" data-target="dropdownSubcomision2">
-        Acciones<i class="material-icons right">arrow_drop_down</i>
+        Gesti&oacute;n<i class="material-icons right">arrow_drop_down</i>
       </a>
     </li>
     <li>

@@ -271,6 +271,9 @@ class UserCreateForm(RegistrationForm):
 
 
 class UserWithoutNameCreateForm(RegistrationForm):
+    layout = Layout(Row('username', 'email'),
+                    Row('password1', 'password2'))
+
     class Meta(RegistrationForm):
         model = models.User
         fields = (
@@ -285,6 +288,7 @@ class UserWithoutNameCreateForm(RegistrationForm):
 
 class UserEditForm(forms.ModelForm):
     layout = Layout('email',
+                    'username',
                     Row('first_name', 'last_name'))
     class Meta:
         model = models.User
@@ -327,10 +331,6 @@ class SubcomisionCarreraEditForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionCarrera
         fields = ('docentes',)
-
-    class Media:
-        css = {'all': ('/static/admin/css/widgets.css',), }
-        js = ('/static/jsAdmin.js',)
 
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraEditForm, self).__init__(*args, **kwargs)
@@ -410,6 +410,16 @@ class SubcomisionPasantiasForm(forms.ModelForm):
 
 
 class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
+    layout = Layout(Row('numero_registro', 'carrera'),
+                    Row('telefono', 'progreso'),
+                    'descripcion_intereses',
+                    'descripcion_habilidades',
+                    Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
+                    'condicion_acreditacion',
+                    'expedicion_acreditacion',
+                    'comentarios_carrera_visibles',
+                    'comentarios_comision_carrera',
+                    'comentarios_comision_pps')
 
     class Meta():
         model = models.Alumno
@@ -435,10 +445,21 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AlumnoDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['condicion_acreditacion'].disabled = True
-        self.fields['expedicion_acreditacion'].widget.attrs['readonly'] = True
-        self.fields['comentarios_comision_carrera'].widget.attrs['readonly'] = True
+        if not self.instance.expedicion_acreditacion:
+            self.fields['expedicion_acreditacion'].label = 'No hay detalle sobre acreditación o su negativa'
+        self.fields['expedicion_acreditacion'].disabled = True
+        if not self.instance.expedicion_acreditacion:
+            self.fields['comentarios_comision_carrera'].label = 'No hay comentarios de la comisión de carrera'
+        self.fields['comentarios_comision_carrera'].disabled = True
 
 class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
+    layout = Layout(Row('empresa', 'alumno'),
+                    Row('status', 'fecha'),
+                    'pasantia_aceptada',
+                    'comentarios_comision_pps',
+                    'resultado',
+                    'comentarios_empresa')
+
     class Meta():
         model = models.Entrevista
         fields = (
@@ -453,10 +474,14 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
         )
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
-        self.fields['alumno'].widget.attrs['readonly'] = True
-        self.fields['empresa'].widget.attrs['readonly'] = True
-        self.fields['resultado'].widget.attrs['readonly'] = True
-        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+        self.fields['alumno'].disabled = True
+        self.fields['empresa'].disabled = True
+        if not self.instance.resultado:
+            self.fields['resultado'].label = 'Aún no hay resultado de la entrevista'
+        self.fields['resultado'].disabled = True
+        if not self.instance.comentarios_empresa:
+            self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
+        self.fields['comentarios_empresa'].disabled = True
 
 class CarreraCreateComisionPasantiasForm(forms.ModelForm):
     class Meta:
@@ -478,6 +503,14 @@ class EmpresaCreateComisionPasantiasForm(forms.ModelForm):
         self.fields['nombre_fantasia'].required = True
 
 class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
+    layout = Layout('status',
+                    Row('fecha_inicio', 'fecha_fin'),
+                    Row('tutor_docente', 'tutor_empresa'),
+                    'informe',
+                    'numero_legajo',
+                    'comentarios_comision_pps',
+                    'comentarios_empresa')
+
     class Meta():
         model = models.Pasantia
         fields = (
@@ -499,13 +532,24 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
             departamento=user.pps_user.departamento)
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
             empresa=self.instance.entrevista.empresa)
-        self.fields['comentarios_empresa'].widget.attrs['readonly'] = True
+        if not self.instance.comentarios_empresa:
+            self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
+        self.fields['comentarios_empresa'].disabled = True
 
 
 class PasantiaCreateForm(forms.ModelForm):
+    layout = Layout('status',
+                    'entrevista',
+                    Row('fecha_inicio', 'fecha_fin'),
+                    Row('tutor_docente', 'tutor_empresa'),
+                    'informe',
+                    'numero_legajo',
+                    'comentarios_comision_pps')
+
     class Meta():
         model = models.Pasantia
         fields = (
+            'status',
             'fecha_inicio',
             'fecha_fin',
             'entrevista',
@@ -515,7 +559,6 @@ class PasantiaCreateForm(forms.ModelForm):
             'numero_legajo',
             'comentarios_comision_pps',
         )
-
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(PasantiaCreateForm, self).__init__(*args, **kwargs)

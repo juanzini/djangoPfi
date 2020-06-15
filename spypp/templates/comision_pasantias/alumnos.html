@@ -3,8 +3,8 @@
 
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Alumnos</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Alumnos</h2>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -17,9 +17,9 @@
                 </thead>
                 <tbody>
                     {% for alumno in alumno_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'alumno-detail-comision-pasantias' alumno.numero_registro %}">
                             <td>
-                                <a href="{% url 'alumno-detail-comision-pasantias' alumno.numero_registro %}">{{ alumno.user.last_name }}</a>
+                                {{ alumno.user.last_name }}
                             </td>
                             <td>
                                 {{ alumno.user.first_name }}
@@ -27,7 +27,7 @@
                             <td>
                                 {{ alumno.carrera }}
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: left;">
                                 {{ alumno.progreso }}
                             </td>
                             <td>

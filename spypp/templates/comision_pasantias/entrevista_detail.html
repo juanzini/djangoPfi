@@ -1,17 +1,19 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Entrevista a {{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}</h2>
+        <div class="col m8">
+            <h4>Entrevista a {{ entrevista.alumno.user.first_name }} {{ entrevista.alumno.user.last_name }}</h4>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
+                {% form form=form %}{% endform %}
                     <br>
+                {% if entrevista.alumno.condicion_acreditacion %}
                     <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                {% endbuttons %}
+                {% endif %}
+                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
             </form>
         </div>
     </div>

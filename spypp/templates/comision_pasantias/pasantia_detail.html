@@ -1,20 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     {{ form.media }}
     <div class="row">
-        <div class="col">
-            <h2>Pasant&iacute;a de {{ pasantia.entrevista.alumno.user.first_name }} {{ pasantia.entrevista.alumno.user.last_name }}</h2>
+        <div class="col m6">
+            <h4>Pasant&iacute;a de {{ pasantia.entrevista.alumno.user.first_name }} {{ pasantia.entrevista.alumno.user.last_name }}</h4>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
+                {% form form=form %}{% endform %}
                     <br>
                 <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
                 <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
-                <a href="{% url 'eliminar-pasantia-comision-pasantias' pasantia.pk %}?next={{ request.GET.next }}"><button style="float: right;" class="btn btn-outline-danger btn-md" type="button" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta pasantia?\nLa informacion no se podra recuperar!');">Eliminar</button></a>
-                {% endbuttons %}
+                <a href="{% url 'eliminar-pasantia-comision-pasantias' pasantia.pk %}?next={{ request.GET.next }}"><button style="float: right;" class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR esta pasantia?\nLa informacion no se podra recuperar!');">Eliminar</button></a>
             </form>
         </div>
     </div>

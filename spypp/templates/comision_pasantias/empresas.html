@@ -2,12 +2,14 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <div><h2>Empresas
-                <a href="{% url 'nueva-empresa-comision-pasantias' %}?next={{ request.path }}">
-                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Empresa</button>
-                </a>
-            </h2></div>
+        <div class="col" style="width: 100%;">
+            <div>
+                <h4>Empresas
+                    <a href="{% url 'nueva-empresa-comision-pasantias' %}?next={{ request.path }}">
+                        <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Empresa</button>
+                    </a>
+                </h4>
+            </div>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>

@@ -1,25 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     {{ comision_pasantias_form.media }}
     <div class="row">
-        <div class="col">
-            <h2>Editar Perfil</h2>
-            <hr>
+        <div class="col m4">
+            <h4>Editar Perfil</h4>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form user_form %}
-                <div class="row">
-                    <div class="col">
-                        {% bootstrap_form comision_pasantias_form show_label=False %}
-                    </div>
-                </div>
-                {% buttons %}
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                    <a href="/accounts/password_change"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Cambiar Contrase&ntilde;a</button></a>
-                {% endbuttons %}
+                {% form form=comision_pasantias_form %}{% endform %}
+                <br>
+                <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                <a href="/accounts/password_change"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Cambiar Contrase&ntilde;a</button></a>
             </form>
         </div>
     </div>

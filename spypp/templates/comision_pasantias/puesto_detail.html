@@ -3,40 +3,47 @@
 
 {% block content %}
     <div class="row">
-        <div class="col">
-            <div style="margin-bottom: 20px; display: flex; align-items: center;">
-                <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}"/>
-                <h2 style="margin-bottom: 20px; margin-left: 2rem;">
-                    {% if puesto.empresa.url %}
-                    <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
-                    {% else %}
-                    {{ puesto.empresa.nombre_fantasia }}
-                    {% endif %}
-                </h2>
+        <div class="col m6" style="width: 100%;">
+            <div class="row" style="margin-bottom: 20px; align-items: center;">
+                <div class="col">
+                    <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                </div>
+                <div class="col">
+                    <h4>
+                        {% if puesto.empresa.url %}
+                        <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
+                        {% else %}
+                        {{ puesto.empresa.nombre_fantasia }}
+                        {% endif %}
+                    </h4>
+                    <h5>{{puesto.get_nombre_display}}</h5>
+                </div>
             </div>
-                {% if puesto.get_nombre_display %}
-                    <span><b>&Aacute;rea</b>: {{puesto.get_nombre_display}}</span>
-                {% endif %}
+        </div>
+        <div class="col m6">
                 {% if puesto.descripcion_actividades %}
-                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span>
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span>
+                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span><br>
                 {% endif %}
                 {% if puesto.horario %}
-                    <span><b>Horario</b>: {{ puesto.horario }}</span>
+                    <span><b>Horario</b>: {{ puesto.horario }}</span><br>
                 {% endif %}
-                {% if puesto.rentada %}
-                    <span><b>Rentado</b>: Si</span>
+                {% if puesto.rentado %}
+                    <span><b>Rentado</b>: Si</span><br>
                 {% else %}
-                    <span><b>Rentado</b>: No</span>
+                    <span><b>Rentado</b>: No</span><br>
                 {% endif %}
-                {% buttons %}
+                {% if puesto.fecha_inactivacion %}
+                    <span><b>Fecha l&iacute;mite para postularse</b>: {{puesto.fecha_inactivacion}}</span><br>
+                {% endif %}
                 <br>
+
                 {% if not puesto.activo %}
                     Este puesto ya no se encuentra disponible
                 {% endif %}
-                {% endbuttons %}
+                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
         </div>
     </div>
 {% endblock %}

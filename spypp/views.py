@@ -1298,15 +1298,6 @@ class ListCarrerasComisionPasantiasView(generic.ListView):
         carreras = Carrera.objects.filter(departamento=self.request.user.pps_user.departamento,activa=True)
         return getPage(self.request, carreras, 10)
 
-class CarreraDetailComisionPasantiasView(generic.UpdateView):
-    model = Carrera
-    template_name = 'comision_pasantias/carrera_detail.html'
-    form_class = EntrevistaDetailComisionPasantiasForm
-    success_url = '../../carreras'
-
-    def get_object(self):
-        return Carrera.objects.get(pk=self.kwargs["pk"])
-
 @transaction.atomic
 def create_carrera(request):
     if request.method == 'POST':
@@ -1354,7 +1345,7 @@ def edit_carrera(request, pk):
         carrera_form = CarreraCreateComisionPasantiasForm(request.POST, instance=Carrera.objects.get(pk=pk))
         subcomision_carrera_form = SubcomisionCarreraEditForm(request.POST, instance=SubcomisionCarrera.objects.get(
             carrera=carrera_form.instance))
-        user_form = UserEditForm(request.POST, instance=User.objects.get(pk=subcomision_carrera_form.instance.user.pk))
+        user_form = UserWithoutNameCreateForm(request.POST, instance=User.objects.get(pk=subcomision_carrera_form.instance.user.pk))
         if user_form.is_valid() and subcomision_carrera_form.is_valid() and carrera_form.is_valid():
             carrera_form.save()
             subcomision_carrera_form.save()
@@ -1367,7 +1358,7 @@ def edit_carrera(request, pk):
         carrera_form = CarreraCreateComisionPasantiasForm(instance=Carrera.objects.get(pk=pk))
         subcomision_carrera_form = SubcomisionCarreraEditForm(instance=SubcomisionCarrera.objects.get(
             carrera=carrera_form.instance))
-        user_form = UserEditForm(instance=subcomision_carrera_form.instance.user)
+        user_form = UserWithoutNameCreateForm(instance=subcomision_carrera_form.instance.user)
     return render(request, 'comision_pasantias/carrera_detail.html', {
         'user_form': user_form,
         'subcomision_carrera_form': subcomision_carrera_form,

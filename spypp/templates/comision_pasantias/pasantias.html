@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
+{% load material_form %}
+
 {% block content %}
     <div class="row">
-        <div class="col">
-            <div><h2>Pasantias
-                <a href="{% url 'nueva-pasantia-comision-pasantias' %}?next={{ request.path }}">
-                    <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Pasant&iacute;a</button>
-                </a>
-            </h2></div>
+        <div class="col" style="width: 100%;">
+            <div>
+                <h4>Pasant&iacute;as
+                    <a href="{% url 'nueva-pasantia-comision-pasantias' %}?next={{ request.path }}">
+                        <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Pasant&iacute;a</button>
+                    </a>
+                </h4>
+            </div>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -21,9 +25,9 @@
                 </thead>
                 <tbody>
                     {% for pasantia in pasantia_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}?next={{ request.path }}">
                             <td>
-                                <a href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}?next={{ request.path }}">{{ pasantia.entrevista.alumno }}</a>
+                                {{ pasantia.entrevista.alumno }}
                             </td>
                             <td>
                                 {{ pasantia.entrevista.empresa }}

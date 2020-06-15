@@ -2,8 +2,8 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Postulaciones Activas</h2>
+        <div class="col" style="width: 100%;">
+            <h4>Postulaciones Activas</h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -16,9 +16,9 @@
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr>
+                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
                             <td>
-                                <a href="{% url 'detail-alumno' %}">{{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}</a>
+                                {{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}
                             </td>
                             <td>
                                 {{ postulacion.puesto.get_nombre_display }}
@@ -31,7 +31,7 @@
                             </td>
                             <td>
                                 {% if postulacion.entrevista %}
-                                    Si
+                                    <a href="{% url 'entrevista-detail-comision-pasantias' postulacion.entrevista.pk %}"><button class="btn-small" type="button">Detalle</button></a>
                                 {% else %}
                                     No Posee
                                 {% endif %}

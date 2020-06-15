@@ -2,11 +2,12 @@
 {% load bootstrap4 %}
 {% block content %}
     <div class="row">
-        <div class="col">
-            <h2>Carreras
+        <div class="col" style="width: 100%;">
+            <h4>Carreras
                 <a href="{% url 'nueva-carrera-comision-pasantias' %}">
                     <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Carrera</button>
-                </a></h2>
+                </a>
+            </h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -18,17 +19,17 @@
                 </thead>
                 <tbody>
                     {% for carrera in carrera_list %}
-                        <tr data-link="row" class="rowlink">
+                        <tr class="table-row" data-href="{% url 'carrera-detail-comision-pasantias' carrera.pk %}">
                             <td>
-                                <a href="{% url 'carrera-detail-comision-pasantias' carrera.pk %}">{{ carrera.nombre }}</a>
+                                {{ carrera.nombre }}
                             </td>
-                            <td style="text-align: center;">
+                            <td>
                                 {{ carrera.get_cantidad_de_alumnos }}
                             </td>
-                            <td style="text-align: center;">
+                            <td>
                                 {{ carrera.get_cantidad_de_docentes_en_subcomision }}
                             </td>
-                            <td style="text-align: center;">
+                            <td >
                                 {{ carrera.get_cantidad_de_pasantias }}
                             </td>
                         </tr>
