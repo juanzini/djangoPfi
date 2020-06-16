@@ -53,18 +53,18 @@
                                     <form style="display: inline-flex" class="form" method="get" action="{% url 'alumno-entrevista-confirm' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                        <button style="display: in-block; float: left" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" type="submit" class="btn btn-small">Confirmar Asistencia</button>
+                                        <button style="display: in-block; float: left" onClick="javascript: return confirm('¿Est&aacute; seguro que confirmará su asistencia a la entrevista?');" type="submit" class="btn">Confirmar Asistencia</button>
                                     </form>
                                     <form style="display: inline-flex" class="form" method="get" action="{% url 'alumno-entrevista-cancel' %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                        <button style="display: in-block; float: left; margin-left: 0.5em;" onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" type="cancel" class="btn btn-small">Cancelar</button>
+                                        <button style="display: in-block; float: left; margin-left: 0.5em;" onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" type="cancel" class="btn">Cancelar</button>
                                     </form>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
                     {% endif %}
-                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-small" type="button" style="float: right; margin-left: 1em;">Atr&aacute;s</button></a>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary" type="button" style="float: right; margin-left: 1em;">Atr&aacute;s</button></a>
             </form>
         </div>
     </div>
