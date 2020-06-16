@@ -2,31 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/alumno_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/alumno_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/alumnos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/alumnos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_create.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carrera_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carreras.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/carreras.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresa_create.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresa_create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/empresas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/entrevista_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/entrevista_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/entrevistas.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantia_create.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantia_create.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantia_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantia_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/pasantias.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/postulaciones.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puesto_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puesto_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/comision_pasantias/puestos.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/alumno.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/empresa.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionCarrera.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/navbar/subcomisionPasantiasPPS.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

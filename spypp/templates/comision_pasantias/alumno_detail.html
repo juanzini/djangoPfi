@@ -4,15 +4,39 @@
 {% block content %}
     <div class="row">
         <div class="col m8">
-            <h4>{{ alumno.user.first_name }} {{ alumno.user.last_name }}</h4>
-            <br>
-            <form method="post" class="form">
-                {% csrf_token %}
-                {% form form=form %}{% endform %}
+            <div class="col m10" style="display: flex; align-items: center;">
+                    {% if alumno.perfil %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' alumno.pk %}"/>
+                    {% else %}
+                        <i class="far fa-user fa-4x"></i>
+                    {% endif %}
+                    <div style="align-items: center; display:  inline; margin-left: 2rem;">
+                        <div class="row" style="margin-bottom: 0px; margin-top: 0px;">
+                            <h4 style="margin-bottom: 0px;">
+                                {{ alumno.user.first_name }} {{ alumno.user.last_name }}
+                            </h4>
+                        </div>
+                    </div>
+            </div>
+            <div class="col m10" style="margin-bottom: 20px; align-items: center; margin-top: 3em;">
+                <form method="post" class="form">
+                    {% csrf_token %}
+                    {% form form=form %}{% endform %}
+                    {% if alumno.curriculum %}<br>
+                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
+                    {% endif %}
+                    {% if alumno.plan_de_estudio %}<br>
+                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-plan-de-estudio' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Plan de Estudio</a>
+                    {% endif %}
+                    {% if alumno.historia_academica %}<br>
+                        <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
+                    {% endif %}
                     <br>
-                <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
-            </form>
+                        <input type="hidden" name="next" value="{{request.META.HTTP_REFERER}}">
+                        <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                        <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}
