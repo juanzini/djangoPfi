@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <div class="col" style="width: 100%;">
+            <div>
+                <h4>Docentes
+                    <a href="{% url 'nuevo-docente-comision-pasantias' %}?next={{ request.path }}">
+                        <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nuevo Docente</button>
+                    </a>
+                </h4>
+            </div>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th style="white-space: nowrap;">Cantidad de pasantes</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for docente in docente_list %}
+                        <tr class="table-row" data-href="{% url 'docente-detail-comision-pasatia' docente.pk %}">
+                            <td>
+                                {{ docente.apellido.upper }}, {{ docente.nombre }}
+                            </td>
+                            <td>
+                                {{ docente.email }}
+                            </td>
+                            <td>
+                                {{ docente.get_cantidad_de_pasantes }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination docente_list size="small" pages_to_show=5 %}</div>
+        </div>
+    </div>
+{% endblock %}

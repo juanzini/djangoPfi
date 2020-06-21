@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load material_form %}
+
+{% block content %}
+    <div class="row">
+        <div class="col m8">
+             <div class="col m8" style="display: flex; align-items: center;">
+                    {% if empresa_form.instance.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' empresa_form.instance.pk %}"/>
+                    {% else %}
+                        <i class="far fa-user fa-4x"></i>
+                    {% endif %}
+                    <div style="align-items: center; display:  inline; margin-left: 2rem;">
+                        <div class="row" style="margin-bottom: 0px; margin-top: 0px;">
+                            <h4 style="margin-bottom: 0px;">
+                                {% if empresa_form.instance.url %}
+                                    <a href="{{ empresa_form.instance.url }}" target="_blank">{{ empresa_form.instance.nombre_fantasia }}</a>
+                                {% else %}
+                                    {{ empresa_form.instance.nombre_fantasia }}
+                                {% endif %}
+                            </h4>
+                        </div>
+                    </div>
+            </div>
+            <div class="col m8" style="margin-top: 2em;">
+                <form method="post" class="form">
+                    {% csrf_token %}
+                    {% form form=user_form %}{% endform %}
+                    {% form form=empresa_form %}{% endform %}
+                        <br>
+                    <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

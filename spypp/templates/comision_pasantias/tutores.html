@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+    <div class="row">
+        <div class="col" style="width: 100%;">
+            <div>
+                <h4>Tutores
+                    <a href="{% url 'nuevo-tutor-comision-pasantias' %}?next={{ request.path }}">
+                        <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nuevo Tutor</button>
+                    </a>
+                </h4>
+            </div>
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Empresa</th>
+                        <th>Email</th>
+                        <th style="white-space: nowrap;">Cantidad de pasantes</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tutor in tutor_list %}
+                        <tr class="table-row" data-href="{% url 'tutor-detail-comision-pasatia' tutor.pk %}">
+                            <td>
+                                {{ tutor.apellido.upper }}, {{ tutor.nombre }}
+                            </td>
+                            <td>
+                                {{ tutor.empresa.nombre_fantasia }}
+                            </td>
+                            <td>
+                                {{ tutor.mail }}
+                            </td>
+                            <td>
+                                {{ tutor.get_cantidad_de_pasantes }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination tutor_list size="small" pages_to_show=5 %}</div>
+        </div>
+    </div>
+{% endblock %}

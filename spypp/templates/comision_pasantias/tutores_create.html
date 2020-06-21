@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load material_form %}
+
+{% block content %}
+    <div class="row">
+        <div class="col m6">
+            <h4>Nuevo Tutor</h4>
+            <br>
+            <form method="post" class="form">
+                {% csrf_token %}
+                {% form form=form %}{% endform %}
+                    <br>
+                <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

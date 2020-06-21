@@ -83,6 +83,49 @@ class EmpresaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['descripcion'].disabled = True
 
 
+class EmpresaDetailComisionPasantiasForm(forms.ModelForm):
+    class Meta():
+        model = models.Empresa
+        fields = (
+            'descripcion',
+        )
+    def __init__(self, *args, **kwargs):
+        super(EmpresaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['descripcion'].disabled = True
+
+
+class CreateTutoresEmpresaDetailComisionPasantiasForm(forms.ModelForm):
+
+    class Meta():
+        model = models.TutorEmpresa
+        fields = (
+            'empresa',
+            'mail',
+            'nombre',
+            'apellido',
+            'cargo',
+        )
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(CreateTutoresEmpresaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.fields['empresa'].queryset = models.Empresa.objects.filter(departamento=user.pps_user.departamento)
+
+class CreateDocenteEmpresaDetailComisionPasantiasForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Docente
+        fields = (
+            'nombre',
+            'apellido',
+            'email',
+            'box_oficina',
+        )
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(CreateDocenteEmpresaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.instance.departamento = models.Departamento.objects.get(pk=user.pps_user.departamento.pk)
+
+
 class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     layout = Layout(Row('empresa', 'alumno'),
                     Row('status', 'fecha'),
@@ -285,6 +328,21 @@ class UserWithoutNameCreateForm(RegistrationForm):
     def __init__(self, *args, **kwargs):
         super(UserWithoutNameCreateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
+
+
+class UserWithoutNameAndPassCreateForm(forms.ModelForm):
+    layout = Layout(Row('username', 'email'),)
+
+    class Meta(RegistrationForm):
+        model = models.User
+        fields = (
+            'username',
+            'email',
+        )
+    def __init__(self, *args, **kwargs):
+        super(UserWithoutNameAndPassCreateForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+
 
 class UserEditForm(forms.ModelForm):
     layout = Layout('email',

@@ -15,13 +15,14 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Email</th>
-                        <th>Cantidad de postulados</th>
-                        <th>Cantidad de pasantes</th>
+                        <th style="white-space: nowrap;">Cantidad de postulados</th>
+                        <th style="white-space: nowrap;">Cantidad de pasantes</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for empresa in empresa_list %}
-                        <tr>
+                        <tr class="table-row" data-href="{% url 'empresa-detail-comision-pasatia' empresa.pk %}">
                             <td>
                                 {{ empresa.nombre_fantasia }}
                             </td>
@@ -33,6 +34,13 @@
                             </td>
                             <td>
                                 {{ empresa.get_cantidad_de_pasantes }}
+                            </td>
+                            <td>
+                                {% if empresa.activa %}
+                                    <a href="{% url 'eliminar-empresa-comision-pasantias' empresa.pk %}?next={{ request.path }}"><button style="float: right" class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea INACTIVAR esta empresa?');">Inactivar</button></a>
+                                {% else %}
+                                    <a href="{% url 'activar-empresa-comision-pasantias' empresa.pk %}?next={{ request.path }}"><button style="float: right" class="btn btn-outline-danger btn-md" type="submit" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ACTIVAR esta empresa?');">ACTIVAR</button></a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

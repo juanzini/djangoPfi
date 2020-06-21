@@ -11,16 +11,16 @@ from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import timedelta as td
 
-from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm
+from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm, EmpresaDetailComisionPasantiasForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
     PasantiaDetailSubcomisionCarreraForm, SubcomisionCarreraCreateForm
 from .forms import EntrevistaCreateForm, EntrevistaExistenteCreateForm, EntrevistaDetailEmpresaForm, \
-    PasantiaDetailEmpresaForm, TutorEmpresaDetailEmpresaForm
+    PasantiaDetailEmpresaForm, TutorEmpresaDetailEmpresaForm, UserWithoutNameAndPassCreateForm, CreateDocenteEmpresaDetailComisionPasantiasForm
 from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, AlumnoDetailComisionPasantiasForm
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
-from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm
+from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
@@ -218,14 +218,6 @@ class IndexAlumnoView(generic.TemplateView):
 
     def get_object(self):
         return Alumno.objects.get(user=self.request.user.pk)
-
-
-class CreateAlumnoView(generic.CreateView):
-    model = Alumno
-    fields = ['username', 'password', 'numero_registro', 'first_name', 'last_name', 'email', 'carrera', 'curriculum',
-              'descripcion_intereses', 'descripcion_habilidades']
-    template_name = 'alumno/create.html'
-
 
 @transaction.atomic
 def create_alumno(request):
@@ -659,7 +651,7 @@ class CreateTutorView(generic.CreateView):
 
 class DetailTutoresEmpresaView(generic.UpdateView):
     model = TutorEmpresa
-    template_name = 'empresa/tutores_detail.html'
+    template_name = 'empresa/tutor_detail.html'
     context_object_name = 'tutor'
     form_class = TutorEmpresaDetailEmpresaForm
     success_url = '../../tutores'
@@ -1057,7 +1049,7 @@ class EmpresaDetailSubcomisionCarreraView(generic.UpdateView):
     model = Empresa
     template_name = 'subcomision_carrera/empresa_detail.html'
     form_class = EmpresaDetailSubcomisionCarreraForm
-    success_url = '../../alumnos'
+    success_url = '../../empresas'
 
     def get_object(self):
         return Empresa.objects.get(pk=self.kwargs["pk"])
@@ -1140,7 +1132,7 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento, activa=True)
+        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento)
         return getPage(self.request, empresas, 10)
     
     
@@ -1174,6 +1166,49 @@ def create_empresa(request):
         'empresa_form': empresa_form,
         'user_form': user_form,
     })
+
+
+@transaction.atomic
+def edit_comision_empresa(request, pk):
+    if request.method == 'POST':
+        empresa_form = EmpresaDetailComisionPasantiasForm(request.POST, instance=Empresa.objects.get(pk=pk))
+        user_form = UserWithoutNameAndPassCreateForm(request.POST, instance=User.objects.get(pk=empresa_form.instance.user.pk))
+        if user_form.is_valid() and empresa_form.is_valid():
+            empresa_form.save()
+            user_form.save()
+            messages.success(request, ('Empresa editada!'))
+            return redirect('empresas-comision-pasantias')
+        else:
+            messages.error(request, ('El formulario contiene algunos errores'))
+    else:
+        empresa_form = EmpresaDetailComisionPasantiasForm(instance=Empresa.objects.get(pk=pk))
+        user_form = UserWithoutNameAndPassCreateForm(instance=empresa_form.instance.user)
+    return render(request, 'comision_pasantias/empresa_detail.html', {
+        'user_form': user_form,
+        'empresa_form': empresa_form
+    })
+
+
+@transaction.atomic
+def delete_empresa(request, *args, **kwargs):
+    get_object_or_404(Empresa, pk=kwargs.get('pk'), departamento=request.user.pps_user.departamento, activa=True)
+    empresa = Empresa.objects.get(pk=kwargs.get('pk'))
+    empresa.activa = False
+    empresa.user.is_active = False
+    empresa.user.save()
+    empresa.save()
+    return HttpResponseRedirect(request.GET.get('next', ''))
+
+
+@transaction.atomic
+def active_empresa(request, *args, **kwargs):
+    get_object_or_404(Empresa, pk=kwargs.get('pk'), departamento=request.user.pps_user.departamento, activa=False)
+    empresa = Empresa.objects.get(pk=kwargs.get('pk'))
+    empresa.activa = True
+    empresa.user.is_active = True
+    empresa.user.save()
+    empresa.save()
+    return HttpResponseRedirect(request.GET.get('next', ''))
 
 
 class ListPuestosComisionPasantiasView(generic.ListView):
@@ -1297,6 +1332,106 @@ class ListCarrerasComisionPasantiasView(generic.ListView):
     def get_queryset(self):
         carreras = Carrera.objects.filter(departamento=self.request.user.pps_user.departamento,activa=True)
         return getPage(self.request, carreras, 10)
+
+
+class ListTutoresComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/tutores.html'
+    context_object_name = 'tutor_list'
+
+    def get_queryset(self):
+        tutores = TutorEmpresa.objects.filter(empresa__departamento=self.request.user.pps_user.departamento)
+        return getPage(self.request, tutores, 10)
+
+
+class DetailTutorComisionPasantiasView(generic.UpdateView):
+    model = TutorEmpresa
+    template_name = 'comision_pasantias/tutor_detail.html'
+    form_class = CreateTutoresEmpresaDetailComisionPasantiasForm
+    success_url = '../../tutores'
+
+    def get_form_kwargs(self):
+        kwargs = super(DetailTutorComisionPasantiasView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+
+class CreateTutorComisionPasantiasView(generic.CreateView):
+    model = TutorEmpresa
+    template_name = 'comision_pasantias/tutores_create.html'
+    form_class = CreateTutoresEmpresaDetailComisionPasantiasForm
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateTutorComisionPasantiasView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def form_valid(self, form):
+        tutor = form.save(commit=False)
+        try:
+            TutorEmpresa.objects.get(pk=tutor.mail)
+            form.add_error('mail', forms.ValidationError("Ya existe un tutor con este mail."))
+            return super(CreateTutorComisionPasantiasView, self).form_invalid(form)
+        except ObjectDoesNotExist:
+            tutor.save()
+        return redirect('tutores-comision-pasantias')
+
+
+@transaction.atomic
+def delete_tutor_comision_pasantia(request, *args, **kwargs):
+    tutor = get_object_or_404(TutorEmpresa, pk=kwargs.get('pk'))
+    tutor.delete()
+    return redirect('tutores-comision-pasantias')
+
+
+class ListDocentesComisionPasantiasView(generic.ListView):
+    template_name = 'comision_pasantias/docentes.html'
+    context_object_name = 'docente_list'
+
+    def get_queryset(self):
+        docentes = Docente.objects.filter(departamento=self.request.user.pps_user.departamento)
+        return getPage(self.request, docentes, 10)
+
+
+class DetailDocenteComisionPasantiasView(generic.UpdateView):
+    model = Docente
+    template_name = 'comision_pasantias/docente_detail.html'
+    form_class = CreateDocenteEmpresaDetailComisionPasantiasForm
+    success_url = '../../docentes'
+
+    def get_form_kwargs(self):
+        kwargs = super(DetailDocenteComisionPasantiasView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+
+class CreateDocenteComisionPasantiasView(generic.CreateView):
+    model = Docente
+    template_name = 'comision_pasantias/docente_create.html'
+    form_class = CreateDocenteEmpresaDetailComisionPasantiasForm
+
+    def form_valid(self, form):
+        docente = form.save(commit=False)
+        try:
+            Docente.objects.get(pk=docente.mail)
+            form.add_error('mail', forms.ValidationError("Ya existe un docente con este mail."))
+            return super(CreateDocenteComisionPasantiasView, self).form_invalid(form)
+        except ObjectDoesNotExist:
+            docente.save()
+        return redirect('docentes-comision-pasantias')
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateDocenteComisionPasantiasView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+
+
+@transaction.atomic
+def delete_docente_comision_pasantia(request, *args, **kwargs):
+    docente = get_object_or_404(Docente, pk=kwargs.get('pk'))
+    docente.delete()
+    return redirect('docentes-comision-pasantias')
+
 
 @transaction.atomic
 def create_carrera(request):

@@ -9,7 +9,7 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Email</th>
-                        <th>Url</th>
+                        <th>Activa</th>
                         <th style="white-space: nowrap;">Cantidad de postulados</th>
                         <th style="white-space: nowrap;">Cantidad de pasantes</th>
                     </tr>
@@ -24,7 +24,11 @@
                                 {{ empresa.user.email }}
                             </td>
                             <td>
-                                {{ empresa.url }}
+                                {% if empresa.activa %}
+                                    Si
+                                {% else %}
+                                    No
+                                {% endif %}
                             </td>
                             <td>
                                 {{ empresa.get_cantidad_de_postulados }}

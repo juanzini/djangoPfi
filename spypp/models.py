@@ -149,11 +149,14 @@ class Docente(models.Model):
     def __str__(self):
         return self.apellido.__str__().upper() + " " + self.nombre
 
+    def get_cantidad_de_pasantes(self):
+        return Pasantia.objects.filter(tutor_docente=self).count()
+
 
 class Pasantia(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
-    tutor_docente = models.ForeignKey('Docente', on_delete=models.DO_NOTHING, null=True)
+    tutor_docente = models.ForeignKey('Docente', on_delete=models.SET_NULL, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.SET_NULL, null=True, blank=True)
     entrevista = models.OneToOneField('Entrevista', on_delete=models.DO_NOTHING, related_name='entrevista_pasantia')
     informe = models.FileField(upload_to='informes/', blank=True, null=True)
@@ -191,6 +194,9 @@ class TutorEmpresa(models.Model):
 
     def __str__(self):
         return self.nombre + " " + self.apellido
+
+    def get_cantidad_de_pasantes(self):
+        return Pasantia.objects.filter(tutor_empresa=self).count()
 
 
 class Entrevista(models.Model):
