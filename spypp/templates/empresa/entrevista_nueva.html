@@ -1,20 +1,18 @@
 {% extends "base.html" %}
-{% load bootstrap4 %}
+{% load material_form %}
 
 {% block content %}
     {{ form.media }}
     <div class="row">
         <div class="col">
-            <h2>Establecer fecha de entrevista</h2>
-            <hr>
+            <h4>Establecer fecha y lugar de entrevista</h4>
+            <br>
             <form method="post" class="form">
                 {% csrf_token %}
-                {% bootstrap_form form %}
-                {% buttons %}
+                {% form form=form %}{% endform %}
                     <br>
                     <input type="hidden" name="postulacion" value="{{ request.POST.postulacion  }}">
                     <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                {% endbuttons %}
             </form>
         </div>
     </div>

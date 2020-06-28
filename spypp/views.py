@@ -345,8 +345,8 @@ def create_postulacion_alumno(request):
                 nuevaPostulacion = True
         except ObjectDoesNotExist:
             puesto = Puesto.objects.get(pk=request.POST.get('puesto_id'))
-            if not puesto.empresa.activa :
-                postulacion = Postulacion.objects.create(puesto=Puesto.objects.get(pk=puesto),
+            if puesto.empresa.activa :
+                postulacion = Postulacion.objects.create(puesto=puesto,
                                            alumno=request.user.alumno_user)
                 nuevaPostulacion = True
         if nuevaPostulacion :
@@ -777,7 +777,7 @@ def delete_postulacion_empresa(request):
 @transaction.atomic
 def nuevaEntrevista(request):
     postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),
-                                          puesto__empresa=request.user.empresa_user, activa=True)
+                                          puesto__empresa=request.user.empresa_user)
     alumno = postulacion.alumno
     empresa = postulacion.puesto.empresa
     entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
@@ -789,12 +789,12 @@ def nuevaEntrevista(request):
                     entrevista = Entrevista.objects.create(
                         alumno=alumno,
                         empresa=empresa,
-                        fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+                        fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S"),
                         lugar=request.POST.get('lugar')
                     )
                 else:
                     entrevista.status = 'NOA'
-                    entrevista.fecha = datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M")
+                    entrevista.fecha = datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S")
                     entrevista.lugar = request.POST.get('lugar')
                 entrevista.save()
                 postulacion.entrevista = entrevista
@@ -929,7 +929,7 @@ def edit_subcomision_carrera(request):
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
     def get_queryset(self):
         try:
-            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera).annotate(
+            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera, alumno__condicion_acreditacion=True).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
@@ -1001,7 +1001,7 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera))
+        pasantias = Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1030,10 +1030,56 @@ class PasantiaDetailSubcomisionCarreraView(generic.UpdateView):
     form_class = PasantiaDetailSubcomisionCarreraForm
 
     def get_object(self):
-        return Pasantia.objects.get(pk=self.kwargs["pk"])
+        return get_object_or_404(Pasantia, pk=self.kwargs["pk"], practica_plan_de_estudio=True)
 
     def get_success_url(self):
         return self.request.GET.get('next', '../../pasantias')
+
+
+class CreatePracticaView(generic.CreateView):
+    model = Pasantia
+    context_object_name = 'pasantia'
+    template_name = 'subcomision_carrera/pasantia_create.html'
+    success_url = '../pasantias'
+
+    def get_form_kwargs(self):
+        kwargs = super(CreatePracticaView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user  # pass the 'user' in kwargs
+        return kwargs
+
+    def get_form(self):
+        form = super(CreatePracticaView, self).get_form(PasantiaCreateForm)
+        return form
+
+    def get_success_url(self):
+        return self.request.GET.get('next', '')
+
+    def form_valid(self, form):
+        context = {
+            'user': form.instance.entrevista.alumno.user,
+            'entrevista': form.instance.entrevista
+        }
+        message = render_to_string(
+            template_name='emails/nueva_pasantia_alumno.txt',
+            context=context
+        )
+        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
+                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        try:
+            email.send()
+        except (SMTPRecipientsRefused, SMTPSenderRefused):
+            None
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
+        for postulacion in postulaciones:
+            delete_postulacion_alumno(postulacion, None)
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        for entrevista in entrevistas:
+            cancel_entrevistas_alumno(entrevista, None)
+        form.instance.entrevista.pasantia_aceptada = True
+        form.instance.practica_plan_de_estudio = True
+        form.instance.entrevista.save()
+        return super().form_valid(form)
 
 class DetailPustoSubcomisionCarreraView(generic.TemplateView):
     template_name = 'subcomision_carrera/puesto_detail.html'
@@ -1236,7 +1282,7 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(
-            entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento)
+            entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1263,7 +1309,7 @@ class PasantiaDetailComisionPasantiasView(generic.UpdateView):
     form_class = PasantiaDetailComisionPasantiasForm
 
     def get_object(self):
-        return Pasantia.objects.get(pk=self.kwargs["pk"])
+        return get_object_or_404(Pasantia, pk=self.kwargs["pk"], practica_plan_de_estudio=False)
 
     def get_form_kwargs(self):
         kwargs = super(PasantiaDetailComisionPasantiasView, self).get_form_kwargs()

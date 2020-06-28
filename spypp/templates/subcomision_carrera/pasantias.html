@@ -3,7 +3,14 @@
 {% block content %}
     <div class="row">
         <div class="col" style="width: 100%;">
-            <h4>Pasantias</h4>
+            <div>
+                <h4>Pr&aacute;cticas
+                    <a href="{% url 'nueva-practica-subcomision-carrera' %}?next={{ request.path }}">
+                        <button style="display: inline-block; float: right;" type="submit" class="btn btn-primary btn-md">Nueva Pr&aacute;ctica</button>
+                    </a>
+                </h4>
+            </div>
+            <h4></h4>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>

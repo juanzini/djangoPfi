@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                     {% for puesto in puesto_list %}
-                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' puesto.pk %}">
+                        <tr class="table-row" data-href="{% url 'puesto-detail-comision-pasantias' puesto.pk %}">
                             <td>
                                 {{ puesto.get_nombre_display }}
                             </td>

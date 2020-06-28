@@ -620,5 +620,9 @@ class PasantiaCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(PasantiaCreateForm, self).__init__(*args, **kwargs)
-        self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-            departamento=user.pps_user.departamento)
+        if user.tipo == models.User.CC:
+            self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
+                departamento=user.carrera_user.carrera.departamento)
+        else:
+            self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
+                departamento=user.pps_user.departamento)

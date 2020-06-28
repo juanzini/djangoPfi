@@ -11,7 +11,7 @@
                         <th>Empresa</th>
                         <th>Fecha</th>
                         <th>Estado</th>
-                        <th>Pasant&iacute;a</th>
+                        <th>Pr&aacute;ctica</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,7 +57,7 @@
                             {% if entrevista.pasantia %}
                                 <a href="{% url 'pasantia-detail-subcomision-carrera' entrevista.pasantia.pk %}?next={{ request.path }}"><button class="btn-small" type="button">Detalle</button></a>
                             {% else %}
-                                <a href="#"><button class="btn-small" type="submit">Crear</button></a>
+                                <a href="{% url 'nueva-practica-subcomision-carrera' %}?next={{ request.path }}"><button class="btn-small" type="submit">Crear</button></a>
                             {% endif %}
                             </td>
                         </tr>

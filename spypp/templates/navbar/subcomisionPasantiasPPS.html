@@ -5,7 +5,7 @@
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <li class="{% if request.resolver_match.url_name == 'edit-comision-pasantias' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'edit-comision-pasantias' %}">La Comisi&oacute;n</a>
+              <a class="nav-link" href="{% url 'edit-comision-pasantias' %}">Comisi&oacute;n de Pasant&iacute;as</a>
             </li>
             <li class="{% if request.resolver_match.url_name == 'puestos-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'entrevistas-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'alumnos-comision-pasantias' or request.resolver_match.url_name == 'empresas-comision-pasantias' or request.resolver_match.url_name == 'pasantias-comision-pasantias' %}active{% endif %}">
               <a class="dropdown-trigger" href="#!" data-target="dropdownComision">
@@ -25,7 +25,7 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li class="{% if request.resolver_match.url_name == 'edit-comision-pasantias' %}active{% endif %}">
-      <a class="nav-link" href="{% url 'edit-comision-pasantias' %}">La Comisi&oacute;n</a>
+      <a class="nav-link" href="{% url 'edit-comision-pasantias' %}">Comisi&oacute;n de Pasant&iacute;as</a>
     </li>
     <li class="{% if request.resolver_match.url_name == 'puestos-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'entrevistas-comision-pasantias' or request.resolver_match.url_name == 'postulaciones-comision-pasantias' or request.resolver_match.url_name == 'alumnos-comision-pasantias' or request.resolver_match.url_name == 'empresas-comision-pasantias' or request.resolver_match.url_name == 'pasantias-comision-pasantias' %}active{% endif %}">
       <a class="dropdown-trigger" href="#!" data-target="dropdownComision2">

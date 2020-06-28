@@ -5,7 +5,7 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             <li class="{% if request.resolver_match.url_name == 'edit-subcomision-carrera' %}active{% endif %}">
-              <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">La Subcomisi&oacute;n</a>
+              <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">Subcomisi&oacute;n de Pr&aacute;cticas</a>
             </li>
             <li class="{% if request.resolver_match.url_name == 'puestos-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'entrevistas-subcomision-carrera' or request.resolver_match.url_name == 'postulaciones-subcomision-carrera' or request.resolver_match.url_name == 'alumnos-subcomision-carrera' or request.resolver_match.url_name == 'empresas-subcomision-carrera' or request.resolver_match.url_name == 'pasantias-subcomision-carrera' %}active{% endif %}">
               <a class="dropdown-trigger" href="#!" data-target="dropdownSubcomision">
@@ -24,7 +24,7 @@
 
 <ul class="sidenav" id="mobile-demo">
     <li>
-      <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">La Subcomisi&oacute;n</a>
+      <a class="nav-link" href="{% url 'edit-subcomision-carrera' %}">Subcomisi&oacute;n de Pr&aacute;cticas</a>
     </li>
     <li>
       <a class="dropdown-trigger" href="#!" data-target="dropdownSubcomision2">
@@ -39,7 +39,7 @@
 </ul>
 
 <ul id="dropdownSubcomision" class="dropdown-content">
-  <li><a class="dropdown-item" href="{% url 'pasantias-subcomision-carrera' %}">Pasant&iacute;as</a></li>
+  <li><a class="dropdown-item" href="{% url 'pasantias-subcomision-carrera' %}">Pr&aacute;cticas</a></li>
   <li><a class="dropdown-item" href="{% url 'entrevistas-subcomision-carrera' %}">Entrevistas</a></li>
   <li><a class="dropdown-item" href="{% url 'postulaciones-subcomision-carrera' %}">Postulaciones</a></li>
   <li><a class="dropdown-item" href="{% url 'puestos-subcomision-carrera' %}">Puestos Ofrecidos</a></li>
@@ -49,7 +49,7 @@
 </ul>
 
 <ul id="dropdownSubcomision2" class="dropdown-content">
-  <li><a class="dropdown-item" href="{% url 'pasantias-subcomision-carrera' %}">Pasant&iacute;as</a></li>
+  <li><a class="dropdown-item" href="{% url 'pasantias-subcomision-carrera' %}">Pr&aacute;cticas</a></li>
   <li><a class="dropdown-item" href="{% url 'entrevistas-subcomision-carrera' %}">Entrevistas</a></li>
   <li><a class="dropdown-item" href="{% url 'postulaciones-subcomision-carrera' %}">Postulaciones</a></li>
   <li><a class="dropdown-item" href="{% url 'puestos-subcomision-carrera' %}">Puestos Ofrecidos</a></li>

@@ -31,15 +31,15 @@
                             </td>
                             <td>
                                 {% if postulacion.entrevista %}
-                                    {% if entrevista.status == 'CAA' %}
+                                    {% if postulacion.entrevista.status == 'CAA' %}
                                         <span style="color:red;">Cancelada por el alumno</span>
                                     {% else %}
-                                        {% if entrevista.status == 'CAE' %}
+                                        {% if postulacion.entrevista.status == 'CAE' %}
                                             <span style="color:red;">Cancelada por la empresa</span>
                                         {% else %}
-                                            {% if entrevista.status == 'COA' or entrevista.status == 'REA' %}
-                                                {% if entrevista.is_past_due or entrevista.status == 'REA' %}
-                                                    {% if entrevista.resultado %}
+                                            {% if postulacion.entrevista.status == 'COA' or postulacion.entrevista.status == 'REA' %}
+                                                {% if postulacion.entrevista.is_past_due or postulacion.entrevista.status == 'REA' %}
+                                                    {% if postulacion.entrevista.resultado %}
                                                         <span> Realizada, con respuesta </span>
                                                     {% else %}
                                                         <span> Realizada, sin respuesta </span>
@@ -48,7 +48,7 @@
                                                     <span style="color:green;"> ACTIVA </span>
                                                 {% endif %}
                                             {% else %}
-                                                {% if entrevista.is_past_due %}
+                                                {% if postulacion.entrevista.is_past_due %}
                                                     <span style="color:red;">Se excedi&oacute; la fecha y no confirm&oacute;</span>
                                                 {% else %}
                                                     <span style="color:orange;">A la espera de confirmación</span>
