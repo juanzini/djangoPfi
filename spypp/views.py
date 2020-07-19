@@ -266,6 +266,10 @@ def edit_alumno(request):
                 messages.success(request, ('Su perfil fue correctamente actualizado!'))
                 return redirect('edit-alumno')
         else:
+            if not alumno_form.is_valid() and alumno_form.errors['telefono']:
+                alumno_form.errors.pop('telefono')
+                alumno_form.add_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
+                alumno_form.has_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
             messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = UserEditForm(instance=request.user)
