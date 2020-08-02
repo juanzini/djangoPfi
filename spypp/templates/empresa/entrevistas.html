@@ -54,11 +54,6 @@
                                                 <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
                                             {% else %}
                                                 <span style="color:orange;">A la espera de confirmación del Alumno</span>
-                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
-                                                  {% csrf_token %}
-                                                  <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn-small" type="cancel">Cancelar</button>
-                                                </form>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}

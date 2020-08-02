@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="7a3855e6-922a-457e-89e3-9da7e967d674" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spypp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pfiProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/pfiProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/alumno/postulaciones.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/alumno_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/entrevista_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/entrevista_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/entrevistas.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/entrevistas.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spypp/templates/empresa/pasantia_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/spypp/templates/empresa/pasantia_detail.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,6 +110,7 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -143,58 +151,62 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="495" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1589107348401" />
-    <state x="376" y="227" width="955" height="511" key="#xdebugger.evaluate" timestamp="1595199875082">
+    <state x="745" y="396" width="955" height="511" key="#xdebugger.evaluate" timestamp="1596405234516">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="376" y="227" width="955" height="511" key="#xdebugger.evaluate/67.27.1853.1053@67.27.1853.1053" timestamp="1595199875082" />
+    <state x="745" y="396" width="955" height="511" key="#xdebugger.evaluate/67.27.1853.1053@67.27.1853.1053" timestamp="1596405234516" />
     <state x="899" y="311" width="424" height="484" key="FileChooserDialogImpl" timestamp="1592781614002">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="899" y="311" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1592781614002" />
-    <state width="1653" height="267" key="GridCell.Tab.0.bottom" timestamp="1595194632028">
+    <state width="1634" height="263" key="GridCell.Tab.0.bottom" timestamp="1596405145155">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1595194632028" />
-    <state width="1653" height="267" key="GridCell.Tab.0.center" timestamp="1595194632028">
+    <state width="1634" height="263" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1596405145155" />
+    <state width="1634" height="263" key="GridCell.Tab.0.center" timestamp="1596405145155">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1595194632028" />
-    <state width="1653" height="267" key="GridCell.Tab.0.left" timestamp="1595194632028">
+    <state width="1634" height="263" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1596405145155" />
+    <state width="1634" height="263" key="GridCell.Tab.0.left" timestamp="1596405145155">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1595194632028" />
-    <state width="1653" height="267" key="GridCell.Tab.0.right" timestamp="1595194632028">
+    <state width="1634" height="263" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1596405145155" />
+    <state width="1634" height="263" key="GridCell.Tab.0.right" timestamp="1596405145155">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1595194632028" />
-    <state width="1653" height="267" key="GridCell.Tab.1.bottom" timestamp="1595198970699">
+    <state width="1634" height="263" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1596405145155" />
+    <state width="1634" height="263" key="GridCell.Tab.1.bottom" timestamp="1596404996874">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1595198970699" />
-    <state width="1653" height="267" key="GridCell.Tab.1.center" timestamp="1595198970699">
+    <state width="1634" height="263" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1596404996874" />
+    <state width="1634" height="263" key="GridCell.Tab.1.center" timestamp="1596404996873">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1595198970699" />
-    <state width="1653" height="267" key="GridCell.Tab.1.left" timestamp="1595198970698">
+    <state width="1634" height="263" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1596404996873" />
+    <state width="1634" height="263" key="GridCell.Tab.1.left" timestamp="1596404996873">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1595198970698" />
-    <state width="1653" height="267" key="GridCell.Tab.1.right" timestamp="1595198970699">
+    <state width="1634" height="263" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1596404996873" />
+    <state width="1634" height="263" key="GridCell.Tab.1.right" timestamp="1596404996874">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1653" height="267" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1595198970699" />
+    <state width="1634" height="263" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1596404996874" />
     <state x="615" y="188" key="SettingsEditor" timestamp="1589132895760">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="615" y="188" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1589132895760" />
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1593383745159">
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1596405514137">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1593383745159" />
-    <state x="596" y="130" width="907" height="770" key="find.popup" timestamp="1595199412533">
+    <state x="873" y="245" width="432" height="616" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1596405514137" />
+    <state x="602" y="129" width="907" height="770" key="find.popup" timestamp="1596406644165">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="596" y="130" width="907" height="770" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1595199412533" />
+    <state x="602" y="129" width="907" height="770" key="find.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596406644165" />
+    <state x="706" y="189" width="670" height="676" key="search.everywhere.popup" timestamp="1596404886974">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="706" y="189" width="670" height="676" key="search.everywhere.popup/67.27.1853.1053@67.27.1853.1053" timestamp="1596404886974" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -313,16 +325,6 @@
           <url>file://$PROJECT_DIR$/spypp/views.py</url>
           <line>795</line>
           <option name="timeStamp" value="197" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>271</line>
-          <option name="timeStamp" value="198" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/spypp/views.py</url>
-          <line>268</line>
-          <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/spypp/views.py</url>

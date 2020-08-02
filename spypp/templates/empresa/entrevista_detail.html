@@ -25,7 +25,7 @@
                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                   {% csrf_token %}
                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="cancel">Cancelar</button>
                                 </form>
                             {% endif %}
                         {% else %}
@@ -36,7 +36,7 @@
                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                   {% csrf_token %}
                                   <input type="hidden" name="entrevista_id" value="{{ entrevista.id }}">
-                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="submit">Cancelar</button>
+                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="cancel">Cancelar</button>
                                 </form>
                             {% endif %}
                         {% endif %}

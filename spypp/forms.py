@@ -149,6 +149,7 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
         self.fields['resultado'].disabled = True
@@ -178,10 +179,11 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
                 self.fields['pasantia_aceptada'].disabled = True
         else:
             self.fields.pop('pasantia_aceptada')
-        if not self.instance.status in ['COA', 'NOA'] or datetime.astimezone(self.instance.fecha - td(days=1)) < datetime.astimezone(datetime.now()):
-            self.fields['fecha'].widget.attrs['readonly'] = True
-            self.fields['lugar'].widget.attrs['readonly'] = True
-        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+        if not self.instance.status in ['NOA'] or datetime.astimezone(self.instance.fecha - td(days=1)) < datetime.astimezone(datetime.now()):
+            self.fields['fecha'].disabled = True
+            self.fields['lugar'].disabled = True
+        self.fields['comentarios_comision_pps'].disabled = True
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
 
 class EntrevistaDetailAlumnoForm(forms.ModelForm):
     class Meta():
@@ -197,6 +199,7 @@ class EntrevistaDetailAlumnoForm(forms.ModelForm):
         self.fields['fecha'].disabled = True
         self.fields['lugar'].disabled = True
         self.fields['resultado'].disabled = True
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
     class Meta():
@@ -213,11 +216,13 @@ class PasantiaDetailEmpresaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PasantiaDetailEmpresaForm, self).__init__(*args, **kwargs)
-        self.fields['fecha_fin'].widget.attrs['readonly'] = True
-        self.fields['fecha_inicio'].widget.attrs['readonly'] = True
+        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha_fin'].disabled = True
+        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha_inicio'].disabled = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(empresa=self.instance.entrevista.empresa)
         self.fields['tutor_docente'].disabled = True
-        self.fields['comentarios_comision_pps'].widget.attrs['readonly'] = True
+        self.fields['comentarios_comision_pps'].disabled = True
 
 class TutorEmpresaDetailEmpresaForm(forms.ModelForm):
     class Meta():
@@ -256,7 +261,9 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         if not self.instance.practica_plan_de_estudio:
             self.fields['status'].disabled = True
             self.fields['fecha_inicio'].disabled = True
+            self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
             self.fields['fecha_fin'].disabled = True
+            self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
             self.fields['informe'].disabled = True
             self.fields['numero_legajo'].disabled = True
             self.fields['comentarios_comision_pps'].disabled = True
@@ -432,6 +439,10 @@ class EntrevistaCreateForm(forms.ModelForm):
         model = models.Entrevista
         fields = ['fecha', 'lugar']
         
+    def __init__(self, *args, **kwargs):
+        super(EntrevistaCreateForm, self).__init__(*args, **kwargs)
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        
 class EntrevistaExistenteCreateForm(forms.ModelForm):
     class Meta:
         model = models.Entrevista
@@ -439,7 +450,8 @@ class EntrevistaExistenteCreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)
-        self.fields['fecha'].widget.attrs['readonly'] = True
+        self.fields['fecha'].disabled = True
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
 
 
 class SubcomisionPasantiasUserEditForm(forms.ModelForm):
@@ -534,6 +546,7 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
         super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
+        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
         if not self.instance.resultado:
             self.fields['resultado'].label = 'Aún no hay resultado de la entrevista'
         self.fields['resultado'].disabled = True
@@ -593,6 +606,8 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
+        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
 
 
 class PasantiaCreateForm(forms.ModelForm):
@@ -626,3 +641,5 @@ class PasantiaCreateForm(forms.ModelForm):
         else:
             self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
                 departamento=user.pps_user.departamento)
+        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
