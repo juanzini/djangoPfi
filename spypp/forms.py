@@ -216,9 +216,7 @@ class PasantiaDetailEmpresaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PasantiaDetailEmpresaForm, self).__init__(*args, **kwargs)
-        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
         self.fields['fecha_fin'].disabled = True
-        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
         self.fields['fecha_inicio'].disabled = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(empresa=self.instance.entrevista.empresa)
         self.fields['tutor_docente'].disabled = True
@@ -261,9 +259,7 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         if not self.instance.practica_plan_de_estudio:
             self.fields['status'].disabled = True
             self.fields['fecha_inicio'].disabled = True
-            self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
             self.fields['fecha_fin'].disabled = True
-            self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
             self.fields['informe'].disabled = True
             self.fields['numero_legajo'].disabled = True
             self.fields['comentarios_comision_pps'].disabled = True
@@ -272,6 +268,8 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['comentarios_empresa'].disabled = True
         self.fields['empresa'].initial = self.instance.entrevista.empresa.__str__()
         self.fields['empresa'].disabled = True
+        self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
+                departamento=self.instance.carrera.departamento)
 
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
@@ -606,8 +604,6 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
-        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
-        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
 
 
 class PasantiaCreateForm(forms.ModelForm):
@@ -632,6 +628,7 @@ class PasantiaCreateForm(forms.ModelForm):
             'numero_legajo',
             'comentarios_comision_pps',
         )
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(PasantiaCreateForm, self).__init__(*args, **kwargs)
@@ -641,5 +638,4 @@ class PasantiaCreateForm(forms.ModelForm):
         else:
             self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
                 departamento=user.pps_user.departamento)
-        self.fields['fecha_inicio'].input_formats = ['%Y/%m/%d - %H:%M hs.']
-        self.fields['fecha_fin'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.none()

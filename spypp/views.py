@@ -655,7 +655,7 @@ class CreateTutorView(generic.CreateView):
 
 class DetailTutoresEmpresaView(generic.UpdateView):
     model = TutorEmpresa
-    template_name = 'empresa/tutor_detail.html'
+    template_name = 'empresa/tutores_detail.html'
     context_object_name = 'tutor'
     form_class = TutorEmpresaDetailEmpresaForm
     success_url = '../../tutores'
@@ -1395,7 +1395,7 @@ class ListTutoresComisionPasantiasView(generic.ListView):
 
 class DetailTutorComisionPasantiasView(generic.UpdateView):
     model = TutorEmpresa
-    template_name = 'comision_pasantias/tutor_detail.html'
+    template_name = 'comision_pasantias/tutores_detail.html'
     form_class = CreateTutoresEmpresaDetailComisionPasantiasForm
     success_url = '../../tutores'
 

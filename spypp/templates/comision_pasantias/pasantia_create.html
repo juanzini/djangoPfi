@@ -21,21 +21,23 @@
 <script type="text/javascript">$(document).ready(function() {
 
     $("#id_tutor_empresa").empty();
-    $("#id_tutor_empresa").append($('<option value="" selected="">---------</option>'));
+    $("#id_tutor_empresa").append('<option value>---------</option>');
 
     $("#id_entrevista").change(function(){
-
         $.ajax({
             url: "{% url 'ajax-get-tutor-empresa' %}",
             type: 'GET',
             data:  {entrevista_id: $("#id_entrevista").val()},
             dataType: "json",
             success: function(data){
+                var counter = 1;
                 $("#id_tutor_empresa").empty();
-                $("#id_tutor_empresa").append($('<option value="" selected="">---------</option>'));
+                $("#id_tutor_empresa").append($('<option value>---------</option>'));
                 $.each(data, function(idx, obj) {
-                    $('#id_tutor_empresa').append($('<option></option>').attr('value', obj.pk).text(obj.fields.nombre + ' ' + obj.fields.apellido ));
+                    var option = $('<option></option>').attr('value', obj.pk).text(obj.fields.nombre + ' ' + obj.fields.apellido );
+                    $('#id_tutor_empresa').append(option);
                 });
+                $('#id_tutor_empresa').formSelect()
             },
             error: function(jqXHR, textStatus, errorThrown) {}
         });
