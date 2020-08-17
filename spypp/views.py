@@ -634,6 +634,9 @@ class DetailPasantiaEmpresaView(generic.UpdateView):
         form.instance.empresa = self.request.user.empresa_user
         return super(DetailPasantiaEmpresaView, self).form_valid(form)
 
+    def get_success_url(self):
+        return self.request.GET.get('next', '../../pasantias')
+
 
 class CreateTutorView(generic.CreateView):
     model = TutorEmpresa
