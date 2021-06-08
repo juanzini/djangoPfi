@@ -9,6 +9,7 @@
             <br>
             <form method="post" class="form">
                 {% csrf_token %}
+                {% form form=user_form %}{% endform %}
                 {% form form=comision_pasantias_form %}{% endform %}
                 <br>
                 <button type="submit" class="btn btn-primary btn-md">Guardar</button>

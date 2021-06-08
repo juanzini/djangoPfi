@@ -15,7 +15,7 @@ from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -25,7 +25,7 @@ SECRET_KEY = '#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
+ALLOWED_HOSTS = ['192.122.229.56', '*', 'localhost', '127.0.0.1']
 
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
@@ -94,8 +94,12 @@ WSGI_APPLICATION = 'pfiProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'spypp_db',
+        'USER': 'root',
+        'PASSWORD': 'spypp2019jaz',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -183,19 +187,16 @@ STATIC_URL = '/static/'
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = config('DATABASE_URL', default='django-db')
+CELERY_RESULT_BACKEND = 'spypp_db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
-    from .settings_production import *
-    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
-else:
-    ADMIN_MEDIA_PREFIX = '/media/'
-    PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
-    EMAIL_USE_SSL = True
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 465
-    EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
-    EMAIL_HOST_PASSWORD = ''
+ADMIN_MEDIA_PREFIX = '/media/'
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
+
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
+EMAIL_HOST_PASSWORD = 'spypp2019jaz'

@@ -12,7 +12,7 @@
                 {% form form=form %}{% endform %}
                 <br>
                 <button type="submit" class="btn btn-primary btn-md">Guardar</button>
-                <a href="{% url 'eliminar-puesto-empresa' puesto.pk %}"><button class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este puesto?');">Eliminar</button></a>
+                <a href="{% url 'eliminar-puesto-empresa' puesto.pk %}"><span class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este puesto?');">Eliminar</span></a>
                 <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button" style="float: right;">Atr&aacute;s</button>
             </form>
         </div>

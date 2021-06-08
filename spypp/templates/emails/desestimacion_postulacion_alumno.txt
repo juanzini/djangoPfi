@@ -1,6 +1,6 @@
 Hola {{user.first_name}} {{user.last_name}}!!
 
-Te escribimos para informarte que la empresa {{entrevista.empresa.nombre_fantasia}} desestimo tu postulacion
+Te escribimos para informarte que la empresa {{entrevista.empresa.nombre_fantasia}} desestimo tu postulación
 para el puesto de {{postulacion.puesto}}.
 
 Arriba ese ánimo! Todavía quedan muchas más empresas que pueden requerir tus servicios!

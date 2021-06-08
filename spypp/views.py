@@ -26,7 +26,6 @@ from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasa
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.db import transaction
-from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q, F
@@ -170,10 +169,15 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
+        if self.request.user.tipo == User.CC:
+            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
-        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.perfil.name:
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.historia_academica.name:
             return True
         if self.request.user.is_superuser:
             return True
@@ -263,14 +267,12 @@ def edit_alumno(request):
                 alumno = Alumno.objects.get(user=request.user.pk)
                 alumno.ultima_actualizacion_perfil = datetime.now()
                 alumno.save()
-                messages.success(request, ('Su perfil fue correctamente actualizado!'))
                 return redirect('edit-alumno')
         else:
             if not alumno_form.is_valid() and alumno_form.errors['telefono']:
                 alumno_form.errors.pop('telefono')
                 alumno_form.add_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
                 alumno_form.has_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = UserEditForm(instance=request.user)
         alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
@@ -291,10 +293,7 @@ def edit_ultima_actualizacion(request, middleware):
             alumno = Alumno.objects.get(user=request.user.pk)
             alumno.ultima_actualizacion_perfil = datetime.now()
             alumno.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-alumno')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         if 'logout' not in request.build_absolute_uri():
             user_form = UserEditForm(instance=request.user)
@@ -534,10 +533,7 @@ def edit_empresa(request):
         if user_form.is_valid() and empresa_form.is_valid():
             user_form.save()
             empresa_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-empresa')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = EmpresaUserEditForm(instance=request.user)
         empresa_form = EmpresaEditForm(instance=Empresa.objects.get(user=request.user.pk))
@@ -919,10 +915,7 @@ def edit_subcomision_carrera(request):
         if user_form.is_valid() and subcomision_carrera_form.is_valid():
             user_form.save()
             subcomision_carrera_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-subcomision-carrera')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = SubcomisionCarreraUserEditForm(instance=request.user)
         subcomision_carrera_form = SubcomisionCarreraEditForm(
@@ -1121,10 +1114,7 @@ def edit_comision_pasantias(request):
         if user_form.is_valid() and comision_pasantias_form.is_valid():
             user_form.save()
             comision_pasantias_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = SubcomisionPasantiasUserEditForm(instance=request.user)
         comision_pasantias_form = SubcomisionPasantiasForm(
@@ -1229,10 +1219,7 @@ def edit_comision_empresa(request, pk):
         if user_form.is_valid() and empresa_form.is_valid():
             empresa_form.save()
             user_form.save()
-            messages.success(request, ('Empresa editada!'))
             return redirect('empresas-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         empresa_form = EmpresaDetailComisionPasantiasForm(instance=Empresa.objects.get(pk=pk))
         user_form = UserWithoutNameAndPassCreateForm(instance=empresa_form.instance.user)
@@ -1449,7 +1436,7 @@ class DetailDocenteComisionPasantiasView(generic.UpdateView):
     model = Docente
     template_name = 'comision_pasantias/docente_detail.html'
     form_class = CreateDocenteEmpresaDetailComisionPasantiasForm
-    success_url = '../../docentes'
+    success_url = '../docentes'
 
     def get_form_kwargs(self):
         kwargs = super(DetailDocenteComisionPasantiasView, self).get_form_kwargs()
@@ -1465,7 +1452,7 @@ class CreateDocenteComisionPasantiasView(generic.CreateView):
     def form_valid(self, form):
         docente = form.save(commit=False)
         try:
-            Docente.objects.get(pk=docente.mail)
+            Docente.objects.get(pk=docente.email)
             form.add_error('mail', forms.ValidationError("Ya existe un docente con este mail."))
             return super(CreateDocenteComisionPasantiasView, self).form_invalid(form)
         except ObjectDoesNotExist:
@@ -1515,7 +1502,7 @@ def create_carrera(request):
                 carrera.departamento = request.user.pps_user.departamento
                 carrera.save()
                 subcomision_carrera.carrera = carrera
-                subcomision_carrera.save(commit=True)
+                subcomision_carrera.save()
             return redirect('carreras-comision-pasantias')
     else:
         carrera_form = CarreraCreateComisionPasantiasForm()
@@ -1538,10 +1525,7 @@ def edit_carrera(request, pk):
             carrera_form.save()
             subcomision_carrera_form.save()
             user_form.save()
-            messages.success(request, ('Carrera editada!'))
             return redirect('carreras-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         carrera_form = CarreraCreateComisionPasantiasForm(instance=Carrera.objects.get(pk=pk))
         subcomision_carrera_form = SubcomisionCarreraEditForm(instance=SubcomisionCarrera.objects.get(
