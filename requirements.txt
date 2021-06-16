@@ -17,8 +17,7 @@ django-celery-beat==2.0.0
 django-celery-results==2.1
 django-cleanup==4.0.0
 django-heroku==0.3.1
-django-material==1.6.3
-django-material-admin==1.7.2
+django-material==1.9.0
 django-phonenumber-field==4.0.0
 django-private-storage==2.2.2
 django-registration==3.1.2
