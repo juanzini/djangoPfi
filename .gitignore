@@ -1,2 +1,4 @@
-.idea/**/workspace.xml
 db.sqlite3
+venv
+.idea\**
+.idea\*
