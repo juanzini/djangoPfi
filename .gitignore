@@ -4,3 +4,6 @@ venv
 .idea\*
 *.pyc
 .idea/workspace.xml
+*.iml
+.idea/pfiProject.iml
+.idea/misc.xml
