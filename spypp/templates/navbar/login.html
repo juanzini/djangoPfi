@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:#004884; align-items:center;align-items:center;">
     <div class="container">
         <div class="nav-wrapper">
-            <a class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img height="60em" width="60em" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
+            <a class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img height="55em" width="55em" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
             {% if not request.resolver_match.url_name == 'login' %}
-                <a class="right hide-on-med-and-down" href="{% url 'login' %}" style="position:relative !important; float: right; padding-top:0.8em;"><button class="btn my-2 my-sm-0" type="submit" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
-                <a class="left hide-on-large-only" href="{% url 'login' %}" style="position:relative !important; float: right; padding-top:0.8em;"><button class="btn my-2 my-sm-0" type="submit" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
+                <a class="right hide-on-med-and-down" href="{% url 'login' %}" style="position:relative !important; float: right;"><button class="btn my-2 my-sm-0" type="submit" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
+                <a class="left hide-on-large-only" href="{% url 'login' %}" style="position:relative !important; float: right;"><button class="btn my-2 my-sm-0" type="submit" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
             {% endif %}
         </div>
     </div>
