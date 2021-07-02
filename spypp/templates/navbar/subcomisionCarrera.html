@@ -1,7 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:#004884; align-items:center;align-items:center;">
-  <div class="container">
-    <div class="nav-wrapper">
-          <a class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img height="55em" width="55em" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
+<nav style="background-color:#004884;">
+    <div class="nav-wrapper container valign-wrapper">
+          <a class="brand-logo" style="display: flex;" href="http://www.dirinfo.unsl.edu.ar/"><img height="55em" width="55em" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             <li class="{% if request.resolver_match.url_name == 'edit-subcomision-carrera' %}active{% endif %}">
@@ -19,7 +18,6 @@
             </li>
           </ul>
     </div>
-  </div>
 </nav>
 
 <ul class="sidenav" id="mobile-demo">
