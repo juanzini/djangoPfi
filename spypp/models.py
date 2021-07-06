@@ -5,6 +5,7 @@ from datetime import datetime
 from pytz import UTC
 from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
+from private_storage.storage.files import PrivateFileSystemStorage
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 from phonenumber_field.modelfields import PhoneNumberField
@@ -12,8 +13,10 @@ from datetime import timedelta as td
 import uuid
 import re
 
-from pfiProject import settings
-
+public_storage = PrivateFileSystemStorage(
+    location='media/public/',
+    base_url= '/public-documents/'
+)
 
 class UserManager(UserManager):
     pass
@@ -257,7 +260,7 @@ class Empresa(models.Model):
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
-                            upload_to=logo_upload_path, max_file_size=1024 * 1024, storage=settings.PUBLIC_STORAGE)
+                            upload_to=logo_upload_path, max_file_size=1024 * 1024, storage=public_storage)
     nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre de Fantasía")
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)

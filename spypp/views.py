@@ -22,7 +22,7 @@ from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, A
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
 from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
@@ -246,7 +246,7 @@ class AjaxField2ViewLogosEmpresas(generic.View):
 
 
 class MyPublicStorageView(PrivateStorageView):
-    storage = settings.PUBLIC_STORAGE
+    storage = public_storage
 
     def can_access_file(self, private_file):
         # This overrides PRIVATE_STORAGE_AUTH_FUNCTION
