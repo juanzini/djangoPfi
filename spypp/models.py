@@ -15,7 +15,7 @@ import re
 
 public_storage = PrivateFileSystemStorage(
     location='media/public/',
-    base_url= '/public-documents/'
+    base_url='/public-documents/'
 )
 
 class UserManager(UserManager):

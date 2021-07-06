@@ -11,7 +11,7 @@ urlpatterns = [
     path('', login_required(views.redirect_view), name='redirect'),
     path('create', views.create_alumno, name='create-alumno'),
     path('accounts/login/empresas', views.AjaxField2ViewLogosEmpresas.as_view(), name='ajax-get-logos-empresas'),
-    path('^public-documents/(?P<path>.*)$', views.MyPublicStorageView.as_view()),
+    path('public-documents/(?P<path>.*)$', views.MyPublicStorageView.as_view()),
 
     # -------------------ALUMNO--------------------
 
