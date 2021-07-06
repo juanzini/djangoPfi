@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col xl5 l6 z-depth-3" style="padding-bottom:2em; margin-top:1.3em;">
+    <div class="col l4 m12 s12 z-depth-3" style="padding-bottom:2em; margin-top:1.3em;">
         <h4><b>Ingres&aacute; tus datos</b></h4>
         <br>
         <form method="post" class="form">
@@ -16,7 +16,7 @@
                 <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right;">Registrarme</button></a>
         </form>
     </div>
-    <div class="col xl6 l6">
+    <div class="col l8 m12 s12">
         <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
         <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
         <blockquote>
@@ -43,7 +43,7 @@
             success: function(data){
                 var counter = 1;
                 $.each(data, function(idx, obj) {
-                    var image = $('<img></img>').append('src', obj.logo)
+                    var image = $('<img></img>').attr('src', obj.logo)
                     var item = $('<a class="carousel-item" href="#"></a>').append(image);
                     $('#carousel').append(item);
                 });
