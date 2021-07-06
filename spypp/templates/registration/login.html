@@ -48,11 +48,11 @@
         success: function(data){
             var counter = 1;
            $.each(data, function(idx, obj) {
-                    if (obj.fields.logo !== 'undefined' || obj.fields.logo !== null) {
+                    if (obj.fields.logo !== 'undefined' && obj.fields.logo !== null && obj.fields.logo !== '') {
                         var image = $('<img>').attr('src', '/public-documents/' + obj.fields.logo)
                         var item
                         if (counter === 1) {
-                            item = $('<a class="carousel-item active" href="#"></a>').append(image);
+                            item = $('<a class="carousel-item" href="#"></a>').append(image);
                         } else {
                             item = $('<a class="carousel-item" href="#"></a>').append(image);
                         }
