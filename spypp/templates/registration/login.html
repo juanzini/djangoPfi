@@ -38,7 +38,6 @@
   $(document).ready(function(){
     //init carousel
     var slider = $('.carousel');
-    slider.carousel();
 
     $.ajax({
         url: "{% url 'ajax-get-logos-empresas' %}",
@@ -63,11 +62,6 @@
         },
         error: function(jqXHR, textStatus, errorThrown) {}
     });
-
-    //remove the 'initialized' class which prevents slider from initializing itself again when it's not needed
-    if (slider.hasClass('initialized')){
-            slider.removeClass('initialized');
-    }
 
     //just reinit the carousel
     slider.carousel({
