@@ -43,7 +43,7 @@
             success: function(data){
                 var counter = 1;
                 $.each(data, function(idx, obj) {
-                    var image = $('<img>').attr('src', obj.fields.logo)
+                    var image = $('<img>').attr('src', '/public-documents/' + obj.fields.logo)
                     var item = $('<a class="carousel-item" href="#"></a>').append(image);
                     $('#carousel').append(item);
                 });
