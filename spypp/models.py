@@ -12,9 +12,12 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import timedelta as td
 import uuid
 import re
+import os
+
+from pfiProject.settings import BASE_DIR
 
 public_storage = PrivateFileSystemStorage(
-    location='media/public/',
+    location=os.path.join(BASE_DIR, 'media/public/'),
     base_url='/public-documents/'
 )
 
@@ -259,7 +262,8 @@ class Empresa(models.Model):
 
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
-    logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'), max_file_size=1024 * 1024, storage=public_storage)
+    logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
+                            upload_to=logo_upload_path, max_file_size=1024 * 1024, storage=public_storage)
     nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre de Fantasía")
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)
