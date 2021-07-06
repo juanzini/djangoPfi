@@ -258,7 +258,7 @@ class Entrevista(models.Model):
 
 class Empresa(models.Model):
     def logo_upload_path(instance, filename):
-        return 'logos/{0}-{1}-{2}'.format("logo", instance.user.username, filename)
+        return '{0}-{1}-{2}'.format("logo", instance.user.username, filename)
 
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
