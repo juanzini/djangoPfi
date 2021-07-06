@@ -1,6 +1,9 @@
 <nav style="background-color:#004884;">
     <div class="nav-wrapper container">
         <a style="width:auto;height:100%;" class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
+        {% if not request.resolver_match.url_name == 'help-comision-pasantias' %}
+          <a class="right" href="{% url 'help-comision-pasantias' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
+        {% endif %}
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <li class="{% if request.resolver_match.url_name == 'edit-comision-pasantias' %}active{% endif %}">

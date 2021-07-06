@@ -246,6 +246,26 @@ def create_alumno(request):
         'alumno_form': alumno_form,
     })
 
+def help_accounts_login(request):
+    return render(request, 'help/login.html')
+
+def help_alumno(request):
+    return render(request, 'help/alumno.html')
+
+def help_empresa(request):
+    return render(request, 'help/empresa.html')
+
+def help_subcomision_carrera(request):
+    return render(request, 'help/subcomisionCarrera.html')
+
+def help_subcomision_pasantias(request):
+    return render(request, 'help/subcomisionPasantiasPPS.html')
+
+class AjaxField2ViewLogosEmpresas(generic.View):
+    def get(self, request, *args, **kwargs):
+        empresas = sorted(Empresa.objects.all(), key=lambda a: a.get_cantidad_de_pasantes())
+        data = serializers.serialize('json', empresas)
+        return HttpResponse(data, content_type="application/json")
 
 @transaction.atomic
 def edit_alumno(request):

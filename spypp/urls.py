@@ -7,11 +7,14 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/login/help', views.help_accounts_login, name='help-login'),
     path('', login_required(views.redirect_view), name='redirect'),
     path('create', views.create_alumno, name='create-alumno'),
+    path('accounts/login/empresas', views.AjaxField2ViewLogosEmpresas.as_view(), name='ajax-get-logos-empresas'),
 
     # -------------------ALUMNO--------------------
 
+    path('alumno/help', login_required(permissions(views.help_alumno, User.AL)), name='help-alumno'),
     path('alumno/detail', login_required(permissions(views.DetailAlumnoView.as_view(), User.AL)), name='detail-alumno'),
     path('alumno/edit', login_required(permissions(views.edit_alumno, User.AL)), name='edit-alumno'),
     path('alumno/entrevistas', login_required(permissions(views.ListEntrevistasAlumnoView.as_view(), User.AL)),
@@ -45,6 +48,7 @@ urlpatterns = [
 
     # -------------------EMPRESA--------------------
 
+    path('empresa/help', login_required(permissions(views.help_empresa, User.EM)), name='help-empresa'),
     path('empresa/detail', login_required(permissions(views.DetailEmpresaView.as_view(), User.EM)),
          name='detail-empresa'),
     path('empresa/edit', login_required(permissions(views.edit_empresa, User.EM)),
@@ -96,6 +100,7 @@ urlpatterns = [
 
     # -------------------SUBCOMISION CARRERA--------------------
 
+    path('subcomision_carrera/help', login_required(permissions(views.help_subcomision_carrera, User.CC)), name='help-subcomision-carrera'),
     path('subcomision_carrera/index', login_required(permissions(views.IndexSubcomisionCarreraView.as_view(), User.CC)),
          name='index-subcomision-carrera'),
     path('subcomision_carrera/edit', login_required(permissions(views.edit_subcomision_carrera, User.CC)),
@@ -137,6 +142,8 @@ urlpatterns = [
 
     # -------------------COMISION PASANTIA--------------------
 
+    path('comision_pasantias/help', login_required(permissions(views.help_subcomision_pasantias, User.CP)),
+         name='help-comision-pasantias'),
     path('comision_pasantias/edit', login_required(permissions(views.edit_comision_pasantias, User.CP)),
          name='edit-comision-pasantias'),
     path('comision_pasantias/entrevistas',

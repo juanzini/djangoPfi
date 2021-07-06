@@ -6,8 +6,8 @@
 
 {% block content %}
 <div class="row">
-    <div class="container col m4" style="min-width:21em;">
-        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b></h5>
+    <div class="col xl5 l6 z-depth-3" style="padding-bottom:2em; margin-top:1.3em;">
+        <h4><b>Ingres&aacute; tus datos</b></h4>
         <br>
         <form method="post" class="form">
             {% csrf_token %}
@@ -16,5 +16,52 @@
                 <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right;">Registrarme</button></a>
         </form>
     </div>
+    <div class="col xl6 l6">
+        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
+        <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
+        <blockquote>
+            <p><b>Sos un alumno y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
+            tu departamento preparó junto a las empresas más importantes de San Luis, para que vivas una experiencia inolvidable y llena de aprendizajes.</p>
+        </blockquote>
+        <blockquote>
+            <p><b>Sos una empresa y querés ofrecer tus oportunidades a los estudiantes mejor capacitados de la provincia?</b> Contactate con nosotros a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>
+            para que podamos coordinar todo lo necesario para formar parte de la vida de los profesionales del futuro.</p>
+        </blockquote>
+    </div>
 </div>
+<div class="row">
+    <div class="carousel" id="carousel" style="height: 20em;">
+        <a class="carousel-item" href="#one!"><img src="https://lorempixel.com/250/250/nature/1"></a>
+        <a class="carousel-item" href="#two!"><img src="https://lorempixel.com/250/250/nature/2"></a>
+        <a class="carousel-item" href="#three!"><img src="https://lorempixel.com/250/250/nature/3"></a>
+        <a class="carousel-item" href="#four!"><img src="https://lorempixel.com/250/250/nature/4"></a>
+        <a class="carousel-item" href="#five!"><img src="https://lorempixel.com/250/250/nature/5"></a>
+    </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $.ajax({
+            url: "{% url 'ajax-get-logos-empresas' %}",
+            type: 'GET',
+            data:  {},
+            dataType: "json",
+            success: function(data){
+                var counter = 1;
+                $.each(data, function(idx, obj) {
+                    var image = $('<img></img>').attr('src', obj.logo)
+                    var item = $('<a class="carousel-item" href="#"></a>').append(image);
+                    $('#carousel').append(item);
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {}
+        });
+
+    $('.carousel').carousel({
+        indicators: true
+    });
+    setInterval(function() {
+        $('.carousel').carousel('next');
+    }, 3000);
+  });
+</script>
 {% endblock %}
