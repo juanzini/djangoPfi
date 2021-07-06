@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from private_storage.storage.files import PrivateFileSystemStorage
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -200,3 +201,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
 EMAIL_HOST_PASSWORD = 'spypp2019jaz'
+
+PUBLIC_STORAGE = PrivateFileSystemStorage(
+    location='media/public/',
+    base_url= '/public-documents/'
+)
