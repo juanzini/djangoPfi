@@ -6,3 +6,4 @@ venv
 *.iml
 spypp/migrations/*
 media/*
+requirements.txt

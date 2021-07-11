@@ -30,6 +30,21 @@
             background-color: #004884;
         }
 
+        .hidden-content {
+          height: 0px;
+          opacity: 0;
+        }
+
+        .active .hidden-content {
+          height: 100px;
+          opacity: 1;
+          transition: opacity 1s ease-in-out;
+          -webkit-transition: opacity 1s ease-in-out;
+          -moz-transition: opacity 1s ease-in-out;
+          -ms-transition: opacity 1s ease-in-out;
+          -o-transition: opacity 1s ease-in-out;
+        }
+
         .pagination li.active {
             background-color: #224884db;
         }
@@ -134,7 +149,7 @@
         }
 </style>
     </head>
-    <body style="min-width:24em;">
+    <body>
         <!-- Navbar -->
             {% if request.user.tipo == 'AL' %}
                 {% include "navbar/alumno.html" %}
