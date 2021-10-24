@@ -125,6 +125,22 @@ class CreateDocenteEmpresaDetailComisionPasantiasForm(forms.ModelForm):
         super(CreateDocenteEmpresaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.instance.departamento = models.Departamento.objects.get(pk=user.pps_user.departamento.pk)
 
+class UpdateDocenteEmpresaDetailComisionPasantiasForm(forms.ModelForm):
+
+    class Meta():
+        model = models.Docente
+        fields = (
+            'nombre',
+            'apellido',
+            'email',
+            'box_oficina',
+        )
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(UpdateDocenteEmpresaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
+        self.instance.departamento = models.Departamento.objects.get(pk=user.pps_user.departamento.pk)
+        self.fields['email'].disabled = True
+
 
 class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     layout = Layout(Row('empresa', 'alumno'),

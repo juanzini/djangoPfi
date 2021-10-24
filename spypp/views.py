@@ -22,6 +22,7 @@ from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, A
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
 from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
+from .forms import UpdateDocenteEmpresaDetailComisionPasantiasForm
 from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
@@ -1455,7 +1456,7 @@ class ListDocentesComisionPasantiasView(generic.ListView):
 class DetailDocenteComisionPasantiasView(generic.UpdateView):
     model = Docente
     template_name = 'comision_pasantias/docente_detail.html'
-    form_class = CreateDocenteEmpresaDetailComisionPasantiasForm
+    form_class = UpdateDocenteEmpresaDetailComisionPasantiasForm
     success_url = '../docentes'
 
     def get_form_kwargs(self):
