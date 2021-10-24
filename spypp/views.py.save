@@ -471,7 +471,7 @@ def cancel_entrevistas_alumno(entrevista, placeReturn):
     if entrevista.status not in ['COA', 'NOA', ]:
         return placeReturn
     try:
-        Pasantia.objects.get(entrevista=entrevista)
+        Pasantia.objects.get(alumno=entrevista.alumno,empresa=entrevista.empresa)
     except ObjectDoesNotExist:
         entrevista.status = 'CAA'
         entrevista.save()
@@ -570,7 +570,7 @@ class ListPasantiasEmpresaView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(Q(entrevista__empresa=self.request.user.empresa_user)).order_by(
+        pasantias = Pasantia.objects.filter(Q(empresa=self.request.user.empresa_user)).order_by(
             F('tutor_empresa').asc(), 'fecha_inicio')
         return getPage(self.request, pasantias, 10)
 
@@ -949,22 +949,14 @@ class ListEntrevistasSubcomisionCarreraView(generic.ListView):
             return None
         for entrevista in entrevistas:
             try:
-                pasantia = Pasantia.objects.get(entrevista=entrevista)
+                pasantia = Pasantia.objects.get(alumno=entrevista.alumno,empresa=entrevista.empresa)
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
         return getPage(self.request, entrevistas, 10)
 
-    def get_pasantia(self):
-        try:
-            pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
-        except ObjectDoesNotExist:
-            return None
-        return pasantias
-
     template_name = 'subcomision_carrera/entrevistas.html'
     context_object_name = 'entrevista_list'
-    extra_context = {'pasantias': get_pasantia}
 
 
 class ListPostulacionesSubcomisionCarreraView(generic.ListView):
@@ -1144,22 +1136,14 @@ class ListEntrevistasComisionPasantiasView(generic.ListView):
             return None
         for entrevista in entrevistas:
             try:
-                pasantia = Pasantia.objects.get(entrevista=entrevista)
+                pasantia = Pasantia.objects.get(alumno=entrevista.alumno,empresa=entrevista.empresa)
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
         return getPage(self.request, entrevistas, 10)
 
-    def get_pasantia(self):
-        try:
-            pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
-        except ObjectDoesNotExist:
-            return None
-        return pasantias
-
     template_name = 'comision_pasantias/entrevistas.html'
     context_object_name = 'entrevista_list'
-    extra_context = {'pasantias': get_pasantia}
 
 
 class ListPostulacionesComisionPasantiasView(generic.ListView):

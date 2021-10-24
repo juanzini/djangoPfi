@@ -276,7 +276,7 @@ class Empresa(models.Model):
         unique_together = (("departamento", "nombre_fantasia"),)
 
     def get_cantidad_de_pasantes(self):
-        return Pasantia.objects.filter(entrevista__empresa=self).count()
+        return Pasantia.objects.filter(empresa=self).count()
 
     def get_cantidad_de_postulados(self):
         return Postulacion.objects.filter(puesto__empresa=self, activa=True).count()
