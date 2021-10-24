@@ -1008,7 +1008,7 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
+        pasantias = Pasantia.objects.filter(alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1289,7 +1289,7 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(
-            entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
+            alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1373,7 +1373,7 @@ class CreatePasantiaView(generic.CreateView):
 
 @transaction.atomic
 def delete_pasantia(request, *args, **kwargs):
-    get_object_or_404(Pasantia, pk=kwargs.get('pk'), entrevista__alumno__carrera__departamento=request.user.pps_user.departamento)
+    get_object_or_404(Pasantia, pk=kwargs.get('pk'), alumno__carrera__departamento=request.user.pps_user.departamento)
     Pasantia.objects.get(pk=kwargs.get('pk')).delete()
     return HttpResponseRedirect(request.GET.get('next', ''))
 

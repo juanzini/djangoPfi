@@ -112,7 +112,7 @@ class Carrera(models.Model):
         return Alumno.objects.filter(carrera=self).count()
 
     def get_cantidad_de_pasantias(self):
-        return Pasantia.objects.filter(entrevista__alumno__carrera=self).count()
+        return Pasantia.objects.filter(alumno__carrera=self).count()
 
     def get_cantidad_de_docentes_en_subcomision(self):
         return SubcomisionCarrera.objects.annotate(total=Count('docentes')).get(carrera=self).total
