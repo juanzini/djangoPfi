@@ -616,7 +616,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
             departamento=user.pps_user.departamento).order_by('apellido')
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
-            empresa=self.instance.entrevista.empresa).order_by('apellido')
+            empresa=self.instance.empresa).order_by('apellido')
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
