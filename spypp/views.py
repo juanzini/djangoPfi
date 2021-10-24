@@ -1085,29 +1085,28 @@ class CreatePracticaView(generic.CreateView):
 
     def form_valid(self, form):
         context = {
-            'user': form.instance.entrevista.alumno.user,
-            'entrevista': form.instance.entrevista
+            'user': form.instance.alumno.user,
+            'empresa': form.instance.empresa
         }
         message = render_to_string(
             template_name='emails/nueva_pasantia_alumno.txt',
             context=context
         )
-        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
-        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
-                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        docentes = Docente.objects.filter(comision_docente=form.instance.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
+                             to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
-        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
         for postulacion in postulaciones:
             delete_postulacion_alumno(postulacion, None)
-        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.alumno, empresa=form.instance.empresa)
         for entrevista in entrevistas:
-            cancel_entrevistas_alumno(entrevista, None)
-        form.instance.entrevista.pasantia_aceptada = True
+            entrevista.pasantia_aceptada = True
+            entrevista.save()
         form.instance.practica_plan_de_estudio = True
-        form.instance.entrevista.save()
         return super().form_valid(form)
 
 class DetailPustoSubcomisionCarreraView(generic.TemplateView):
@@ -1355,28 +1354,27 @@ class CreatePasantiaView(generic.CreateView):
 
     def form_valid(self, form):
         context = {
-            'user': form.instance.entrevista.alumno.user,
-            'entrevista': form.instance.entrevista
+            'user': form.instance.alumno.user,
+            'empresa': form.instance.empresa
         }
         message = render_to_string(
             template_name='emails/nueva_pasantia_alumno.txt',
             context=context
         )
-        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
-        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
-                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        docentes = Docente.objects.filter(comision_docente=form.instance.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
+                             to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
-        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
         for postulacion in postulaciones:
             delete_postulacion_alumno(postulacion, None)
-        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.alumno, empresa=form.instance.empresa)
         for entrevista in entrevistas:
-            cancel_entrevistas_alumno(entrevista, None)
-        form.instance.entrevista.pasantia_aceptada = True
-        form.instance.entrevista.save()
+            entrevista.pasantia_aceptada = True
+            entrevista.save()
         return super().form_valid(form)
 
 @transaction.atomic

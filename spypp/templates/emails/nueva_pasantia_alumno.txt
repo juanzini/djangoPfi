@@ -1,6 +1,6 @@
 Hola {{user.first_name}} {{user.last_name}}!!
 
-Te escribimos para felicitarte por la pasantía obtenida en {{entrevista.empresa.nombre_fantasia}}!!.
+Te escribimos para felicitarte por la pasantía obtenida en {{empresa.nombre_fantasia}}!!.
 Nos pone muy contentos ver tu crecimiento y estamos para ayudarte en lo que necesites en esta nueva etapa.
 
 Esperamos que sea todo un éxito!!.
