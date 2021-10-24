@@ -92,7 +92,7 @@ class Alumno(models.Model):
         verbose_name_plural = 'Estudiantes'
 
     def __str__(self):
-        return self.user.last_name.__str__() + ", " + self.user.first_name.__str__()
+        return self.user.last_name.__str__().upper() + ", " + self.user.first_name.__str__()
 
 
 class Carrera(models.Model):
@@ -141,7 +141,7 @@ class SubcomisionPasantiasPPS(models.Model):
         verbose_name_plural = 'SubcomisionesPasantiasPPS'
 
     def __str__(self):
-        return "SubcomisionPasantias - " + self.departamento.__str__()
+        return "Subcomision de Pasantias - " + self.departamento.__str__()
 
 
 class Docente(models.Model):
@@ -203,7 +203,7 @@ class TutorEmpresa(models.Model):
         verbose_name_plural = 'Tutores de Empresas'
 
     def __str__(self):
-        return self.nombre + " " + self.apellido
+        return self.apellido.__str__().upper() + ", " + self.nombre
 
     def get_cantidad_de_pasantes(self):
         return Pasantia.objects.filter(tutor_empresa=self).count()
@@ -321,7 +321,7 @@ class Puesto(models.Model):
         return Postulacion.objects.filter(puesto=self,activa=True).count()
 
     def __str__(self):
-        return self.empresa.__str__() + ' ' + self.nombre.__str__()
+        return self.empresa.__str__() + ' - ' + self.nombre.__str__()
 
 
 class Postulacion(models.Model):
