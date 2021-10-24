@@ -1587,8 +1587,8 @@ def delete_carrera(request, *args, **kwargs):
 class AjaxField2View(generic.View):
 
     def get(self, request, *args, **kwargs):
-        entrevista = get_object_or_404(Entrevista, pk=request.GET.get('entrevista_id'))
-        tutores = TutorEmpresa.objects.filter(empresa=entrevista.empresa)
+        empresa = get_object_or_404(Entrevista, pk=request.GET.get('empresa_id'))
+        tutores = TutorEmpresa.objects.filter(empresa=empresa)
         data = serializers.serialize('json', tutores)
         return HttpResponse(data, content_type="application/json")
 

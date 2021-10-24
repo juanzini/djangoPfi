@@ -18,7 +18,7 @@
                     {% for pasantia in pasantia_list %}
                         <tr class="table-row" data-href="{% url 'pasantias-detail-empresa' pasantia.id %}">
                             <td>
-                                {{ pasantia.entrevista.alumno.user.first_name }} {{ pasantia.entrevista.alumno.user.last_name }}
+                                {{ pasantia.alumno.user.first_name }} {{ pasantia.alumno.user.last_name }}
                             </td>
                             <td>
                                 {{ pasantia.fecha_inicio }}

@@ -34,7 +34,7 @@ class User(AbstractUser):
     CP = 'CP'
     EM = 'EM'
     TYPE_CHOICES = (
-        (AL, 'Alumno'),
+        (AL, 'Estudiante'),
         (CC, 'Comision Carrera'),
         (CP, 'Comision PPS'),
         (EM, 'Empresa'),
@@ -88,8 +88,8 @@ class Alumno(models.Model):
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 
     class Meta:
-        verbose_name = 'Alumno'
-        verbose_name_plural = 'Alumnos'
+        verbose_name = 'Estudiante'
+        verbose_name_plural = 'Estudiantes'
 
     def __str__(self):
         return self.user.last_name.__str__() + ", " + self.user.first_name.__str__()
@@ -167,12 +167,12 @@ class Pasantia(models.Model):
     fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.SET_NULL, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.SET_NULL, null=True, blank=True)
-    entrevista = models.OneToOneField('Entrevista', on_delete=models.CASCADE, related_name='entrevista_pasantia')
-    informe = models.FileField(upload_to='informes/', blank=True, null=True)
-    numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
+    alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE, default='')
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, default='')
+    informe = models.FileField(upload_to='informes/', blank=True, null=True, verbose_name='Informe del Estudiante')
+    numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True, verbose_name='Número de Expediente')
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión General de Pasantías')
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión General de Pasantías')
-    numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
     practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
     STATUS_CHOICES = (
         ("FINALIZADA", "Finalizada"),
@@ -185,6 +185,7 @@ class Pasantia(models.Model):
     class Meta:
         verbose_name = 'Pasantia'
         verbose_name_plural = 'Pasantias'
+        unique_together = (("alumno", "empresa"),)
 
     def __str__(self):
         return self.entrevista.__str__()
@@ -224,10 +225,10 @@ class Entrevista(models.Model):
     REA = 'REA'
     NOC = 'NOC'
     STATUS_CHOICES = [
-        (COA, 'Confirmada Alumno'),
-        (NOC, 'No Confirmada Alumno'),
-        (NOA, 'Notificada Alumno'),
-        (CAA, 'Cancelada Alumno'),
+        (COA, 'Confirmada Estudiante'),
+        (NOC, 'No Confirmada Estudiante'),
+        (NOA, 'Notificada Estudiante'),
+        (CAA, 'Cancelada Estudiante'),
         (REA, 'Realizada'),
         (CAE, 'Cancelada Empresa')
     ]
@@ -264,7 +265,7 @@ class Empresa(models.Model):
     url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=logo_upload_path, max_file_size=1024 * 1024, storage=public_storage)
-    nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre de Fantasía")
+    nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre Comercial")
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')

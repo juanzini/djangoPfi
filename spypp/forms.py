@@ -269,7 +269,7 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['empresa'].initial = self.instance.entrevista.empresa.__str__()
         self.fields['empresa'].disabled = True
         self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-                departamento=self.instance.carrera.departamento)
+                departamento=self.instance.carrera.departamento).order_by('apellido')
 
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
@@ -397,7 +397,7 @@ class SubcomisionCarreraEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraEditForm, self).__init__(*args, **kwargs)
-        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=self.instance.carrera.departamento), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
+        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=self.instance.carrera.departamento).order_by('apellido'), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
 
 class SubcomisionCarreraCreateForm(forms.ModelForm):
     class Meta:
@@ -410,7 +410,7 @@ class SubcomisionCarreraCreateForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SubcomisionCarreraCreateForm, self).__init__(*args, **kwargs)
-        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=user.pps_user.departamento), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
+        self.fields['docentes'] = forms.ModelMultipleChoiceField(queryset=models.Docente.objects.filter(departamento=user.pps_user.departamento).order_by('apellido'), widget=FilteredSelectMultiple("Docentes", is_stacked=False))
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -598,9 +598,9 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(PasantiaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-            departamento=user.pps_user.departamento)
+            departamento=user.pps_user.departamento).order_by('apellido')
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
-            empresa=self.instance.entrevista.empresa)
+            empresa=self.instance.entrevista.empresa).order_by('apellido')
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
@@ -608,7 +608,8 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
 
 class PasantiaCreateForm(forms.ModelForm):
     layout = Layout('status',
-                    'entrevista',
+                    'alumno',
+                    'empresa',
                     Row('fecha_inicio', 'fecha_fin'),
                     Row('tutor_docente', 'tutor_empresa'),
                     'informe',
@@ -621,7 +622,8 @@ class PasantiaCreateForm(forms.ModelForm):
             'status',
             'fecha_inicio',
             'fecha_fin',
-            'entrevista',
+            'alumno',
+            'empresa',
             'tutor_docente',
             'tutor_empresa',
             'informe',
@@ -634,8 +636,8 @@ class PasantiaCreateForm(forms.ModelForm):
         super(PasantiaCreateForm, self).__init__(*args, **kwargs)
         if user.tipo == models.User.CC:
             self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-                departamento=user.carrera_user.carrera.departamento)
+                departamento=user.carrera_user.carrera.departamento).order_by('apellido')
         else:
             self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-                departamento=user.pps_user.departamento)
+                departamento=user.pps_user.departamento).order_by('apellido')
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.none()

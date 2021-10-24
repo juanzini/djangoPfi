@@ -25,10 +25,10 @@
                     {% for pasantia in pasantia_list %}
                         <tr class="table-row" data-href="{% url 'pasantia-detail-subcomision-carrera' pasantia.pk %}">
                             <td>
-                                {{ pasantia.entrevista.alumno }}
+                                {{ pasantia.alumno }}
                             </td>
                             <td>
-                                {{ pasantia.entrevista.empresa }}
+                                {{ pasantia.empresa }}
                             </td>
                             <td>
                                 {{ pasantia.fecha_inicio }}
