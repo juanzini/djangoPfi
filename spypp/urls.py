@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', views.redirect_index, name='index'),
+    path('redirect', login_required(views.redirect_view), name='redirect'),
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/login/help', views.help_accounts_login, name='help-login'),
