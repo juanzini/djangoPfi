@@ -218,6 +218,9 @@ def redirect_view(request):
             return HttpResponseRedirect(reverse('edit-comision-pasantias'))
     return redirect_to_login(reverse('login'))
 
+def redirect_index(request):
+    return render(request, 'index.html')
+
 
 def help_accounts_login(request):
     return render(request, 'help/login.html')

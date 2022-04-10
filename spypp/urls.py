@@ -5,10 +5,10 @@ from .models import User
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
+    path('', views.redirect_index, name='index'),
     path('accounts/', include('django_registration.backends.activation.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/login/help', views.help_accounts_login, name='help-login'),
-    path('', login_required(views.redirect_view), name='redirect'),
     path('create', views.create_alumno, name='create-alumno'),
     path('accounts/login/empresas', views.AjaxField2ViewLogosEmpresas.as_view(), name='ajax-get-logos-empresas'),
     path('public-documents/<path>', views.MyPublicStorageView.as_view()),

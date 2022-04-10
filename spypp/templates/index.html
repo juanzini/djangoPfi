@@ -1,23 +1,24 @@
+<!-- templates/registration/login.html -->
 {% extends 'base.html' %}
 {% load material_form %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="row" style="margin-bottom:0px;">
-    <div class="col l5 m12 s12 z-depth-3" style="padding-bottom:2em; margin-top:1.3em;">
-        <h4><b>Ingres&aacute; tus datos</b></h4>
-        <br>
-        <form method="post" class="form">
-            {% csrf_token %}
-            {% form form=form %}{% endform %}
-                <button type="submit" class="btn btn-md">Iniciar Sesi&oacute;n</button>
-                <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right;">Registrarme</button></a>
-        </form>
+<div class="row">
+    <div class="carousel carousel-slider center" id="first_carousel">
+        <a class="carousel-item" href="#one!"><img src="https://scontent.fluq2-1.fna.fbcdn.net/v/t1.18169-9/27072444_147967355999469_6061369957267527838_n.jpg?stp=cp0_dst-jpg_e15_q65_s320x320&_nc_cat=109&ccb=1-5&_nc_sid=dd9801&_nc_ohc=rJ0Pdu1a4EUAX-aMxoz&_nc_ht=scontent.fluq2-1.fna&oh=00_AT82Mxe-Z464mfKDvUl_vjLEiDVDYlZB2Aa6dy20-7HCmA&oe=62715EB8"></a>
+        <a class="carousel-item" href="#two!"><img src="https://www.larepublica.net/storage/images/2021/12/17/20211217094139.copia-de-empleo.jpg"></a>
+        <a class="carousel-item" href="#three!"><img src="https://static1.elcorreo.com/www/multimedia/202108/20/media/cortadas/ofertas-empleo-espana-salario-alto-kzEI-U150282573831TeH-624x385@El%20Correo.jpg"></a>
+        <a class="carousel-item" href="#four!"><img src="https://enfermeriavalladolid.com/wp-content/uploads/2020/04/98ec292dc3fbf42c55fe2e7de48b7b36.jpg"></a>
     </div>
-    <div class="col l7 m12 s12">
+</div>
+<div class="row" style="margin-bottom:0px;">
+    <div class="col l5 m12 s12">
         <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
         <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
+    </div>
+    <div class="col l7 m12 s12">
         <blockquote>
             <p><b>Sos un alumno y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
             tu departamento preparó junto a las empresas más importantes de San Luis, para que vivas una experiencia inolvidable y llena de aprendizajes.</p>
@@ -30,9 +31,20 @@
 </div>
 <div class="row">
     <div class="carousel" id="mycarousel" style="height: 20em;"></div>
-
 </div>
 <script type="text/javascript">
+
+
+   document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.carousel');
+    var instances = M.Carousel.init(elems, {
+        fullWidth: true,
+        indicators: true
+      });
+  });
+  setInterval(function() {
+                $("#first_carousel").carousel('next');
+            }, 4000);
 
   document.addEventListener('DOMContentLoaded', function() {
 
@@ -58,6 +70,7 @@
         },
         error: function(jqXHR, textStatus, errorThrown) {}
     });
+
     function makeSlideCarousel(logoPath, nombreEmpresa) {
         var newItem = $("<a>").addClass("carousel-item");
         var divContainer = $("<div style='height: 100%;'>");
@@ -70,6 +83,7 @@
         divContainer.append(divRowImg);
         divContainer.append(divRowTxt);
         newItem.append(divContainer);
+
         return newItem;
     }
   });
