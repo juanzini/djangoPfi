@@ -4,9 +4,9 @@
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url("./MaterialIcons-Regular.eot");
+  src: url("./MaterialIcons-Regular.96c476804d7a.eot");
   /* For IE6-8 */
-  src: local("☺"), url("./MaterialIcons-Regular.woff2") format("woff2"), url("./MaterialIcons-Regular.woff") format("woff"), url("./MaterialIcons-Regular.ttf") format("truetype"); }
+  src: local("☺"), url("./MaterialIcons-Regular.0509ab09c1b0.woff2") format("woff2"), url("./MaterialIcons-Regular.29b882f018fa.woff") format("woff"), url("./MaterialIcons-Regular.da4ea5cdfca6.ttf") format("truetype"); }
 
 .material-icons {
   font-family: 'Material Icons';
