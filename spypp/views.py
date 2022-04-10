@@ -242,13 +242,6 @@ def help_subcomision_pasantias(request):
     return render(request, 'help/subcomisionPasantiasPPS.html')
 
 
-class AjaxField2ViewLogosEmpresas(generic.View):
-    def get(self, request, *args, **kwargs):
-        empresas = sorted(Empresa.objects.all(), key=lambda a: a.get_cantidad_de_pasantes())
-        data = serializers.serialize('json', empresas[:5])
-        return HttpResponse(data, content_type="application/json")
-
-
 class MyPublicStorageView(PrivateStorageView):
     storage = public_storage
 

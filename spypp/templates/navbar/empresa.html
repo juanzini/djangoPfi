@@ -1,6 +1,7 @@
+{% load static %}
 <nav style="background-color:#004884;">
     <div class="nav-wrapper container">
-        <a style="width:auto;height:100%;" class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"></a>
+        <a style="width:auto;height:100%;" class="brand-logo hide-on-med-and-down" target="_blank" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="{% static '/images/dirinfo_blanco.png' %}"></a>
         {% if not request.resolver_match.url_name == 'help-empresa' %}
           <a class="right" href="{% url 'help-empresa' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
         {% endif %}
