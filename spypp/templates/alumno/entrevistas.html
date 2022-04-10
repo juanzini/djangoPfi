@@ -27,7 +27,7 @@
                             </td>
                             <td>
                                 {% if entrevista.status == 'CAA' %}
-                                    <span style="color:red;">Cancelada por el alumno</span>
+                                    <span style="color:red;">Cancelada por el estudiante</span>
                                 {% else %}
                                     {% if entrevista.status == 'CAE' %}
                                         <span style="color:red;">Cancelada por la empresa</span>
@@ -46,7 +46,7 @@
                                             {% if entrevista.is_past_due %}
                                                 <span style="color:black;"> Se excedi&oacute; la fecha y no confirm&oacute;</span>
                                             {% else %}
-                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
+                                                <span style="color:orange;">A la espera de confirmación del Estudiante</span>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}

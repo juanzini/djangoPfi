@@ -1,5 +1,6 @@
 <!-- templates/registration/login.html -->
 {% extends 'base.html' %}
+{% load static %}
 {% load material_form %}
 
 {% block title %}Login{% endblock %}
@@ -7,30 +8,30 @@
 {% block content %}
 <div class="row">
     <div class="carousel carousel-slider center" id="first_carousel">
-        <a class="carousel-item" href="#one!"><img src="https://scontent.fluq2-1.fna.fbcdn.net/v/t1.18169-9/27072444_147967355999469_6061369957267527838_n.jpg?stp=cp0_dst-jpg_e15_q65_s320x320&_nc_cat=109&ccb=1-5&_nc_sid=dd9801&_nc_ohc=rJ0Pdu1a4EUAX-aMxoz&_nc_ht=scontent.fluq2-1.fna&oh=00_AT82Mxe-Z464mfKDvUl_vjLEiDVDYlZB2Aa6dy20-7HCmA&oe=62715EB8"></a>
-        <a class="carousel-item" href="#two!"><img src="https://www.larepublica.net/storage/images/2021/12/17/20211217094139.copia-de-empleo.jpg"></a>
-        <a class="carousel-item" href="#three!"><img src="https://static1.elcorreo.com/www/multimedia/202108/20/media/cortadas/ofertas-empleo-espana-salario-alto-kzEI-U150282573831TeH-624x385@El%20Correo.jpg"></a>
-        <a class="carousel-item" href="#four!"><img src="https://enfermeriavalladolid.com/wp-content/uploads/2020/04/98ec292dc3fbf42c55fe2e7de48b7b36.jpg"></a>
+        <a class="carousel-item"><img class="responsive-img" src="{% static '/images/carousel_index/1.jpg' %}"></a>
+        <a class="carousel-item"><img class="responsive-img" src="{% static '/images/carousel_index/2.jpg' %}"></a>
+        <a class="carousel-item"><img class="responsive-img" src="{% static '/images/carousel_index/3.jpg' %}"></a>
+        <a class="carousel-item"><img class="responsive-img" src="{% static '/images/carousel_index/4.jpg' %}"></a>
+        <a class="carousel-item"><img class="responsive-img" src="{% static '/images/carousel_index/5.jpg' %}"></a>
     </div>
 </div>
 <div class="row" style="margin-bottom:0px;">
-    <div class="col l5 m12 s12">
-        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
-        <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
+    <div class="col l4 m12 s12">
+        <h4>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b>!</h4>
     </div>
-    <div class="col l7 m12 s12">
+    <div class="col l8 m12 s12">
         <blockquote>
-            <p><b>Sos un alumno y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
-            tu departamento preparó junto a las empresas más importantes de San Luis, para que vivas una experiencia inolvidable y llena de aprendizajes.</p>
+            <p><b>Si sos estudiante</b> Aqu&iacute; podr&aacute;s encontrar las ofertas de las empresas e instituciones en b&uacute;squeda de pasantes y talentos. Para ver las postulaciones por favor registrate.</p>
         </blockquote>
         <blockquote>
-            <p><b>Sos una empresa y querés ofrecer tus oportunidades a los estudiantes mejor capacitados de la provincia?</b> Contactate con nosotros a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>
-            para que podamos coordinar todo lo necesario para formar parte de la vida de los profesionales del futuro.</p>
+            <p><b>Si sos empresa/instituci&oacute;n</b> Para poder ofrecer postulaciones y puestos comunicarse a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>
+            as&iacute; generamos tu usuario enviando Razón Social y mail de contacto.</p>
         </blockquote>
     </div>
 </div>
 <div class="row">
-    <div class="carousel" id="mycarousel" style="height: 20em;"></div>
+    <div class="col l3 m3 s3 offset-l2 offset-m2 offset-s2"><img class="responsive-img" src="{% static '/images/dirinfo.jpg' %}" alt="Dirinfo"></div>
+    <div class="col l3 m3 s3 offset-l2 offset-m2 offset-s2"><img class="responsive-img" src="{% static '/images/fcfmyn.svg' %}" alt="FCFMyN"></div>
 </div>
 <script type="text/javascript">
 
@@ -45,47 +46,5 @@
   setInterval(function() {
                 $("#first_carousel").carousel('next');
             }, 4000);
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    $.ajax({
-        url: "{% url 'ajax-get-logos-empresas' %}",
-        type: 'GET',
-        dataType: "json",
-        success: function(data){
-           $.each(data, function(idx, obj) {
-                    if (obj.fields.logo !== 'undefined' && obj.fields.logo !== null && obj.fields.logo !== '') {
-                        var newSlide = makeSlideCarousel(obj.fields.logo, obj.fields.nombre_fantasia)
-                        $('.carousel-item').first().addClass('active');
-                        $("#mycarousel").append(newSlide);
-                    }
-           });
-           $('#mycarousel').carousel({
-            numVisible: 3,
-            dist: -50
-           });
-           setInterval(function() {
-                $("#mycarousel").carousel('next');
-            }, 3000);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {}
-    });
-
-    function makeSlideCarousel(logoPath, nombreEmpresa) {
-        var newItem = $("<a>").addClass("carousel-item");
-        var divContainer = $("<div style='height: 100%;'>");
-        var divRowImg = $("<div style='margin-bottom:0em'>").addClass("row center-align");
-        var divRowTxt = $("<div style='margin-bottom:0em'>").addClass("row center-align");
-        var img = $("<img style='width: 12em;'>").attr("src", '/public-documents/' + logoPath);
-        var txt = $("<p class='black-text hidden-content' style='font-size: 15px; font-weight:bolder; margin-bottom: 0px; margin-top: 0px;'>").text(nombreEmpresa);
-        divRowImg.append(img);
-        divRowTxt.append(txt);
-        divContainer.append(divRowImg);
-        divContainer.append(divRowTxt);
-        newItem.append(divContainer);
-
-        return newItem;
-    }
-  });
 </script>
 {% endblock %}

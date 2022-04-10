@@ -19,7 +19,7 @@
         <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
         <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
         <blockquote>
-            <p><b>Sos un alumno y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
+            <p><b>Sos un estudiante y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
             tu departamento preparó junto a las empresas más importantes de San Luis, para que vivas una experiencia inolvidable y llena de aprendizajes.</p>
         </blockquote>
         <blockquote>
@@ -28,50 +28,4 @@
         </blockquote>
     </div>
 </div>
-<div class="row">
-    <div class="carousel" id="mycarousel" style="height: 20em;"></div>
-
-</div>
-<script type="text/javascript">
-
-  document.addEventListener('DOMContentLoaded', function() {
-
-    $.ajax({
-        url: "{% url 'ajax-get-logos-empresas' %}",
-        type: 'GET',
-        dataType: "json",
-        success: function(data){
-           $.each(data, function(idx, obj) {
-                    if (obj.fields.logo !== 'undefined' && obj.fields.logo !== null && obj.fields.logo !== '') {
-                        var newSlide = makeSlideCarousel(obj.fields.logo, obj.fields.nombre_fantasia)
-                        $('.carousel-item').first().addClass('active');
-                        $("#mycarousel").append(newSlide);
-                    }
-           });
-           $('#mycarousel').carousel({
-            numVisible: 3,
-            dist: -50
-           });
-           setInterval(function() {
-                $("#mycarousel").carousel('next');
-            }, 3000);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {}
-    });
-    function makeSlideCarousel(logoPath, nombreEmpresa) {
-        var newItem = $("<a>").addClass("carousel-item");
-        var divContainer = $("<div style='height: 100%;'>");
-        var divRowImg = $("<div style='margin-bottom:0em'>").addClass("row center-align");
-        var divRowTxt = $("<div style='margin-bottom:0em'>").addClass("row center-align");
-        var img = $("<img style='width: 12em;'>").attr("src", '/public-documents/' + logoPath);
-        var txt = $("<p class='black-text hidden-content' style='font-size: 15px; font-weight:bolder; margin-bottom: 0px; margin-top: 0px;'>").text(nombreEmpresa);
-        divRowImg.append(img);
-        divRowTxt.append(txt);
-        divContainer.append(divRowImg);
-        divContainer.append(divRowTxt);
-        newItem.append(divContainer);
-        return newItem;
-    }
-  });
-</script>
 {% endblock %}
