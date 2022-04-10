@@ -158,7 +158,7 @@ AUTH_USER_MODEL = 'spypp.User'
 REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
 ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de un día; usted puede, por supuesto, usar un valor diferente.
 REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
-LOGIN_REDIRECT_URL  =  '/'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
+LOGIN_REDIRECT_URL  =  '/redirect'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
 LOGIN_URL  =  '/accounts/login'   # Los usuarios de la página están dirigidas a si no están conectadas
 
 # Internationalization
