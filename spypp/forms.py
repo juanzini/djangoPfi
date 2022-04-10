@@ -409,7 +409,7 @@ class SubcomisionCarreraUserEditForm(forms.ModelForm):
 class SubcomisionCarreraEditForm(forms.ModelForm):
     class Meta:
         model = models.SubcomisionCarrera
-        fields = ('docentes',)
+        fields = ('mail_publico','docentes',)
 
     def __init__(self, *args, **kwargs):
         super(SubcomisionCarreraEditForm, self).__init__(*args, **kwargs)

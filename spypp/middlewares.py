@@ -1,6 +1,8 @@
 from datetime import timedelta as td
 from datetime import datetime
 from django.conf import settings
+from django.contrib.auth.forms import AuthenticationForm
+
 from .models import User
 from .views import edit_ultima_actualizacion, edit_alumno
 from django.contrib.auth import logout
@@ -36,6 +38,8 @@ class LastUserActivityMiddleware:
                 return None
 
             request.session[self.KEY] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+        else:
+            request.login_form = AuthenticationForm(request)
 
         return None
 

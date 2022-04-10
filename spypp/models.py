@@ -122,6 +122,7 @@ class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE, related_name='carrera_comision')
     docentes = models.ManyToManyField('Docente', verbose_name='docentes', related_name='comision_docente')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
+    mail_publico = models.EmailField(blank=True, null=True, verbose_name="mail para contacto")
 
     class Meta:
         verbose_name = 'SubcomisionCarrera'
