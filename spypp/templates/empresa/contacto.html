@@ -20,7 +20,7 @@
                             <td><a href="mailto:{{contacto.user.email}}">
                                 <i class="fas fa-envelope"></i></a>
                                 {% if contacto.mail_publico %}
-                                    {{ contacto.user.email }}
+                                    {{ contacto.mail_publico }}
                                 {% else %}
                                     {{ contacto.user.email }}
                                 {% endif %}
