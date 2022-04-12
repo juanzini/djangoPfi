@@ -21,9 +21,6 @@
 
 <script>
     $(document).ready(function() {
-        {% if user.alumno_user.plan_de_estudio %}
-            $( "<div class=\"col\" style=\"margin-top : -1em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-plan-de-estudio' user.alumno_user.pk %}\" target=\"_blank\">Plan de estudio</a><br></span></div>" ).insertAfter("#id_plan_de_estudio_container");
-        {% endif %}
         {% if user.alumno_user.curriculum %}
             $( "<div class=\"col\" style=\"margin-top : -1em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-curriculum' user.alumno_user.pk %}\" target=\"_blank\">Curriculum</a><br></span></div>" ).insertAfter("#id_curriculum_container");
         {% endif %}

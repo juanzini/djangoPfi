@@ -147,6 +147,20 @@
           margin-bottom: 1em;
         }
 
+        .collapsible-header {
+            font-weight: bold;
+        }
+
+        ol {
+          counter-reset: item;
+        }
+        ol li {
+          display: block;
+        }
+        ol li:before {
+          content: counters(item, ". ") ". ";
+          counter-increment: item;
+        }
 
         .table-row{
             cursor:pointer;
