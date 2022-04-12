@@ -4,7 +4,7 @@
 {% block content %}
     <div class="row">
         <div class="col m10">
-            <h4>Mi Perfil <a href="https://www.modelos-de-curriculum.com/hacer-un-curriculum-vitae/">
+            <h4>Mi Perfil <a href="https://www.modelos-de-curriculum.com/hacer-un-curriculum-vitae/" target="_blank">
                     <button style="display: inline-block; float: right;" class="btn btn-primary btn-sm">Como armar mi Curriculum?</button>
                 </a></h4>
             <br>
@@ -22,13 +22,13 @@
 <script>
     $(document).ready(function() {
         {% if user.alumno_user.curriculum %}
-            $( "<div class=\"col\" style=\"margin-top : -1em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-curriculum' user.alumno_user.pk %}\" target=\"_blank\">Curriculum</a><br></span></div>" ).insertAfter("#id_curriculum_container");
+            $( "<div class=\"col\" style=\"margin-top : -0.5em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-curriculum' user.alumno_user.pk %}\" target=\"_blank\" style=\"color:black;\">Curriculum</a><br></span></div>" ).insertAfter("#id_curriculum_container");
         {% endif %}
         {% if user.alumno_user.perfil %}
-            $( "<div class=\"col\" style=\"margin-top : -1em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-perfil' user.alumno_user.pk %}\" target=\"_blank\">Perfil</a><br></span></div>" ).insertAfter("#id_perfil_container");
+            $( "<div class=\"col\" style=\"margin-top : -0.5em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-perfil' user.alumno_user.pk %}\" target=\"_blank\" style=\"color:black;\">Perfil</a><br></span></div>" ).insertAfter("#id_perfil_container");
         {% endif %}
         {% if user.alumno_user.historia_academica %}
-            $( "<div class=\"col\" style=\"margin-top : -1em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-historia-academica' user.alumno_user.pk %}\" target=\"_blank\">Historia Academica</a><br></span></div>" ).insertAfter("#id_historia_academica_container");
+            $( "<div class=\"col\" style=\"margin-top : -0.5em !important; margin-bottom : 1em\"><span style=\"font-size: 14px; margin-left: 0.4rem;\">Actualmente: <a href=\"{% url 'descarga-alumno-historia-academica' user.alumno_user.pk %}\" target=\"_blank\" style=\"color:black;\">Historia Academica</a><br></span></div>" ).insertAfter("#id_historia_academica_container");
         {% endif %}
     });
 </script>
