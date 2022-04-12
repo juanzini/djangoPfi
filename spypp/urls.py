@@ -40,8 +40,6 @@ urlpatterns = [
          name='postulaciones-delete-alumno'),
     path('alumno/curriculum/<int:pk>', login_required(views.CvDownloadView.as_view()),
          name='descarga-alumno-curriculum'),
-    path('alumno/plan-de-estudio/<int:pk>', login_required(views.PlanDeEstudioDownloadView.as_view()),
-         name='descarga-alumno-plan-de-estudio'),
     path('alumno/perfil/<int:pk>', login_required(views.PerfilDownloadView.as_view()),
          name='descarga-alumno-perfil'),
     path('alumno/historia-academica/<int:pk>', login_required(views.HistoriaAcademicaDownloadView.as_view()),

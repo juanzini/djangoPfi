@@ -66,8 +66,6 @@ class Alumno(models.Model):
     numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
     curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
-    plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
-                                  content_types='application/pdf', max_file_size=1024 * 1024)
     historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,
                                        content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
@@ -79,7 +77,7 @@ class Alumno(models.Model):
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
-    perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
+    perfil = PrivateFileField(content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')

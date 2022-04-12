@@ -86,41 +86,6 @@ class LogoDownloadView(PrivateStorageDetailView):
         return True
 
 
-class PlanDeEstudioDownloadView(PrivateStorageDetailView):
-    model = Alumno
-    model_file_field = 'plan_de_estudio'
-    content_disposition = 'inline'
-
-    def get_content_disposition_filename(self, private_file):
-        return 'plan_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
-
-    def get_queryset(self):
-        # Make sure only certain objects can be accessed.
-        if self.request.user.tipo == User.EM:
-            postulaciones = Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
-        return super().get_queryset().filter()
-
-    def can_access_file(self, private_file):
-        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.plan_de_estudio.name:
-            return True
-        if self.request.user.is_superuser:
-            return True
-        if self.request.user.is_staff:
-            return True
-        if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
-                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs["pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
-            return True
-        return False
-
-
 class PerfilDownloadView(PrivateStorageDetailView):
     model = Alumno
     model_file_field = 'perfil'

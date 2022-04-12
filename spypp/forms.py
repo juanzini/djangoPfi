@@ -19,7 +19,6 @@ class AlumnoForm(forms.ModelForm):
             'perfil',
             'telefono',
             'curriculum',
-            'plan_de_estudio',
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
@@ -291,7 +290,7 @@ class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
                    'carrera',
                    Row('perfil', 'curriculum'),
-                   Row('historia_academica', 'plan_de_estudio'),
+                   Row('historia_academica'),
                    'descripcion_intereses','descripcion_habilidades')
     class Meta:
         model = models.Alumno
@@ -301,7 +300,6 @@ class AlumnoCreateForm(forms.ModelForm):
             'perfil',
             'telefono',
             'curriculum',
-            'plan_de_estudio',
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
@@ -376,12 +374,12 @@ class UserEditForm(forms.ModelForm):
 class AlumnoEditForm(forms.ModelForm):
     layout = Layout(Row('telefono'),
                     Row('perfil', 'curriculum'),
-                    Row('historia_academica', 'plan_de_estudio'),
+                    Row('historia_academica'),
                     'descripcion_intereses', 'descripcion_habilidades')
 
     class Meta:
         model = models.Alumno
-        fields = ('perfil', 'telefono', 'curriculum', 'plan_de_estudio', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -514,7 +512,6 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
             'perfil',
             'telefono',
             'curriculum',
-            'plan_de_estudio',
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
