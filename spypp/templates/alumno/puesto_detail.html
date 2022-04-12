@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load bootstrap4 %}
 
 {% block content %}
@@ -6,14 +7,18 @@
         <div class="col" style="width: 100%;">
             <div class="row" style="margin-bottom: 20px; align-items: center;">
                 <div class="col">
-                    <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% if puesto.empresa.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% else %}
+                         <img height="120rem;" width="120rem;" src="{% static '/images/not_found_logo.png' %}" style="float: right; margin-right:2rem;"/>
+                    {% endif %}
                 </div>
                 <div class="col">
                     <h4>
                         {% if puesto.empresa.url %}
                         <a href="{{ puesto.empresa.url }}" target="_blank">{{ puesto.empresa.nombre_fantasia }}</a>
                         {% else %}
-                        {{ puesto.empresa.nombre_fantasia }}
+                            {{ puesto.empresa.nombre_fantasia }}
                         {% endif %}
                     </h4>
                     <h5>{{puesto.get_nombre_display}}</h5>
