@@ -42,7 +42,7 @@ class CvDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'curriculum_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'curriculum_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -76,7 +76,7 @@ class LogoDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'logo_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'logo_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -92,7 +92,7 @@ class PerfilDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'perfil_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'perfil_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -128,7 +128,7 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'historia_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'historia_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
