@@ -187,7 +187,7 @@ class Pasantia(models.Model):
         unique_together = (("alumno", "empresa"),)
 
     def __str__(self):
-        return self.entrevista.__str__()
+        return self.alumno.__str__() + " en " + self.empresa.__str__()
 
 
 class TutorEmpresa(models.Model):
