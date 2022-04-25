@@ -1,3 +1,4 @@
+from django.forms import PasswordInput
 from django_registration.forms import RegistrationForm
 from material.base import *
 
@@ -304,6 +305,10 @@ class AlumnoCreateForm(forms.ModelForm):
             'descripcion_intereses',
             'descripcion_habilidades',
         )
+        help_texts = {
+            'historia_academica': (
+                'La encontrás en tu Siu Guarani -> Reportes -> Historia Académica'),
+        }
 
     def __init__(self, *args, **kwargs):
         super(AlumnoCreateForm, self).__init__(*args, **kwargs)
@@ -325,6 +330,10 @@ class UserCreateForm(RegistrationForm):
             'password1',
             'password2',
         )
+        help_texts = {
+            'username': ('Alias con el que iniciarás sesion. 150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_'),
+        }
+
     def __init__(self, *args, **kwargs):
         super(UserCreateForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
