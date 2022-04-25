@@ -63,7 +63,7 @@ class Alumno(models.Model):
     def perfil_upload_path(instance, filename):
         return 'perfiles/{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
-    numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
+    numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True, verbose_name='Número de registro')
     curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,

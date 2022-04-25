@@ -28,4 +28,17 @@
         </blockquote>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $( '<i class="material-icons prefix" id="togglePassword" style="line-height: 1;">visibility_off</i>' ).insertBefore("#id_password");
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#id_password');
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            const icon = password.getAttribute('type') === 'password' ? 'visibility' : 'visibility_off';
+            password.setAttribute('type', type);
+            togglePassword.innerHTML = icon;
+        });
+    });
+</script>
 {% endblock %}
