@@ -1,13 +1,12 @@
-<!-- templates/registration/login.html -->
 {% extends 'base.html' %}
 {% load material_form %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="container col m4" style="min-width:21em;">
-        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b></h5>
+<div class="row" style="margin-bottom:0px;">
+    <div class="col l5 m12 s12 z-depth-3" style="padding-bottom:2em; margin-top:1.3em;">
+        <h4><b>Ingres&aacute; tus datos</b></h4>
         <br>
         <form method="post" class="form">
             {% csrf_token %}
@@ -16,5 +15,30 @@
                 <a href="{% url 'create-alumno' %}"><button class="btn btn-md" type="button" style="float: right;">Registrarme</button></a>
         </form>
     </div>
+    <div class="col l7 m12 s12">
+        <h5>Bienvenido al <b>Sistema de Pasant&iacute;as y Pr&aacute;cticas Profesionales</b> de tu Departamento de Informática!</h5>
+        <p style="font-size: 1.3em;">Donde el trabajo y las ganas de trabajar se encuentran mutuamente.</p>
+        <blockquote>
+            <p><b>Sos un estudiante y estás buscando tu primer experiencia laboral?</b> Hace click en REGISTRARME! Y comenzá a postularte en las oportunidades que
+            tu departamento preparó junto a las empresas más importantes de San Luis, para que vivas una experiencia inolvidable y llena de aprendizajes.</p>
+        </blockquote>
+        <blockquote>
+            <p><b>Sos una empresa y querés ofrecer tus oportunidades a nuestros estudiantes?</b> Contactate con nosotros a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>
+            para que podamos coordinar todo lo necesario para formar parte de la vida de los profesionales del futuro.</p>
+        </blockquote>
+    </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $( '<i class="material-icons prefix" id="togglePassword" style="line-height: 1;">visibility_off</i>' ).insertBefore("#id_password");
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#id_password');
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            const icon = password.getAttribute('type') === 'password' ? 'visibility' : 'visibility_off';
+            password.setAttribute('type', type);
+            togglePassword.innerHTML = icon;
+        });
+    });
+</script>
 {% endblock %}

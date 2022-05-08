@@ -12,7 +12,7 @@
                     <br>
                 <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
                 <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: left;">Atr&aacute;s</button></a>
-                <a href="{% url 'eliminar-docente-comision-pasantias' form.instance.pk %}?next={{ request.GET.next }}"><button style="float: right;" class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este docente?\nSi tiene pasant&iacute;as quedar&aacute;n sin tutor');">Eliminar</button></a>
+                <a href="{% url 'eliminar-docente-comision-pasantias' form.instance.pk %}?next={{ request.GET.next }}"><span style="float: right;" class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este docente?\nSi tiene pasant&iacute;as quedar&aacute;n sin tutor');">Eliminar</span></a>
             </form>
         </div>
     </div>

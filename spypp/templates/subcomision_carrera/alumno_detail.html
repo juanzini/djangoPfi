@@ -25,9 +25,6 @@
                     {% if alumno.curriculum %}<br>
                         <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
                     {% endif %}
-                    {% if alumno.plan_de_estudio %}<br>
-                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-plan-de-estudio' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Plan de Estudio</a>
-                    {% endif %}
                     {% if alumno.historia_academica %}<br>
                         <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
                     {% endif %}

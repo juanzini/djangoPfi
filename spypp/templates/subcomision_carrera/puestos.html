@@ -10,7 +10,7 @@
                         <th>Empresa</th>
                         <th>Puesto</th>
                         <th>Rentado</th>
-                        <th>Cantidad de Alumnos Postulados</th>
+                        <th>Cantidad de Estudiantes Postulados</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -44,7 +44,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}

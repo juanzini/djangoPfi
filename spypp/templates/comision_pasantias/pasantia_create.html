@@ -23,11 +23,11 @@
     $("#id_tutor_empresa").empty();
     $("#id_tutor_empresa").append('<option value>---------</option>');
 
-    $("#id_entrevista").change(function(){
+    $("#id_empresa").change(function(){
         $.ajax({
             url: "{% url 'ajax-get-tutor-empresa' %}",
             type: 'GET',
-            data:  {entrevista_id: $("#id_entrevista").val()},
+            data:  {empresa_id: $("#id_empresa").val()},
             dataType: "json",
             success: function(data){
                 var counter = 1;

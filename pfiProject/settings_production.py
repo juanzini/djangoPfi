@@ -4,7 +4,7 @@ from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1']
 
 LAST_ACTIVITY_INTERVAL_SECS = config('LAST_ACTIVITY_INTERVAL_SECS', default=300, cast=int)
 

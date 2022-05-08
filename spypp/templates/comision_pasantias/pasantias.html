@@ -15,7 +15,7 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Alumno</th>
+                        <th>Estudiante</th>
                         <th>Empresa</th>
                         <th>Carrera</th>
                         <th>Fecha de inicio</th>
@@ -27,13 +27,13 @@
                     {% for pasantia in pasantia_list %}
                         <tr class="table-row" data-href="{% url 'pasantia-detail-comision-pasantias' pasantia.pk %}?next={{ request.path }}">
                             <td>
-                                {{ pasantia.entrevista.alumno }}
+                                {{ pasantia.alumno }}
                             </td>
                             <td>
-                                {{ pasantia.entrevista.empresa }}
+                                {{ pasantia.empresa }}
                             </td>
                             <td>
-                                {{ pasantia.entrevista.alumno.carrera }}
+                                {{ pasantia.alumno.carrera }}
                             </td>
                             <td>
                                 {{ pasantia.fecha_inicio }}
@@ -50,7 +50,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination pasantia_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination pasantia_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}

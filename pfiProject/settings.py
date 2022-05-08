@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from decouple import config
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -25,7 +26,27 @@ SECRET_KEY = '#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'www.mysite.com']
+sentry_sdk.init(
+    dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+
+    # By default the SDK will try to use the SENTRY_RELEASE
+    # environment variable, or infer a git commit
+    # SHA as release, however you may want to set
+    # something more human-readable.
+    # release="myapp@1.0.0",
+)
+
+ALLOWED_HOSTS = ['192.122.229.56', '*', 'localhost', '127.0.0.1']
 
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
@@ -50,7 +71,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 ]
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,10 +115,21 @@ WSGI_APPLICATION = 'pfiProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'spypp_db',
+        'USER': 'root',
+        'PASSWORD': 'spypp2019jaz',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -125,7 +157,7 @@ AUTH_USER_MODEL = 'spypp.User'
 REGISTRATION_OPEN  =  True                 # Si es True, los usuarios pueden registrar
 ACCOUNT_ACTIVATION_DAYS  =  1      # Ventana de activación de un día; usted puede, por supuesto, usar un valor diferente.
 REGISTRATION_AUTO_LOGIN  =  True   # Si es True, el usuario iniciará sesión automáticamente.
-LOGIN_REDIRECT_URL  =  '/'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
+LOGIN_REDIRECT_URL  =  '/redirect'   # La página a la que desea que lleguen los usuarios después de iniciar sesión correctamente
 LOGIN_URL  =  '/accounts/login'   # Los usuarios de la página están dirigidas a si no están conectadas
 
 # Internationalization
@@ -183,19 +215,17 @@ STATIC_URL = '/static/'
 
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = config('DATABASE_URL', default='django-db')
+CELERY_RESULT_BACKEND = 'spypp_db'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
-    from .settings_production import *
-    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
-else:
-    ADMIN_MEDIA_PREFIX = '/media/'
-    PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
-    EMAIL_USE_SSL = True
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 465
-    EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
-    EMAIL_HOST_PASSWORD = ''
+ADMIN_MEDIA_PREFIX = '/media/'
+PRIVATE_STORAGE_ROOT = os.path.join(BASE_DIR, 'media/')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
+EMAIL_HOST_PASSWORD = 'yqslizutooeoashy'
+EMAIL_USE_TLS = True

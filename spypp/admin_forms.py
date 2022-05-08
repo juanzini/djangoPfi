@@ -72,7 +72,6 @@ class AlumnoForm(forms.ModelForm):
             'perfil',
             'telefono',
             'curriculum',
-            'plan_de_estudio',
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',

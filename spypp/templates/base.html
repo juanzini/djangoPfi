@@ -1,27 +1,48 @@
-{% load static %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-{% include 'material/includes/material_css.html' %}
-{% include 'material/includes/material_js.html' %}
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        {% load static %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        {% include 'material/includes/material_css.html' %}
+        {% include 'material/includes/material_js.html' %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SPyPP</title>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link href="{% static 'color-scheme.css' %}" rel="stylesheet" media="screen" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-        <title>{% block title %}{% endblock %}</title>
-        <style>
+	    <link rel="shortcut icon" type="image/png" href="http://www.dirinfo.unsl.edu.ar/static/img/logo/logo.png"/>
+        <style type="text/css">
         html,body { height: 100%;  margin: 0; }
 
-        header {
-          height: 50px;
-          background: lightcyan;
+        .main-navigation,
+        .site-footer {
+          background-color: #004884;
         }
 
-        footer {
-          height: 50px;
-          background: PapayaWhip;
+        .carousel .indicators {
+            margin-bottom: -1em;
+        }
+        .carousel .indicators .indicator-item {
+            background-color: skyblue;
+        }
+        .carousel .indicators .indicator-item.active {
+            background-color: #004884;
+        }
+
+        .hidden-content {
+          height: 0px;
+          opacity: 0;
+        }
+
+        .active .hidden-content {
+          height: 100px;
+          opacity: 1;
+          transition: opacity 1s ease-in-out;
+          -webkit-transition: opacity 1s ease-in-out;
+          -moz-transition: opacity 1s ease-in-out;
+          -ms-transition: opacity 1s ease-in-out;
+          -o-transition: opacity 1s ease-in-out;
         }
 
         .pagination li.active {
@@ -109,11 +130,37 @@
           background-color: blue;
         }
 
+        .carousel-slider .carousel-item {
+            height:auto !important;
+            max-height: 30em !important;
+            overflow: hidden !important;
+        }
+
+        .carousel-slider .carousel-item img {
+            height:auto !important;
+            max-height: 30em !important;
+            overflow: hidden !important;
+        }
+
         #id_username,
         #id_password2{
           margin-bottom: 1em;
         }
 
+        .collapsible-header {
+            font-weight: bold;
+        }
+
+        ol {
+          counter-reset: item;
+        }
+        ol li {
+          display: block;
+        }
+        ol li:before {
+          content: counters(item, ". ") ". ";
+          counter-increment: item;
+        }
 
         .table-row{
             cursor:pointer;
@@ -128,7 +175,7 @@
         }
 </style>
     </head>
-    <body style="min-width:24em;">
+    <body>
         <!-- Navbar -->
             {% if request.user.tipo == 'AL' %}
                 {% include "navbar/alumno.html" %}
@@ -153,12 +200,12 @@
             <div class="row">
                 <div class="col" style="width: 100%;">
                     <div id="contact" class="footer-widget">
-                        <h4 class="footer-widget-title">Departamento de Informática</h4>
+                        <h5 class="footer-widget-title">Departamento de Informática</h5>
                         <span>Universidad Nacional de San Luis<br>Ejército de Los Andes 950 - Bloque II - 1 Piso - Oficina Nº12<br /> San Luis, Argentina - CP 5700<br>+54-266-4520300 int 2133<br>Línea Directa +54-266-4520331<br>secinfo@unsl.edu.ar
                         </span>
                     </div>
-                    <a href="https://www.facebook.com/dirinfounsl/?fref=ts" class="fab fa-facebook-square fa-3x"></a>&nbsp;
-                    <a href="https://twitter.com/dirinfounsl" class="fab fa-twitter-square fa-3x"></a>
+                    <a href="https://www.facebook.com/dirinfounsl/?fref=ts" target="_blank" class="fab fa-facebook fa-3x"></a>&nbsp;
+                    <a href="https://www.instagram.com/dirinfounsl/" target="_blank" class="fab fa-instagram fa-3x"></a>
                 </div>
             </div><!-- /.row -->
         </div>

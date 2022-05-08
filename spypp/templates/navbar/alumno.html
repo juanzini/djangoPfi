@@ -1,8 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color:#004884; align-items:center;align-items:center; display:inline-flex;">
-  <div class="container">
-    <div class="nav-wrapper">
-          <a class="brand-logo" href="http://www.dirinfo.unsl.edu.ar/"><img height="60em" width="60em" src="http://www.dirinfo.unsl.edu.ar/static/images/logo.png"></a>
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+{% load static %}
+<nav style="background-color:#004884;">
+    <div class="nav-wrapper container">
+        <a style="width:auto;height:100%;" class="brand-logo hide-on-med-and-down" target="_blank" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="{% static '/images/dirinfo_blanco.png' %}"></a>
+        {% if not request.resolver_match.url_name == 'help-alumno' %}
+          <a class="right" href="{% url 'help-alumno' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
+        {% endif %}
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
             <li>
               <a class="nav-link" href="{% url 'edit-alumno' %}">Mi perf&iacute;l</a>
@@ -21,7 +24,6 @@
               </a>
             </li>
           </ul>
-    </div>
   </div>
 </nav>
 

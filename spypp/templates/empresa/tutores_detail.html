@@ -9,7 +9,7 @@
                 {% csrf_token %}
                 {% form form=form %}{% endform %}
                 <button type="submit" class="btn btn-primary btn-md" style="float: left;margin-right:1em;margin-bottom:1em;">Guardar</button>
-                <a href="{% url 'eliminar-tutor-empresa' tutor.pk %}"><button class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este tutor?');">Eliminar</button></a>
+                <a href="{% url 'eliminar-tutor-empresa' tutor.pk %}"><span class="btn btn-outline-danger btn-md" type="cancel" onClick="javascript: return confirm('¿Est&aacute; seguro que desea ELIMINAR este tutor?');">Eliminar</span></a>
                 <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button" style="float: right;">Atr&aacute;s</button>
             </form>
         </div>

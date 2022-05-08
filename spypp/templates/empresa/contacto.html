@@ -17,8 +17,14 @@
                     {% if contacto|classname == "SubcomisionCarrera" %}
                         <tr>
                             <td>{{ contacto.carrera }}</td>
-                            <td><a href="mailto:{{contacto.user.email}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
+                            <td><a href="mailto:{{contacto.user.email}}">
+                                <i class="fas fa-envelope"></i></a>
+                                {% if contacto.mail_publico %}
+                                    {{ contacto.mail_publico }}
+                                {% else %}
+                                    {{ contacto.user.email }}
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}

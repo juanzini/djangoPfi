@@ -1,0 +1,156 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load material_form %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="container col">
+        <h5>Preguntas frecuentes - Estudiantes</b></h5>
+        <br>
+        <ul class="collapsible popout" id="collapsible_estudiantes">
+            <li>
+              <div class="collapsible-header">¿Qu&eacute; es una pasant&iacute;a educativa?</div>
+              <div class="collapsible-body">Una pasant&iacute;a educativa tiene el fin de poner en pr&aacute;ctica los conocimientos adquiridos en la carrera en una empresa o instituci&oacute;n. El beneficio es que la cantidad de horas dedicadas a la pasant&iacute;a no supera las 4hs diarias, lo que te permite tambi&eacute;n poder estudiar.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Qu&eacute; es una pr&aacute;ctica profesional?</div>
+              <div class="collapsible-body">Una pr&aacute;ctica profesional o t&eacute;cnica es parte de una carrera, es decir es obligatoria y tiene sus requisitos espec&iacute;ficos de acuerdo a la carrera que curs&aacute;s. Para conocer los requisitos de tu carrera te recomendamos te comuniques con algún miembro de la comisi&oacute;n de PPS o de carrera.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Con qui&eacute;n me contacto para saber si puedo hacer la pr&aacute;ctica/pasant&iacute;a? ¿Qui&eacute;nes est&aacute;n en las comisiones de pr&aacute;cticas de las carreras?</div>
+              <div class="collapsible-body">Dependiendo de la carrera deber&aacute;s contactarte con:
+                  <br>
+                  <br>
+                  <ul>
+                      <li>- <b>Ingenier&iacute;a en Computaci&oacute;n</b>: Roberto Guerrero <a style="color:blue" href="mailto:rag@gmail.com">rag@gmail.com</a></li>
+                      <li>- <b>Ingenier&iacute;a en Inform&aacute;tica</b>: Lorena Baigorria <a style="color:blue" href="mailto:lorenabaigorria@gmail.com">lorenabaigorria@gmail.com</a></li>
+                      <li>- <b>Lic. en Cs de la Computaci&oacute;n</b>: Patrica Roggero <a style="color:blue" href="mailto:proggero@gmail.com">proggero@gmail.com</a></li>
+                      <li>- <b>Tec. Univ. en Web</b>: Carlos Salgado <a style="color:blue" href="mailto:csalgado@unsl.edu.ar">csalgado@unsl.edu.ar</a></li>
+                      <li>- <b>Tec. Univ. en Redes de Computadoras</b>: Rub&eacute;n Apolloni <a style="color:blue" href="mailto:rubenga@gmail.com">rubenga@gmail.com</a></li>
+                      <li>- <b>Prof. en Cs de la Computaci&oacute;ns</b>: Berta Garcia <a style="color:blue" href="mailto:bertae.garcia@gmail.com">bertae.garcia@gmail.com</a></li>
+                  </ul>
+              </div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿A partir de cu&aacute;ndo puedo hacer una pasant&iacute;a educativa?</div>
+              <div class="collapsible-body">La pasant&iacute;a pod&eacute;s realizarla a partir del tercer año de la carrera.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Todas las carreras tienen pr&aacute;ctica?</div>
+              <div class="collapsible-body">No todas las carreras tienen pr&aacute;ctica obligatoria, pero si es posible hacer una pasant&iacute;a.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Si soy estudiante de una carrera del departamento de inform&aacute;tica puedo hacer pr&aacute;cticas profesionales?</div>
+              <div class="collapsible-body">Si es parte de tu carrera est&aacute;s obligado a hacer la pr&aacute;ctica. Si no es obligatoria pod&eacute;s hacer una pasant&iacute;a.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Qui&eacute;n puede ser tutor de mi pasant&iacute;a o pr&aacute;ctica?</div>
+              <div class="collapsible-body">Es necesario que un docente (profesor o jefe de trabajos pr&aacute;cticos) de la carrera que estas inscripto sea tu tutor. Quien te guiar&aacute; en el proceso.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Cu&aacute;nto duran?</div>
+              <div class="collapsible-body">Duran entre 6 (seis) y 12 (doce) meses.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Son pagas?</div>
+              <div class="collapsible-body">Hay pagas y ad honoren (no pagas). Depende de la oferta en el momento que te postules.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Cu&aacute;ntas horas por d&iacute;a?</div>
+              <div class="collapsible-body">Son 4 (cuatro) horas por d&iacute;a, por lo general a la mañana.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo es el proceso de selecci&oacute;n?</div>
+              <div class="collapsible-body">Si est&aacute;s interesado deb&eacute;s:<br><br>
+                  <ol>
+                      <li>Crearte un usuario</li>
+                      <li>Completar tu perfil</li>
+                      <li>Revisar las postulaciones de las empresas</li>
+                      <li>Postularte a trav&eacute;s del sistema al puesto que te interesa</li>
+                      <li>Se contactaran para definir una entrevista</li>
+                      <li>Te informaran del resultado</li>
+                      <li>Una vez obtenido el resultado
+                          <ol>
+                              <li>Si te aceptaron
+                                 <ol>
+                                     <li>Contacta a tu tutor docente</li>
+                                     <li>Se realizaran los pasos administrativos correspondiente. Aqu&iacute; la comisi&oacute;n de pr&aacute;cticas del dpto. te asistir&aacute; en la documentaci&oacute;n. Coordinador: Edgardo Ferretti  (<a style="color:blue" href="mailto:edgardo.ferretti@gmail.com">edgardo.ferretti@gmail.com</a>)</li>
+                                  </ol>
+                              </li>
+                              <li>Si no te aceptaron pod&eacute;s continuar postul&aacute;ndote a los puestos que se ofrecen en el sistema.</li>
+                          </ol>
+                      </li>
+                  </ol>
+                </div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo me inscribo?</div>
+              <div class="collapsible-body">Debes ingresar al sistema con tu usuario y contraseña, y seleccionar la postulaci&oacute;n ofrecida.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿D&oacute;nde veo las propuestas de las empresas?</div>
+              <div class="collapsible-body">En el sistema, debes estar registrado.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Qu&eacute; necesito para hacer una pasant&iacute;a o pr&aacute;ctica?</div>
+              <div class="collapsible-body">Es necesario cumplas los requisitos: <br><br>
+                  <ul>
+                      <li>- Ser alumnos regular de la carrera.</li>
+                      <li>- Cumplir los requisitos de la pr&aacute;ctica/pasant&iacute;a según la carrera.</li>
+                      <li>- Estar al menos en 3er año.</li>
+                  </ul>
+              </div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Cu&aacute;ndo se abren las inscripciones?</div>
+              <div class="collapsible-body">Las inscripciones est&aacute;n abiertas desde febrero a noviembre.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo me avisan si me eligieron?</div>
+              <div class="collapsible-body">Te contactaran por mail.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Hay entrevista?</div>
+              <div class="collapsible-body">Si hay entrevista por parte de la empresa, te contactar&aacute;n para definir horario.</div>
+             </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="container col">
+        <h5>Preguntas frecuentes - Empresas/Instituciones</b></h5>
+        <br>
+        <ul class="collapsible popout" id="collapsible_empresas">
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo ofrezco mis puestos de pasant&iacute;as?</div>
+              <div class="collapsible-body">A trav&eacute;s del sistema de pasant&iacute;as y pr&aacute;cticas profesionales.<br><br>Debe estar registrado, para esto debe escribir un mail indicando raz&oacute;n social y mail de contacto a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>.<br><br>Para que los estudiantes ingresen como pasantes debe haber un convenio firmado con la Facultad de Ciencias F&iacute;sico Matem&aacute;ticas y Naturales de la UNSL.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo creo un usuario empresa/instituci&oacute;n?</div>
+              <div class="collapsible-body">Debe estar registrado, para esto debe escribir un mail indicando raz&oacute;n social y mail de contacto a <a style="color:blue" href="mailto:secinfo@unsl.edu.ar">secinfo@unsl.edu.ar</a>.<br><br>Para que los estudiantes ingresen como pasantes debe haber un convenio firmado con la Facultad de Ciencias F&iacute;sico Matem&aacute;ticas y Naturales de la UNSL.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿C&oacute;mo es el proceso  de selecci&oacute;n?</div>
+              <div class="collapsible-body">Una vez publicado el puesto, los estudiantes se postular&aacute;n y la empresa podr&aacute; conocer el cv y situaci&oacute;n acad&eacute;mica del mismo. Luego coordinar una entrevista para el proceso de selecci&oacute;n, cargando en el sistema el resultado.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿D&oacute;nde veo los interesados?</div>
+              <div class="collapsible-body">En el sistema de pasant&iacute;as y pr&aacute;cticas profesionales en la secci&oacute;n <b>Postulaciones</b>.</div>
+             </li>
+            <li>
+              <div class="collapsible-header">¿Qu&eacute; requisitos son necesarios para que los estudiantes sean pasantes en mi empresa/instituci&oacute;n?</div>
+              <div class="collapsible-body">Debe existir un convenio vigente entre la empresa/instituci&oacute;n y la UNSL. Luego se firman actas acuerdo espec&iacute;ficas por cada estudiante que realice la pasant&iacute;a.<br><br>Recuerde que se encuentra vigente el convenio con la C&aacute;mara de la Industria del Software de San Luis, a trav&eacute;s del cual toda empresa que sea parte de la c&aacute;mara ya est&aacute; habilitada a ofrecer pasant&iacute;as.<br><br>La empresa/instituci&oacute;n debe designar un tutor/responsable del pasante.</div>
+             </li>
+        </ul>
+    </div>
+</div>
+<script>
+    let faq_1 = document.querySelector("#collapsible_estudiantes");
+     M.Collapsible.init(faq_1,{});
+
+     let faq_2 = document.querySelector("#collapsible_empresas");
+     M.Collapsible.init(faq_2,{});
+</script>
+{% endblock %}

@@ -11,6 +11,7 @@ from smtplib import SMTPRecipientsRefused, SMTPSenderRefused
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import timedelta as td
 
+from pfiProject import settings
 from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm, EmpresaDetailComisionPasantiasForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
@@ -21,16 +22,17 @@ from .forms import SubcomisionPasantiasForm, SubcomisionPasantiasUserEditForm, A
 from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComisionPasantiasForm, PasantiaCreateForm
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
 from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente
+from .forms import UpdateDocenteEmpresaDetailComisionPasantiasForm
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.db import transaction
-from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q, F
 from private_storage.views import PrivateStorageDetailView
+from private_storage.views import PrivateStorageView
 from django.db.models import Case, When, Value, IntegerField
 
 
@@ -40,7 +42,7 @@ class CvDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'curriculum_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'curriculum_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -74,7 +76,7 @@ class LogoDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'logo_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'logo_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -84,48 +86,13 @@ class LogoDownloadView(PrivateStorageDetailView):
         return True
 
 
-class PlanDeEstudioDownloadView(PrivateStorageDetailView):
-    model = Alumno
-    model_file_field = 'plan_de_estudio'
-    content_disposition = 'inline'
-
-    def get_content_disposition_filename(self, private_file):
-        return 'plan_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
-
-    def get_queryset(self):
-        # Make sure only certain objects can be accessed.
-        if self.request.user.tipo == User.EM:
-            postulaciones = Postulacion.objects.filter(puesto__empresa=self.request.user.empresa_user,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
-        return super().get_queryset().filter()
-
-    def can_access_file(self, private_file):
-        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.plan_de_estudio.name:
-            return True
-        if self.request.user.is_superuser:
-            return True
-        if self.request.user.is_staff:
-            return True
-        if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
-                puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs["pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
-            return True
-        return False
-
-
 class PerfilDownloadView(PrivateStorageDetailView):
     model = Alumno
     model_file_field = 'perfil'
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'perfil_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'perfil_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -161,7 +128,7 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
     content_disposition = 'inline'
 
     def get_content_disposition_filename(self, private_file):
-        return 'historia_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name)
+        return 'historia_' + str(self.request.user.first_name) + '_' + str(self.request.user.last_name) + '_' + private_file.relative_name
 
     def get_queryset(self):
         # Make sure only certain objects can be accessed.
@@ -170,10 +137,15 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
+        if self.request.user.tipo == User.CC:
+            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
+                                                       alumno__pk=self.kwargs["pk"])
+            ids = set(postulacion.alumno.id for postulacion in postulaciones)
+            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
-        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.perfil.name:
+        if self.request.user.tipo == User.AL and private_file.relative_name == self.request.user.alumno_user.historia_academica.name:
             return True
         if self.request.user.is_superuser:
             return True
@@ -211,6 +183,37 @@ def redirect_view(request):
             return HttpResponseRedirect(reverse('edit-comision-pasantias'))
     return redirect_to_login(reverse('login'))
 
+def redirect_index(request):
+    return render(request, 'index.html')
+
+
+def help_accounts_login(request):
+    return render(request, 'help/login.html')
+
+
+def help_alumno(request):
+    return render(request, 'help/alumno.html')
+
+
+def help_empresa(request):
+    return render(request, 'help/empresa.html')
+
+
+def help_subcomision_carrera(request):
+    return render(request, 'help/subcomisionCarrera.html')
+
+
+def help_subcomision_pasantias(request):
+    return render(request, 'help/subcomisionPasantiasPPS.html')
+
+
+class MyPublicStorageView(PrivateStorageView):
+    storage = public_storage
+
+    def can_access_file(self, private_file):
+        # This overrides PRIVATE_STORAGE_AUTH_FUNCTION
+        return True
+
 
 class IndexAlumnoView(generic.TemplateView):
     model = Alumno
@@ -242,7 +245,6 @@ def create_alumno(request):
         'alumno_form': alumno_form,
     })
 
-
 @transaction.atomic
 def edit_alumno(request):
     if request.method == 'POST':
@@ -263,14 +265,12 @@ def edit_alumno(request):
                 alumno = Alumno.objects.get(user=request.user.pk)
                 alumno.ultima_actualizacion_perfil = datetime.now()
                 alumno.save()
-                messages.success(request, ('Su perfil fue correctamente actualizado!'))
                 return redirect('edit-alumno')
         else:
             if not alumno_form.is_valid() and alumno_form.errors['telefono']:
                 alumno_form.errors.pop('telefono')
                 alumno_form.add_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
                 alumno_form.has_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = UserEditForm(instance=request.user)
         alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
@@ -291,10 +291,7 @@ def edit_ultima_actualizacion(request, middleware):
             alumno = Alumno.objects.get(user=request.user.pk)
             alumno.ultima_actualizacion_perfil = datetime.now()
             alumno.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-alumno')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         if 'logout' not in request.build_absolute_uri():
             user_form = UserEditForm(instance=request.user)
@@ -471,7 +468,7 @@ def cancel_entrevistas_alumno(entrevista, placeReturn):
     if entrevista.status not in ['COA', 'NOA', ]:
         return placeReturn
     try:
-        Pasantia.objects.get(entrevista=entrevista)
+        Pasantia.objects.get(alumno=entrevista.alumno, empresa=entrevista.empresa)
     except ObjectDoesNotExist:
         entrevista.status = 'CAA'
         entrevista.save()
@@ -534,10 +531,7 @@ def edit_empresa(request):
         if user_form.is_valid() and empresa_form.is_valid():
             user_form.save()
             empresa_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-empresa')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = EmpresaUserEditForm(instance=request.user)
         empresa_form = EmpresaEditForm(instance=Empresa.objects.get(user=request.user.pk))
@@ -570,7 +564,7 @@ class ListPasantiasEmpresaView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(Q(entrevista__empresa=self.request.user.empresa_user)).order_by(
+        pasantias = Pasantia.objects.filter(Q(empresa=self.request.user.empresa_user)).order_by(
             F('tutor_empresa').asc(), 'fecha_inicio')
         return getPage(self.request, pasantias, 10)
 
@@ -919,10 +913,7 @@ def edit_subcomision_carrera(request):
         if user_form.is_valid() and subcomision_carrera_form.is_valid():
             user_form.save()
             subcomision_carrera_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-subcomision-carrera')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = SubcomisionCarreraUserEditForm(instance=request.user)
         subcomision_carrera_form = SubcomisionCarreraEditForm(
@@ -949,22 +940,14 @@ class ListEntrevistasSubcomisionCarreraView(generic.ListView):
             return None
         for entrevista in entrevistas:
             try:
-                pasantia = Pasantia.objects.get(entrevista=entrevista)
+                pasantia = Pasantia.objects.get(alumno=entrevista.alumno,empresa=entrevista.empresa)
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
         return getPage(self.request, entrevistas, 10)
 
-    def get_pasantia(self):
-        try:
-            pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
-        except ObjectDoesNotExist:
-            return None
-        return pasantias
-
     template_name = 'subcomision_carrera/entrevistas.html'
     context_object_name = 'entrevista_list'
-    extra_context = {'pasantias': get_pasantia}
 
 
 class ListPostulacionesSubcomisionCarreraView(generic.ListView):
@@ -1008,7 +991,7 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(entrevista__alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
+        pasantias = Pasantia.objects.filter(alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1063,29 +1046,28 @@ class CreatePracticaView(generic.CreateView):
 
     def form_valid(self, form):
         context = {
-            'user': form.instance.entrevista.alumno.user,
-            'entrevista': form.instance.entrevista
+            'user': form.instance.alumno.user,
+            'empresa': form.instance.empresa
         }
         message = render_to_string(
             template_name='emails/nueva_pasantia_alumno.txt',
             context=context
         )
-        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
-        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
-                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        docentes = Docente.objects.filter(comision_docente=form.instance.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
+                             to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
-        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
         for postulacion in postulaciones:
             delete_postulacion_alumno(postulacion, None)
-        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.alumno, empresa=form.instance.empresa)
         for entrevista in entrevistas:
-            cancel_entrevistas_alumno(entrevista, None)
-        form.instance.entrevista.pasantia_aceptada = True
+            entrevista.pasantia_aceptada = True
+            entrevista.save()
         form.instance.practica_plan_de_estudio = True
-        form.instance.entrevista.save()
         return super().form_valid(form)
 
 class DetailPustoSubcomisionCarreraView(generic.TemplateView):
@@ -1121,10 +1103,7 @@ def edit_comision_pasantias(request):
         if user_form.is_valid() and comision_pasantias_form.is_valid():
             user_form.save()
             comision_pasantias_form.save()
-            messages.success(request, ('Su perfil fue correctamente actualizado!'))
             return redirect('edit-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         user_form = SubcomisionPasantiasUserEditForm(instance=request.user)
         comision_pasantias_form = SubcomisionPasantiasForm(
@@ -1144,22 +1123,14 @@ class ListEntrevistasComisionPasantiasView(generic.ListView):
             return None
         for entrevista in entrevistas:
             try:
-                pasantia = Pasantia.objects.get(entrevista=entrevista)
+                pasantia = Pasantia.objects.get(alumno=entrevista.alumno,empresa=entrevista.empresa)
             except ObjectDoesNotExist:
                 continue
             entrevista.pasantia = pasantia
         return getPage(self.request, entrevistas, 10)
 
-    def get_pasantia(self):
-        try:
-            pasantias = Pasantia.objects.get(entrevista__in=self.get_queryset)
-        except ObjectDoesNotExist:
-            return None
-        return pasantias
-
     template_name = 'comision_pasantias/entrevistas.html'
     context_object_name = 'entrevista_list'
-    extra_context = {'pasantias': get_pasantia}
 
 
 class ListPostulacionesComisionPasantiasView(generic.ListView):
@@ -1229,10 +1200,7 @@ def edit_comision_empresa(request, pk):
         if user_form.is_valid() and empresa_form.is_valid():
             empresa_form.save()
             user_form.save()
-            messages.success(request, ('Empresa editada!'))
             return redirect('empresas-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         empresa_form = EmpresaDetailComisionPasantiasForm(instance=Empresa.objects.get(pk=pk))
         user_form = UserWithoutNameAndPassCreateForm(instance=empresa_form.instance.user)
@@ -1289,7 +1257,7 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
 
     def get_queryset(self):
         pasantias = Pasantia.objects.filter(
-            entrevista__alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
+            alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
         return getPage(self.request, pasantias, 10)
 
 
@@ -1347,33 +1315,32 @@ class CreatePasantiaView(generic.CreateView):
 
     def form_valid(self, form):
         context = {
-            'user': form.instance.entrevista.alumno.user,
-            'entrevista': form.instance.entrevista
+            'user': form.instance.alumno.user,
+            'empresa': form.instance.empresa
         }
         message = render_to_string(
             template_name='emails/nueva_pasantia_alumno.txt',
             context=context
         )
-        docentes = Docente.objects.filter(comision_docente=form.instance.entrevista.alumno.carrera.carrera_comision)
-        email = EmailMessage('Felicitaciones ' + form.instance.entrevista.alumno.user.first_name + "!!", message,
-                             to=[form.instance.entrevista.alumno.user.email] + list(docente.email for docente in docentes))
+        docentes = Docente.objects.filter(comision_docente=form.instance.alumno.carrera.carrera_comision)
+        email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
+                             to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
             email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
-        postulaciones = Postulacion.objects.filter(alumno=form.instance.entrevista.alumno, activa=True)
+        postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
         for postulacion in postulaciones:
             delete_postulacion_alumno(postulacion, None)
-        entrevistas = Entrevista.objects.filter(alumno=form.instance.entrevista.alumno, status__in=['COA', 'NOA'])
+        entrevistas = Entrevista.objects.filter(alumno=form.instance.alumno, empresa=form.instance.empresa)
         for entrevista in entrevistas:
-            cancel_entrevistas_alumno(entrevista, None)
-        form.instance.entrevista.pasantia_aceptada = True
-        form.instance.entrevista.save()
+            entrevista.pasantia_aceptada = True
+            entrevista.save()
         return super().form_valid(form)
 
 @transaction.atomic
 def delete_pasantia(request, *args, **kwargs):
-    get_object_or_404(Pasantia, pk=kwargs.get('pk'), entrevista__alumno__carrera__departamento=request.user.pps_user.departamento)
+    get_object_or_404(Pasantia, pk=kwargs.get('pk'), alumno__carrera__departamento=request.user.pps_user.departamento)
     Pasantia.objects.get(pk=kwargs.get('pk')).delete()
     return HttpResponseRedirect(request.GET.get('next', ''))
 
@@ -1398,7 +1365,7 @@ class ListTutoresComisionPasantiasView(generic.ListView):
 
 class DetailTutorComisionPasantiasView(generic.UpdateView):
     model = TutorEmpresa
-    template_name = 'comision_pasantias/tutores_detail.html'
+    template_name = 'comision_pasantias/tutor_detail.html'
     form_class = CreateTutoresEmpresaDetailComisionPasantiasForm
     success_url = '../../tutores'
 
@@ -1448,8 +1415,8 @@ class ListDocentesComisionPasantiasView(generic.ListView):
 class DetailDocenteComisionPasantiasView(generic.UpdateView):
     model = Docente
     template_name = 'comision_pasantias/docente_detail.html'
-    form_class = CreateDocenteEmpresaDetailComisionPasantiasForm
-    success_url = '../../docentes'
+    form_class = UpdateDocenteEmpresaDetailComisionPasantiasForm
+    success_url = '../docentes'
 
     def get_form_kwargs(self):
         kwargs = super(DetailDocenteComisionPasantiasView, self).get_form_kwargs()
@@ -1465,7 +1432,7 @@ class CreateDocenteComisionPasantiasView(generic.CreateView):
     def form_valid(self, form):
         docente = form.save(commit=False)
         try:
-            Docente.objects.get(pk=docente.mail)
+            Docente.objects.get(pk=docente.email)
             form.add_error('mail', forms.ValidationError("Ya existe un docente con este mail."))
             return super(CreateDocenteComisionPasantiasView, self).form_invalid(form)
         except ObjectDoesNotExist:
@@ -1515,7 +1482,7 @@ def create_carrera(request):
                 carrera.departamento = request.user.pps_user.departamento
                 carrera.save()
                 subcomision_carrera.carrera = carrera
-                subcomision_carrera.save(commit=True)
+                subcomision_carrera.save()
             return redirect('carreras-comision-pasantias')
     else:
         carrera_form = CarreraCreateComisionPasantiasForm()
@@ -1533,20 +1500,17 @@ def edit_carrera(request, pk):
         carrera_form = CarreraCreateComisionPasantiasForm(request.POST, instance=Carrera.objects.get(pk=pk))
         subcomision_carrera_form = SubcomisionCarreraEditForm(request.POST, instance=SubcomisionCarrera.objects.get(
             carrera=carrera_form.instance))
-        user_form = UserWithoutNameCreateForm(request.POST, instance=User.objects.get(pk=subcomision_carrera_form.instance.user.pk))
+        user_form = UserWithoutNameAndPassCreateForm(request.POST, instance=User.objects.get(pk=subcomision_carrera_form.instance.user.pk))
         if user_form.is_valid() and subcomision_carrera_form.is_valid() and carrera_form.is_valid():
             carrera_form.save()
             subcomision_carrera_form.save()
             user_form.save()
-            messages.success(request, ('Carrera editada!'))
             return redirect('carreras-comision-pasantias')
-        else:
-            messages.error(request, ('El formulario contiene algunos errores'))
     else:
         carrera_form = CarreraCreateComisionPasantiasForm(instance=Carrera.objects.get(pk=pk))
         subcomision_carrera_form = SubcomisionCarreraEditForm(instance=SubcomisionCarrera.objects.get(
             carrera=carrera_form.instance))
-        user_form = UserWithoutNameCreateForm(instance=subcomision_carrera_form.instance.user)
+        user_form = UserWithoutNameAndPassCreateForm(instance=subcomision_carrera_form.instance.user)
     return render(request, 'comision_pasantias/carrera_detail.html', {
         'user_form': user_form,
         'subcomision_carrera_form': subcomision_carrera_form,
@@ -1567,8 +1531,8 @@ def delete_carrera(request, *args, **kwargs):
 class AjaxField2View(generic.View):
 
     def get(self, request, *args, **kwargs):
-        entrevista = get_object_or_404(Entrevista, pk=request.GET.get('entrevista_id'))
-        tutores = TutorEmpresa.objects.filter(empresa=entrevista.empresa)
+        empresa = get_object_or_404(Empresa, pk=request.GET.get('empresa_id'))
+        tutores = TutorEmpresa.objects.filter(empresa=empresa)
         data = serializers.serialize('json', tutores)
         return HttpResponse(data, content_type="application/json")
 

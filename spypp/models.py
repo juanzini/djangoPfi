@@ -5,12 +5,21 @@ from datetime import datetime
 from pytz import UTC
 from django.core.exceptions import ValidationError
 from private_storage.fields import PrivateFileField
+from private_storage.storage.files import PrivateFileSystemStorage
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import timedelta as td
 import uuid
 import re
+import os
+
+from pfiProject.settings import BASE_DIR
+
+public_storage = PrivateFileSystemStorage(
+    location=os.path.join(BASE_DIR, 'media/public/'),
+    base_url='/public-documents/'
+)
 
 class UserManager(UserManager):
     pass
@@ -25,7 +34,7 @@ class User(AbstractUser):
     CP = 'CP'
     EM = 'EM'
     TYPE_CHOICES = (
-        (AL, 'Alumno'),
+        (AL, 'Estudiante'),
         (CC, 'Comision Carrera'),
         (CP, 'Comision PPS'),
         (EM, 'Empresa'),
@@ -54,10 +63,8 @@ class Alumno(models.Model):
     def perfil_upload_path(instance, filename):
         return 'perfiles/{0}-{1}-{2}'.format("perfil", instance.user.username, filename)
 
-    numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True)
+    numero_registro = models.PositiveIntegerField(validators=[validate_hash], unique=True, verbose_name='Número de registro')
     curriculum = PrivateFileField('Curriculum (.pdf)', upload_to=curriculum_upload_path,
-                                  content_types='application/pdf', max_file_size=1024 * 1024)
-    plan_de_estudio = PrivateFileField('Plan de Estudio (.pdf)', upload_to=plan_upload_path,
                                   content_types='application/pdf', max_file_size=1024 * 1024)
     historia_academica = PrivateFileField('Historia Académica (.pdf)', upload_to=historia_upload_path,
                                        content_types='application/pdf', max_file_size=1024 * 1024)
@@ -70,7 +77,7 @@ class Alumno(models.Model):
     comentarios_comision_carrera = models.TextField(max_length=1000, null=True, blank=True)
     comentarios_carrera_visibles = models.BooleanField(default=False, verbose_name='Comentarios visibles para las empresas')
     comentarios_comision_pps = models.TextField(max_length=1000, null=True, blank=True)
-    perfil = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
+    perfil = PrivateFileField(content_types=('image/jpeg', 'image/png', 'image/jpg'),
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
@@ -79,11 +86,11 @@ class Alumno(models.Model):
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 
     class Meta:
-        verbose_name = 'Alumno'
-        verbose_name_plural = 'Alumnos'
+        verbose_name = 'Estudiante'
+        verbose_name_plural = 'Estudiantes'
 
     def __str__(self):
-        return self.user.last_name.__str__() + ", " + self.user.first_name.__str__()
+        return self.user.last_name.__str__().upper() + ", " + self.user.first_name.__str__()
 
 
 class Carrera(models.Model):
@@ -103,7 +110,7 @@ class Carrera(models.Model):
         return Alumno.objects.filter(carrera=self).count()
 
     def get_cantidad_de_pasantias(self):
-        return Pasantia.objects.filter(entrevista__alumno__carrera=self).count()
+        return Pasantia.objects.filter(alumno__carrera=self).count()
 
     def get_cantidad_de_docentes_en_subcomision(self):
         return SubcomisionCarrera.objects.annotate(total=Count('docentes')).get(carrera=self).total
@@ -113,6 +120,7 @@ class SubcomisionCarrera(models.Model):
     carrera = models.OneToOneField('Carrera', on_delete=models.CASCADE, related_name='carrera_comision')
     docentes = models.ManyToManyField('Docente', verbose_name='docentes', related_name='comision_docente')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrera_user')
+    mail_publico = models.EmailField(blank=True, null=True, verbose_name="mail para contacto")
 
     class Meta:
         verbose_name = 'SubcomisionCarrera'
@@ -132,7 +140,7 @@ class SubcomisionPasantiasPPS(models.Model):
         verbose_name_plural = 'SubcomisionesPasantiasPPS'
 
     def __str__(self):
-        return "SubcomisionPasantias - " + self.departamento.__str__()
+        return "Subcomision de Pasantias - " + self.departamento.__str__()
 
 
 class Docente(models.Model):
@@ -158,12 +166,12 @@ class Pasantia(models.Model):
     fecha_fin = models.DateField()
     tutor_docente = models.ForeignKey('Docente', on_delete=models.SET_NULL, null=True)
     tutor_empresa = models.ForeignKey('TutorEmpresa', on_delete=models.SET_NULL, null=True, blank=True)
-    entrevista = models.OneToOneField('Entrevista', on_delete=models.CASCADE, related_name='entrevista_pasantia')
-    informe = models.FileField(upload_to='informes/', blank=True, null=True)
-    numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True)
+    alumno = models.ForeignKey('Alumno', on_delete=models.CASCADE)
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
+    informe = models.FileField(upload_to='informes/', blank=True, null=True, verbose_name='Informe del Estudiante')
+    numero_legajo = models.PositiveIntegerField(unique=True, blank=True, null=True, verbose_name='Número de Expediente')
     comentarios_empresa = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios para la Comisión General de Pasantías')
     comentarios_comision_pps = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Comentarios de la Comisión General de Pasantías')
-    numero_de_expediente = models.PositiveIntegerField(unique=True, blank=True, null=True)
     practica_plan_de_estudio = models.BooleanField(default=False, verbose_name='Práctica del plan de estudio')
     STATUS_CHOICES = (
         ("FINALIZADA", "Finalizada"),
@@ -176,9 +184,10 @@ class Pasantia(models.Model):
     class Meta:
         verbose_name = 'Pasantia'
         verbose_name_plural = 'Pasantias'
+        unique_together = (("alumno", "empresa"),)
 
     def __str__(self):
-        return self.entrevista.__str__()
+        return self.alumno.__str__() + " en " + self.empresa.__str__()
 
 
 class TutorEmpresa(models.Model):
@@ -193,7 +202,7 @@ class TutorEmpresa(models.Model):
         verbose_name_plural = 'Tutores de Empresas'
 
     def __str__(self):
-        return self.nombre + " " + self.apellido
+        return self.apellido.__str__().upper() + ", " + self.nombre
 
     def get_cantidad_de_pasantes(self):
         return Pasantia.objects.filter(tutor_empresa=self).count()
@@ -215,10 +224,10 @@ class Entrevista(models.Model):
     REA = 'REA'
     NOC = 'NOC'
     STATUS_CHOICES = [
-        (COA, 'Confirmada Alumno'),
-        (NOC, 'No Confirmada Alumno'),
-        (NOA, 'Notificada Alumno'),
-        (CAA, 'Cancelada Alumno'),
+        (COA, 'Confirmada Estudiante'),
+        (NOC, 'No Confirmada Estudiante'),
+        (NOA, 'Notificada Estudiante'),
+        (CAA, 'Cancelada Estudiante'),
         (REA, 'Realizada'),
         (CAE, 'Cancelada Empresa')
     ]
@@ -249,13 +258,13 @@ class Entrevista(models.Model):
 
 class Empresa(models.Model):
     def logo_upload_path(instance, filename):
-        return 'logos/{0}-{1}-{2}'.format("logo", instance.user.username, filename)
+        return '{0}-{1}-{2}'.format("logo", instance.user.username, filename)
 
     descripcion = models.TextField(max_length=1000, blank=True, null=True)
     url = models.URLField(max_length=200, default='', blank=True, null=True)
     logo = PrivateFileField(blank=True, null=True, content_types=('image/jpeg', 'image/png', 'image/jpg'),
-                            upload_to=logo_upload_path, max_file_size=1024 * 1024)
-    nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre de Fantasía")
+                            upload_to=logo_upload_path, max_file_size=1024 * 1024, storage=public_storage)
+    nombre_fantasia = models.CharField(max_length=200, blank=False, null=False, verbose_name="Nombre Comercial")
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
@@ -266,7 +275,7 @@ class Empresa(models.Model):
         unique_together = (("departamento", "nombre_fantasia"),)
 
     def get_cantidad_de_pasantes(self):
-        return Pasantia.objects.filter(entrevista__empresa=self).count()
+        return Pasantia.objects.filter(empresa=self).count()
 
     def get_cantidad_de_postulados(self):
         return Postulacion.objects.filter(puesto__empresa=self, activa=True).count()
@@ -311,7 +320,7 @@ class Puesto(models.Model):
         return Postulacion.objects.filter(puesto=self,activa=True).count()
 
     def __str__(self):
-        return self.empresa.__str__() + ' ' + self.nombre.__str__()
+        return self.empresa.__str__() + ' - ' + self.nombre.__str__()
 
 
 class Postulacion(models.Model):

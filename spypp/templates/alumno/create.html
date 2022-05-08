@@ -14,4 +14,30 @@
             </form>
         </div>
     </div>
+
+<script>
+    $(document).ready(function() {
+        $( '<i class="material-icons prefix" id="togglePassword" style="line-height: 1;">visibility_off</i>' ).insertBefore("#id_password1");
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#id_password1');
+        togglePassword.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            const icon = password.getAttribute('type') === 'password' ? 'visibility' : 'visibility_off';
+            password.setAttribute('type', type);
+            togglePassword.innerHTML = icon;
+        });
+    });
+
+    $(document).ready(function() {
+        $( '<i class="material-icons prefix" id="togglePassword2" style="line-height: 1;">visibility_off</i>' ).insertBefore("#id_password2");
+        const togglePassword2 = document.querySelector('#togglePassword2');
+        const password = document.querySelector('#id_password2');
+        togglePassword2.addEventListener('click', function (e) {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            const icon = password.getAttribute('type') === 'password' ? 'visibility' : 'visibility_off';
+            password.setAttribute('type', type);
+            togglePassword2.innerHTML = icon;
+        });
+    });
+</script>
 {% endblock %}

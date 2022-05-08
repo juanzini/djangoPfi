@@ -7,7 +7,7 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Alumno</th>
+                        <th>Estudiante</th>
                         <th>Empresa</th>
                         <th>Fecha</th>
                         <th>Estado</th>
@@ -64,7 +64,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination entrevista_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination entrevista_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}

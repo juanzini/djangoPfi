@@ -29,7 +29,7 @@
                             <td>
                             {% if postulacion.entrevista %}
                                 {% if postulacion.entrevista.status == 'CAA' %}
-                                    <span style="color:red;">Cancelada por el alumno</span>
+                                    <span style="color:red;">Cancelada por el estudiante</span>
                                 {% else %}
                                     {% if postulacion.entrevista.status == 'CAE' %}
                                         <span style="color:red;">Cancelada por la empresa</span>
@@ -47,9 +47,9 @@
                                             {% endif %}
                                         {% else %}
                                             {% if postulacion.entrevista.is_past_due %}
-                                                <span style="color:black;"> Se excedi&oacute; la fecha y el alumno no confirm&oacute;</span>
+                                                <span style="color:black;"> Se excedi&oacute; la fecha y el estudiante no confirm&oacute;</span>
                                             {% else %}
-                                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
+                                                <span style="color:orange;">A la espera de confirmación del Estudiante</span>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
@@ -68,7 +68,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center" style="display: -webkit-box;">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 %}</div>
         </div>
     </div>
 {% endblock %}
