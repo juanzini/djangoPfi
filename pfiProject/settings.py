@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 ]
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFiles'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
