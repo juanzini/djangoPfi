@@ -1,4 +1,4 @@
-amqp==2.5.2
+amqp==5.1.1
 anyjson==0.3.3
 appdirs==1.4.3
 asgiref==3.5.1
@@ -47,7 +47,7 @@ sendgrid==6.3.0
 six==1.14.0
 soupsieve==2.0
 sqlparse==0.4.2
-urllib3>=1.25.11
+urllib3==1.25.11
 vine==5.0.0
 virtualenv==20.0.20
 whitenoise==5.0.1
