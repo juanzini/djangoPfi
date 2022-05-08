@@ -51,11 +51,6 @@ class CvDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -65,7 +60,10 @@ class CvDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.filter(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
+        if self.request.user.tipo == User.EM or self.request.user.tipo == User.CP:
             return True
         return False
 
@@ -101,11 +99,6 @@ class PerfilDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -115,6 +108,9 @@ class PerfilDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.filter(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
         if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
                 puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
                     "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
@@ -137,11 +133,6 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -151,6 +142,9 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.filter(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
         if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
                 puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
                     "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:

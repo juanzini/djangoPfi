@@ -508,9 +508,9 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
                     Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
                     'condicion_acreditacion',
                     'expedicion_acreditacion',
-                    'comentarios_carrera_visibles',
                     'comentarios_comision_carrera',
-                    'comentarios_comision_pps')
+                    'comentarios_comision_pps',
+                    'comentarios_carrera_visibles')
 
     class Meta():
         model = models.Alumno
