@@ -61,7 +61,7 @@ class CvDownloadView(PrivateStorageDetailView):
         if self.request.user.is_staff:
             return True
         if self.request.user.tipo == User.CC:
-            alumno = Alumno.objects.filter(pk=self.kwargs["pk"])
+            alumno = Alumno.objects.get(pk=self.kwargs["pk"])
             return alumno.carrera == self.request.user.carrera_user.carrera
         if self.request.user.tipo == User.EM or self.request.user.tipo == User.CP:
             return True
