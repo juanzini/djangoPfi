@@ -4,81 +4,85 @@
 {% block content %}
     <div class="row">
         <div class="col">
-            <div style="display: flex; align-items: center;">
-                {% if postulacion.alumno.perfil %}
-                    <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
-                {% else %}
-                    <i class="far fa-user fa-4x"></i>
-                {% endif %}
-                <div style="align-items: center; display:  inline; margin-left: 2rem;">
-                    <div class="row" style="margin-bottom: 0px; margin-top: 0px;">
-                        <h4 style="margin-bottom: 0px;">
-                            {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
-                        </h4>
+            <div class="row">
+                <div class="col">
+                    <div style="display: flex; align-items: center;">
+                        {% if postulacion.alumno.perfil %}
+                            <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}"/>
+                        {% else %}
+                            <i class="far fa-user fa-4x"></i>
+                        {% endif %}
+                        <div style="align-items: center; display:  inline; margin-left: 2rem;">
+                            <div class="row" style="margin-bottom: 0px; margin-top: 0px;">
+                                <h4 style="margin-bottom: 0px;">
+                                    {{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}
+                                </h4>
+                            </div>
+                            {% if not postulacion.activa %}
+                            <div class="row">
+                                <p style="margin-top: 0px; margin-bottom: 0px;">
+                                    La postulaci&oacute;n se encuentra <b style="color:red;">inactiva</b>.
+                                </p>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
-                    {% if not postulacion.activa %}
-                    <div class="row">
-                        <p style="margin-top: 0px; margin-bottom: 0px;">
-                            La postulaci&oacute;n se encuentra <b style="color:red;">inactiva</b>.
-                        </p>
-                    </div>
-                    {% endif %}
                 </div>
             </div>
             {% if postulacion.puesto.nombre %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
-                        <p><b>Puesto</b>: {{postulacion.puesto.get_nombre_display}}</p>
+                        <b>Puesto</b>: {{postulacion.puesto.get_nombre_display}}
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.carrera %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
-                        <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
+                        <b>Carrera</b>: {{postulacion.alumno.carrera}}
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.descripcion_intereses %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
-                        <p><b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}</p>
+                        <b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.descripcion_habilidades %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
-                        <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
+                        <b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.curriculum %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
                         <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.historia_academica %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
                         <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
                     </div>
                 </div>
             {% endif %}
             {% if postulacion.alumno.comentarios_carrera_visibles %}
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
                         {% if postulacion.alumno.comentarios_comision_carrera %}
-                            <p><b>Comentarios de la Subcomisi&oacute;n de Pr&aacute;ctica</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
+                            <b>Comentarios de la Subcomisi&oacute;n de Pr&aacute;ctica</b>: {{postulacion.alumno.comentarios_comision_carrera}
                         {% endif %}
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-bottom:0px;">
                     <div class="col">
                         {% if postulacion.alumno.comentarios_comision_pps %}
-                            <p><b>Comentarios de la Comisi&oacute;n general de Pasant&iacute;asb>: {{postulacion.alumno.comentarios_comision_pps}</p>
+                            <b>Comentarios de la Comisi&oacute;n general de Pasant&iacute;asb>: {{postulacion.alumno.comentarios_comision_pps}
                         {% endif %}
                     </div>
                 </div>
