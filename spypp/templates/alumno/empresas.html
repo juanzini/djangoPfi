@@ -30,7 +30,7 @@
                                 {% if puesto.rentado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                             </td>
                             <td style="text-align: center;">
-                                {% with postulado=is_postulated puesto user.alumno_user.pk %}
+                                {% with postulado=puesto|is_postulated:user.alumno_user.pk %}
                                 {% if postulado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                                 {% endwith %}
                             </td>
