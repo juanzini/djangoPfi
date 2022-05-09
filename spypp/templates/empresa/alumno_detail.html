@@ -25,82 +25,130 @@
                     {% endif %}
                 </div>
             </div>
-                {% if postulacion.puesto.nombre %}
-                    <p><b>Puesto</b>: {{postulacion.puesto.get_nombre_display}}</p>
-                {% endif %}
-                {% if postulacion.alumno.carrera %}
-                    <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
-                {% endif %}
-                {% if postulacion.alumno.descripcion_intereses %}
-                    <p><b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}</p>
-                {% endif %}
-                {% if postulacion.alumno.descripcion_habilidades %}
-                    <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
-                {% endif %}
-                {% if postulacion.alumno.curriculum %}
-                    <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
-                {% endif %}
-                {% if postulacion.alumno.historia_academica %}
-                    <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
-                {% endif %}
-                {% if postulacion.alumno.comentarios_carrera_visibles %}
-                    {% if postulacion.alumno.comentarios_comision_carrera %}
-                        <p><b>Comentarios de la Subcomisi&oacute;n de Pr&aacute;ctica</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
-                    {% endif %}
-                    {% if postulacion.alumno.comentarios_comision_pps %}
-                        <p><b>Comentarios de la Comisi&oacute;n general de Pasant&iacute;asb>: {{postulacion.alumno.comentarios_comision_pps}</p>
-                    {% endif %}
-                {% endif %}
+            {% if postulacion.puesto.nombre %}
+                <div class="row">
+                    <div class="col">
+                        <p><b>Puesto</b>: {{postulacion.puesto.get_nombre_display}}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.carrera %}
+                <div class="row">
+                    <div class="col">
+                        <p><b>Carrera</b>: {{postulacion.alumno.carrera}}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.descripcion_intereses %}
+                <div class="row">
+                    <div class="col">
+                        <p><b>Descripci&oacute;n de Intereses</b>: {{postulacion.alumno.descripcion_intereses}}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.descripcion_habilidades %}
+                <div class="row">
+                    <div class="col">
+                        <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.curriculum %}
+                <div class="row">
+                    <div class="col">
+                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.historia_academica %}
+                <div class="row">
+                    <div class="col">
+                        <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.comentarios_carrera_visibles %}
+                <div class="row">
+                    <div class="col">
+                        {% if postulacion.alumno.comentarios_comision_carrera %}
+                            <p><b>Comentarios de la Subcomisi&oacute;n de Pr&aacute;ctica</b>: {{postulacion.alumno.comentarios_comision_carrera}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {% if postulacion.alumno.comentarios_comision_pps %}
+                            <p><b>Comentarios de la Comisi&oacute;n general de Pasant&iacute;asb>: {{postulacion.alumno.comentarios_comision_pps}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
                 {% buttons %}
                 <br>
+                <div class="row">
                 {% if postulacion.entrevista and not postulacion.entrevista.is_past_due and not postulacion.entrevista.status in 'NOC,CAA,CAE' %}
-                    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
-                      {% csrf_token %}
-                      <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Entrevista Generada</button>
-                      <button class="btn btn-outline-primary btn-md" style="float: right;" onclick="history.back();return false" type="button">Atr&aacute;s</button>
-                    </form>
+                        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
+                          {% csrf_token %}
+                          <div class="col">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Entrevista Generada</button>
+                          </div>
+                          <div class="col">
+                            <button class="btn btn-outline-primary btn-md" style="float: right;" onclick="history.back();return false" type="button">Atr&aacute;s</button>
+                          </div>
+                        </form>
                 {% else %}
                     {% if postulacion.activa %}
                         {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
                             {% if postulacion.entrevista.status == NOC %}
+                            <div class="col">
                                 <p>Se le generó una entrevista que <b style="color:red;">no fue confirmada por el alumno</b></p>
+                            </div>
                             {% elif postulacion.entrevista.status == CAA %}
+                            <div class="col">
                                 <p style="color:red;">Se le generó una entrevista que <b style="color:red;">fue cancelada por el alumno</b></p>
+                            </div>
                             {% else %}
+                            <div class="col">
                                 <p>Se le generó una entrevista que <b style="color:red;">fue cancelada por la empresa</b></p>
+                            </div>
                             {% endif %}
-                            <div style="display: flex; align-items: center;" class="col">
+                            <div class="col">
                                 <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                                   <button class="btn btn-warning my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Regenerar Entrevista</button>
                                 </form>
-                                <br>
+                            </div>
+                            <div class="col">
                                 <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar Postulacion</button>
+                                  <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
                                 </form>
                             </div>
                         {% else %}
-                            <div style="display: flex; align-items: center;">
+                            <div class="col">
                                 <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Generar Entrevista</button>
+                                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Generar Entrevista</button>
                                 </form>
-                                <br>
+                            </div>
+                            <div class="col">
                                 <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar Postulacion</button>
+                                    <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
                                 </form>
                             </div>
                         {% endif %}
                     {% else %}
+                    <div class="col">
                         <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button">Atr&aacute;s</button>
+                    </div>
                     {% endif %}
                 {% endif %}
+                </div>
                 {% endbuttons %}
         </div>
     </div>
