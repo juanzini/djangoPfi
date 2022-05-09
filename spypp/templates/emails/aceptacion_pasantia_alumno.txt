@@ -1,4 +1,4 @@
-Se informa que la empresa {{ entrevista.empresa.nombre_fantasia }} ACEPTÓ la pasantía del alumno {{ entrevista.alumno.user.first_name }}.
+Se informa que la empresa {{ entrevista.empresa.nombre_fantasia }} ACEPTÓ la pasantía del estudiante {{ entrevista.alumno.user.first_name }}.
 
 Sin otro particular, saluda atentamente.
 
