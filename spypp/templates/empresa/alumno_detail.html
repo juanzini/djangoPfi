@@ -38,10 +38,10 @@
                     <p><b>Descripci&oacute;n de Habilidades</b>: {{postulacion.alumno.descripcion_habilidades}}</p>
                 {% endif %}
                 {% if postulacion.alumno.curriculum %}
-                    <p><a href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><b>Curr&iacute;culum</b> <i style="vertical-align: middle;" class="fas fa-file-pdf fa-1x"></i></a></p>
+                    <p style="color: black;"><a href="{% url 'descarga-alumno-curriculum' postulacion.alumno.pk %}" target="_blank"><b>Curr&iacute;culum</b> <i style="vertical-align: middle;" class="fas fa-file-pdf fa-1x"></i></a></p>
                 {% endif %}
                 {% if postulacion.alumno.historia_academica %}
-                    <p><a href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><b>Historia Académica</b> <i style="vertical-align: middle;" class="fas fa-file-pdf fa-1x"></i></a></p>
+                    <p style="color: black;"><a href="{% url 'descarga-alumno-historia-academica' postulacion.alumno.pk %}" target="_blank"><b>Historia Académica</b> <i style="vertical-align: middle;" class="fas fa-file-pdf fa-1x"></i></a></p>
                 {% endif %}
                 {% if postulacion.alumno.comentarios_carrera_visibles %}
                     {% if postulacion.alumno.comentarios_comision_carrera %}
