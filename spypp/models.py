@@ -13,6 +13,7 @@ from datetime import timedelta as td
 import uuid
 import re
 import os
+from django.core.exceptions import ObjectDoesNotExist
 
 from pfiProject.settings import BASE_DIR
 
@@ -318,6 +319,16 @@ class Puesto(models.Model):
 
     def get_cantidad_alumnos(self):
         return Postulacion.objects.filter(puesto=self,activa=True).count()
+
+    def is_postulated(self, estudiantePk):
+        try:
+            if self.fecha_inactivacion < datetime.now().date():
+                self.activo = False
+                self.save()
+            Postulacion.objects.get(puesto=self, alumno=estudiantePk, activa=True)
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def __str__(self):
         return self.empresa.__str__() + ' - ' + self.nombre.__str__()
