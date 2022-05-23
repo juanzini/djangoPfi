@@ -1,14 +1,15 @@
 from django.forms import PasswordInput
 from django_registration.forms import RegistrationForm
 from material.base import *
-
 from . import models
 from datetime import timedelta as td
 from datetime import datetime
+from django.utils import timezone
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.forms import ValidationError
 
 class AlumnoForm(forms.ModelForm):
 
@@ -165,7 +166,7 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
         self.fields['resultado'].disabled = True
@@ -199,7 +200,14 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
             self.fields['fecha'].disabled = True
             self.fields['lugar'].disabled = True
         self.fields['comentarios_comision_pps'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
 
 class EntrevistaDetailAlumnoForm(forms.ModelForm):
     class Meta():
@@ -215,7 +223,7 @@ class EntrevistaDetailAlumnoForm(forms.ModelForm):
         self.fields['fecha'].disabled = True
         self.fields['lugar'].disabled = True
         self.fields['resultado'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
     class Meta():
@@ -455,6 +463,7 @@ class MyUserCreateForm(UserCreationForm):
         self.fields['last_name'].required = True
 
 class EntrevistaCreateForm(forms.ModelForm):
+    fecha = forms.DateTimeField()
 
     class Meta():
         model = models.Entrevista
@@ -462,9 +471,18 @@ class EntrevistaCreateForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(EntrevistaCreateForm, self).__init__(*args, **kwargs)
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ["%d/%m/%Y %H:%M"]
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
         
 class EntrevistaExistenteCreateForm(forms.ModelForm):
+    fecha = forms.DateTimeField()
+
     class Meta:
         model = models.Entrevista
         fields = ['fecha', 'lugar']
@@ -472,7 +490,14 @@ class EntrevistaExistenteCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
 
 
 class SubcomisionPasantiasUserEditForm(forms.ModelForm):
@@ -566,7 +591,7 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
         super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
         if not self.instance.resultado:
             self.fields['resultado'].label = 'Aún no hay resultado de la entrevista'
         self.fields['resultado'].disabled = True

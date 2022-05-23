@@ -2,6 +2,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.views import generic
 from datetime import datetime, date, timedelta
 from django import forms
+from django.views.generic.edit import FormView
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django_registration.backends.activation.views import RegistrationView
@@ -433,15 +434,10 @@ class ListPuestosAlumnoView(generic.ListView):
 
 class ListContactoAlumnoView(generic.ListView):
     template_name = 'alumno/contacto.html'
-    context_object_name = 'docente_list'
+    context_object_name = 'subcomision'
 
     def get_queryset(self):
-        carrera = Alumno.objects.get(user=self.request.user.pk).carrera
-        try:
-            subcomision = SubcomisionCarrera.objects.get(carrera=carrera)
-        except ObjectDoesNotExist:
-            return None
-        return getPage(self.request, subcomision.docentes.all(), 10)
+        return Alumno.objects.get(user=self.request.user.pk).carrera.carrera_comision
 
 class DetailEntrevistaAlumnoView(generic.UpdateView):
     model = Entrevista
@@ -769,28 +765,33 @@ def delete_postulacion_empresa(request):
             None
         return HttpResponseRedirect('../postulaciones')
 
-@transaction.atomic
-def nuevaEntrevista(request):
-    postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),
-                                          puesto__empresa=request.user.empresa_user)
-    alumno = postulacion.alumno
-    empresa = postulacion.puesto.empresa
-    entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
-    if entrevista == None or entrevista.status in ['NOC','CAA','CAE']:
-        if request.POST:
-            form = EntrevistaCreateForm(request.POST)
-            if form.is_valid():
+class NuevaEntrevistaView(FormView):
+    template_name = 'empresa/entrevista_nueva.html'
+    form_class = EntrevistaCreateForm
+    success_url = '/empresa/postulaciones'
+
+    def form_valid(self, form):
+        if self.request.GET:
+            postulacion = Postulacion.objects.get(pk=self.request.GET.get('postulacion'),
+                                                  puesto__empresa=self.request.user.empresa_user)
+        else:
+            postulacion = Postulacion.objects.get(pk=self.request.POST.get('postulacion'),
+                                              puesto__empresa=self.request.user.empresa_user)
+        alumno = postulacion.alumno
+        empresa = postulacion.puesto.empresa
+        entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
+        if entrevista == None or entrevista.status in ['NOC','CAA','CAE']:
                 if entrevista == None:
                     entrevista = Entrevista.objects.create(
                         alumno=alumno,
                         empresa=empresa,
-                        fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S"),
-                        lugar=request.POST.get('lugar')
+                        fecha=datetime.strptime(self.request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+                        lugar=self.request.POST.get('lugar')
                     )
                 else:
                     entrevista.status = 'NOA'
-                    entrevista.fecha = datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S")
-                    entrevista.lugar = request.POST.get('lugar')
+                    entrevista.fecha = datetime.strptime(self.request.POST.get('fecha'), "%d/%m/%Y %H:%M")
+                    entrevista.lugar = self.request.POST.get('lugar')
                 entrevista.save()
                 postulacion.entrevista = entrevista
                 postulacion.save()
@@ -808,20 +809,7 @@ def nuevaEntrevista(request):
                     email.send()
                 except (SMTPRecipientsRefused, SMTPSenderRefused):
                     None
-                return redirect('/empresa/postulaciones')
-        return render(request, 'empresa/entrevista_nueva.html', {
-            'form': EntrevistaCreateForm,
-        })
-    if request.POST:
-        form = EntrevistaExistenteCreateForm(request.POST)
-        if form.is_valid():
-            postulacion.entrevista = entrevista
-            postulacion.save()
-            return redirect('/empresa/postulaciones')
-    return render(request, 'empresa/entrevista_nueva_existente.html', {
-        'form': EntrevistaExistenteCreateForm(instance=entrevista),
-    })
-
+                return super().form_valid(form)
 
 class CreatePuestoView(generic.CreateView):
     model = Puesto

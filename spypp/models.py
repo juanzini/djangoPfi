@@ -82,7 +82,7 @@ class Alumno(models.Model):
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
-    telefono = PhoneNumberField(blank=True, null=True)
+    telefono = PhoneNumberField(blank=False, null=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
 

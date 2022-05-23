@@ -2,29 +2,48 @@
 
 {% block content %}
     <div class="row">
-        <div class="col" style="width: 100%;">
-            <h4>Docentes de pasantías y prácticas</h4>
+        <div class="col s12" style="width: 100%;">
+            <h4>Subcomisión de Pasantías de tu Carrera</h4>
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>Apellido</th>
-                            <th>Nombre</th>
+                            <th>Carrera</th>
                             <th>Mail</th>
-                            <th>Box</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% if docente_list %}
-                            {% for docente in docente_list %}
-                                <tr>
-                                    <td>{{ docente.apellido }}</td>
-                                    <td>{{ docente.nombre }}</td>
-                                    <td><a href="mailto:{{docente.email}}" mail>
-                                        <i class="fas fa-envelope"></i></a> {{ docente.email }}</td>
-                                    <td>{{ docente.box_oficina }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
+                        <tr>
+                            <td>{{ subcomision.carrera.nombre }}</td>
+                            <td><a href="mailto:{% if subcomision.mail_publico %}{{ subcomision.mail_publico }}{% else %}{{ subcomision.user.email }}{% endif %}">
+                                <i class="fas fa-envelope"></i></a>
+                                {% if subcomision.mail_publico %}
+                                    {{ subcomision.mail_publico }}
+                                {% else %}
+                                    {{ subcomision.user.email }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col s12" style="width: 100%;">
+            <h4>Comisión General de Pasantías</h4>
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Mail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FERRETTI, Edgardo</td>
+                            <td><a href="mailto:edgardo.ferretti@gmail.com">
+                                <i class="fas fa-envelope"></i></a> edgardo.ferretti@gmail.com</td>
+                        </tr>
                     </tbody>
                 </table>
         </div>

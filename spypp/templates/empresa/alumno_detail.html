@@ -94,7 +94,7 @@
                         <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'entrevista-detail-empresa' postulacion.entrevista.pk %}">
                           {% csrf_token %}
                           <div class="col">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Entrevista Generada</button>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Entrevista Generada</button>
                           </div>
                           <div class="col">
                             <button class="btn btn-outline-primary btn-md" style="float: right;" onclick="history.back();return false" type="button">Atr&aacute;s</button>
@@ -103,32 +103,38 @@
                 {% else %}
                     {% if postulacion.activa %}
                         {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
-                            {% if postulacion.entrevista.status == NOC %}
                             <div class="col">
-                                <p>Se le generó una entrevista que <b style="color:red;">no fue confirmada por el alumno</b></p>
-                            </div>
-                            {% elif postulacion.entrevista.status == CAA %}
-                            <div class="col">
-                                <p style="color:red;">Se le generó una entrevista que <b style="color:red;">fue cancelada por el alumno</b></p>
-                            </div>
-                            {% else %}
-                            <div class="col">
-                                <p>Se le generó una entrevista que <b style="color:red;">fue cancelada por la empresa</b></p>
-                            </div>
-                            {% endif %}
-                            <div class="col">
-                                <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
-                                  {% csrf_token %}
-                                    <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-warning my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Regenerar Entrevista</button>
-                                </form>
-                            </div>
-                            <div class="col">
-                                <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
-                                  {% csrf_token %}
-                                    <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                  <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
-                                </form>
+                                <div class="row">
+                                    {% if postulacion.entrevista.status == 'NOC' %}
+                                    <div class="col">
+                                        <p>Se le generó una entrevista que <b style="color:red;">no fue confirmada por el alumno</b></p>
+                                    </div>
+                                    {% elif postulacion.entrevista.status == 'CAA' %}
+                                    <div class="col">
+                                        <p style="color:red;">Se le generó una entrevista que <b style="color:red;">fue cancelada por el alumno</b></p>
+                                    </div>
+                                    {% else %}
+                                    <div class="col">
+                                        <p>Se le generó una entrevista que <b style="color:red;">fue cancelada por la empresa</b></p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'nueva-entrevista-empresa' %}">
+                                          {% csrf_token %}
+                                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                                          <button class="btn btn-warning my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Nueva Entrevista</button>
+                                        </form>
+                                    </div>
+                                    <div class="col">
+                                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                                          {% csrf_token %}
+                                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                                          <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         {% else %}
                             <div class="col">
