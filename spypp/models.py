@@ -22,6 +22,27 @@ public_storage = PrivateFileSystemStorage(
     base_url='/public-documents/'
 )
 
+BE = 'BE'
+FE = 'FE'
+QA = 'QA'
+IOS = 'MB'
+AND = 'AND'
+IND = 'IND'
+RED = 'RED'
+OTR = 'OTR'
+AREA_CHOICES = [
+    (BE, 'Back-end'),
+    (FE, 'Front-end'),
+    (QA, 'Quality Assurance'),
+    (IOS, 'Mobile - iOS'),
+    (AND, 'Mobile - Android'),
+    (IND, 'Indistinto'),
+    (RED, 'Redes'),
+    (OTR, 'Otro'),
+]
+
+AREA_CHOICES_REVERSE = {choice:idx for idx, choice in AREA_CHOICES}
+
 class UserManager(UserManager):
     pass
 
@@ -71,6 +92,7 @@ class Alumno(models.Model):
                                        content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
+    consideraciones_particulares = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Consideraciones particulares')
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
     condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación de práctica del plan de estudio?')
@@ -288,25 +310,10 @@ class Empresa(models.Model):
 class Puesto(models.Model):
     puesto_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
-    BE = 'BE'
-    FE = 'FE'
-    QA = 'QA'
-    IOS = 'MB'
-    AND = 'AND'
-    IND = 'IND'
-    OTR = 'OTR'
-    AREA_CHOICES = [
-        (BE, 'Back-end'),
-        (FE, 'Front-end'),
-        (QA, 'Quality Assurance'),
-        (IOS, 'Mobile - iOS'),
-        (AND, 'Mobile - Android'),
-        (IND, 'Indistinto'),
-        (OTR, 'Otro'),
-    ]
     nombre = models.CharField(max_length=3, choices=AREA_CHOICES, default=IND, verbose_name='Área')
     descripcion_actividades = models.TextField(max_length=1000)
     conocimientos_requeridos = models.TextField(max_length=1000)
+    requerimientos_adicionales = models.TextField(max_length=1000, blank=True, null=True)
     horario = models.CharField(max_length=100)
     rentado = models.BooleanField(default=False, blank=False, null=False)
     fecha_inactivacion = models.DateField(default=datetime.today() + td(days=15))

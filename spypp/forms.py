@@ -24,6 +24,7 @@ class AlumnoForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'condicion_acreditacion',
             'expedicion_acreditacion',
             'comentarios_comision_carrera',
@@ -38,6 +39,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
                     Row('telefono', 'progreso'),
                     'descripcion_intereses',
                     'descripcion_habilidades',
+                    'consideraciones_particulares',
                     Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
                     'condicion_acreditacion',
                     'expedicion_acreditacion',
@@ -54,6 +56,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
             'progreso',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'ultima_actualizacion_perfil',
             'ultima_postulacion',
             'condicion_acreditacion',
@@ -68,6 +71,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['descripcion_intereses'].disabled = True
         self.fields['telefono'].disabled = True
         self.fields['descripcion_habilidades'].disabled = True
+        self.fields['consideraciones_particulares'].disabled = True
         self.fields['ultima_actualizacion_perfil'].disabled = True
         self.fields['ultima_postulacion'].disabled = True
         self.fields['comentarios_comision_pps'].disabled = True
@@ -300,7 +304,7 @@ class AlumnoCreateForm(forms.ModelForm):
                    'carrera',
                    Row('perfil', 'curriculum'),
                    Row('historia_academica'),
-                   'descripcion_intereses','descripcion_habilidades')
+                   'descripcion_intereses','descripcion_habilidades','consideraciones_particulares')
     class Meta:
         model = models.Alumno
         fields = (
@@ -312,10 +316,13 @@ class AlumnoCreateForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
         )
         help_texts = {
             'historia_academica': (
                 'La encontrás en tu Siu Guarani -> Reportes -> Historia Académica'),
+            'consideraciones_particulares': (
+                'Ej: celiaquía, movilidad reducida, diabetes, etc.'),
         }
 
     def __init__(self, *args, **kwargs):
@@ -392,11 +399,11 @@ class AlumnoEditForm(forms.ModelForm):
     layout = Layout(Row('telefono'),
                     Row('perfil', 'curriculum'),
                     Row('historia_academica'),
-                    'descripcion_intereses', 'descripcion_habilidades')
+                    'descripcion_intereses', 'descripcion_habilidades', 'consideraciones_particulares')
 
     class Meta:
         model = models.Alumno
-        fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades', 'consideraciones_particulares')
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -530,6 +537,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
                     Row('telefono', 'progreso'),
                     'descripcion_intereses',
                     'descripcion_habilidades',
+                    'consideraciones_particulares',
                     Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
                     'condicion_acreditacion',
                     'expedicion_acreditacion',
@@ -549,6 +557,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'ultima_actualizacion_perfil',
             'ultima_postulacion',
             'condicion_acreditacion',

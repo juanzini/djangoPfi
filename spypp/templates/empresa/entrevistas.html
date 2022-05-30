@@ -5,10 +5,25 @@
     <div class="row">
         <div class="col" style="width: 100%;">
             <h4>Entrevistas</h4>
+            <form action="{{request.get_full_path}}" method="get" class="form">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">search</i>
+                        <input name="q" id="id_buscador" type="text" value="{{ request.GET.q }}">
+                        <label for="id_buscador">Buscador...</label>
+                        <span style="margin-top:-1em;" class="helper-text" data-error="wrong" data-success="right">Nombre o Apellido del Estudiante</span>
+                    </div>
+                    {% if request.GET.q %}
+                        <div class="input-field col s4">
+                            <a href="{{request.path}}"><i class="material-icons prefix">clear</i></a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Alumno</th>
+                        <th>Estudiante</th>
                         <th>Fecha</th>
                         <th>Puesto</th>
                         <th>Estado</th>

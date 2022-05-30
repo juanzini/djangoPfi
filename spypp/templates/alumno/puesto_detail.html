@@ -30,7 +30,10 @@
                     <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                    <span><b>Conocimientos requeridos</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                {% endif %}
+                {% if puesto.requerimientos_adicionales %}
+                    <span><b>Requerimientos adicionales</b>: {{puesto.requerimientos_adicionales}}</span><br>
                 {% endif %}
                 {% if puesto.horario %}
                     <span><b>Horario</b>: {{ puesto.horario }}</span><br>
@@ -51,7 +54,7 @@
                 {% else %}
                     {% if not postulacion %}
                         {% if not is_available %}
-                            Debe esperar hasta el {{ next_day }} para poder volver a postularse.
+                            Debe esperar hasta el {{ next_day|date:"l j" }} para poder volver a postularse.
                         {% else %}
                             <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-create-alumno' %}" style="margin-bottom: 0px;">
                                 {% csrf_token %}

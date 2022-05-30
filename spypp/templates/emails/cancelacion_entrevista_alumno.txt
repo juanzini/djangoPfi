@@ -1,7 +1,7 @@
 Hola {{user.first_name}} {{user.last_name}}!!
 
 Te escribimos para informarte que la empresa {{entrevista.empresa.nombre_fantasia}} canceló la entrevista que tenías programada
-para el {{entrevista.fecha}}hs., en {{entrevista.lugar}}.
+para el {{entrevista.fecha}}, en {{entrevista.lugar}}.
 
 Arriba ese ánimo! Todavía quedan muchas más empresas que pueden requerir tus servicios!
 

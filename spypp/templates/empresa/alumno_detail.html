@@ -57,6 +57,20 @@
                     </div>
                 </div>
             {% endif %}
+            {% if postulacion.alumno.consideraciones_particulares %}
+                <div class="row">
+                    <div class="col">
+                        <b>Consideraciones Particulares</b>: {{postulacion.alumno.consideraciones_particulares}}
+                    </div>
+                </div>
+            {% endif %}
+            {% if postulacion.alumno.consideraciones_particulares %}
+                <div class="row">
+                    <div class="col">
+                        <b>Consideraciones Particulares</b>: {{postulacion.alumno.consideraciones_particulares}}
+                    </div>
+                </div>
+            {% endif %}
             {% if postulacion.alumno.comentarios_carrera_visibles %}
                 <div class="row">
                     <div class="col">
@@ -101,7 +115,6 @@
                           </div>
                         </form>
                 {% else %}
-                    {% if postulacion.activa %}
                         {% if postulacion.entrevista and postulacion.entrevista.status in 'NOC,CAA,CAE' %}
                             <div class="col">
                                 <div class="row">
@@ -127,13 +140,19 @@
                                           <button class="btn btn-warning my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Nueva Entrevista</button>
                                         </form>
                                     </div>
-                                    <div class="col">
-                                        <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
-                                          {% csrf_token %}
-                                            <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                          <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
-                                        </form>
-                                    </div>
+                                    {% if postulacion.activa %}
+                                        <div class="col">
+                                            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                                              {% csrf_token %}
+                                                <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                                              <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <div class="col">
+                                            <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button">Atr&aacute;s</button>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% else %}
@@ -144,19 +163,20 @@
                                     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="margin-right: 0.5rem;">Generar Entrevista</button>
                                 </form>
                             </div>
-                            <div class="col">
-                                <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
-                                  {% csrf_token %}
-                                    <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
-                                    <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
-                                </form>
-                            </div>
+                            {% if postulacion.activa %}
+                                <div class="col">
+                                    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
+                                      {% csrf_token %}
+                                        <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
+                                        <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>
+                                    </form>
+                                </div>
+                            {% else %}
+                                <div class="col">
+                                    <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button">Atr&aacute;s</button>
+                                </div>
+                            {% endif %}
                         {% endif %}
-                    {% else %}
-                    <div class="col">
-                        <button class="btn btn-outline-primary btn-md" onclick="history.back();return false" type="button">Atr&aacute;s</button>
-                    </div>
-                    {% endif %}
                 {% endif %}
                 </div>
                 {% endbuttons %}

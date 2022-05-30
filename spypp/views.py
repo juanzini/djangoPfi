@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.views import redirect_to_login
 from django.views import generic
 from datetime import datetime, date, timedelta
@@ -24,7 +26,8 @@ from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComision
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
 from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
 from .forms import UpdateDocenteEmpresaDetailComisionPasantiasForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage, \
+    AREA_CHOICES_REVERSE
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
@@ -417,7 +420,18 @@ class ListPuestosAlumnoView(generic.ListView):
 
     def get_queryset(self):
         to_be_deleted = []
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.alumno_user.carrera.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '' : queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.alumno_user.carrera.departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        )
         for puesto in puestos:
             try:
                 if puesto.fecha_inactivacion < datetime.now().date():
@@ -536,12 +550,18 @@ class ListEntrevistasEmpresaView(generic.ListView):
     context_object_name = 'entrevista_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         entrevistas = Entrevista.objects.filter(
-            Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None)).annotate(
+            Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None) &
+            #Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
-                output_field=IntegerField()))
+                output_field=IntegerField())
+        )
         if len(entrevistas) == 0:
             entrevistas = []
         order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
@@ -554,8 +574,13 @@ class ListPasantiasEmpresaView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(Q(empresa=self.request.user.empresa_user)).order_by(
-            F('tutor_empresa').asc(), 'fecha_inicio')
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        pasantias = Pasantia.objects.filter(
+            Q(empresa=self.request.user.empresa_user) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).order_by(F('tutor_empresa').asc(), 'fecha_inicio')
         return getPage(self.request, pasantias, 10)
 
 class ListTutoresEmpresaView(generic.ListView):
@@ -563,7 +588,13 @@ class ListTutoresEmpresaView(generic.ListView):
     context_object_name = 'tutores_list'
 
     def get_queryset(self):
-        tutores = TutorEmpresa.objects.filter(Q(empresa=self.request.user.empresa_user))
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        tutores = TutorEmpresa.objects.filter(
+            Q(empresa=self.request.user.empresa_user) &
+            # Query for filter by first_name and last_name of tutor
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query))
+        )
         return getPage(self.request, tutores, 10)
 
 
@@ -676,8 +707,13 @@ class ListPostulacionesEmpresaView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         postulaciones = Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by('-activa',
+            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).order_by('-activa',
             F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
         return getPage(self.request, postulaciones, 10)
 
@@ -765,10 +801,10 @@ def delete_postulacion_empresa(request):
             None
         return HttpResponseRedirect('../postulaciones')
 
-class NuevaEntrevistaView(FormView):
+class CreateEntrevistaView(FormView):
     template_name = 'empresa/entrevista_nueva.html'
     form_class = EntrevistaCreateForm
-    success_url = '/empresa/postulaciones'
+    success_url = '/empresa/entrevistas'
 
     def form_valid(self, form):
         if self.request.GET:
@@ -814,7 +850,7 @@ class NuevaEntrevistaView(FormView):
 class CreatePuestoView(generic.CreateView):
     model = Puesto
     context_object_name = 'puesto'
-    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'requerimientos_adicionales', 'horario', 'rentado']
     template_name = 'empresa/puesto_create.html'
 
     def form_valid(self, form):
@@ -828,6 +864,7 @@ class CreatePuestoView(generic.CreateView):
                 puestoDb = Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user, activo=False)
                 puestoDb.descripcion_actividades = puesto.descripcion_actividades
                 puestoDb.conocimientos_requeridos = puesto.conocimientos_requeridos
+                puestoDb.requerimientos_adicionales = puesto.requerimientos_adicionales
                 puestoDb.horario = puesto.horario
                 puestoDb.rentado = puesto.rentado
                 puestoDb.activo = True
@@ -866,7 +903,7 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     model = Puesto
     template_name = 'empresa/puesto_detail.html'
     context_object_name = 'puesto'
-    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado', 'activo']
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'requerimientos_adicionales', 'horario', 'rentado', 'activo']
     success_url = '../../puestos'
 
     def get_object(self):
@@ -909,7 +946,13 @@ def edit_subcomision_carrera(request):
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
     def get_queryset(self):
         try:
-            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera, alumno__condicion_acreditacion=True).annotate(
+            query = self.request.GET.get("q")
+            if query == None: query = ''
+            entrevistas = Entrevista.objects.filter(
+                Q(alumno__carrera=self.request.user.carrera_user.carrera) & Q(alumno__condicion_acreditacion=True) &
+                # Query for filter by first_name and last_name of alumno and empresa
+                (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+            ).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
@@ -937,7 +980,13 @@ class ListPostulacionesSubcomisionCarreraView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        postulaciones = Postulacion.objects.filter(
+            Q(alumno__carrera=self.request.user.carrera_user.carrera) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(puesto__empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, postulaciones, 10)
 
 
@@ -946,7 +995,13 @@ class ListAlumnosSubcomisionCarreraView(generic.ListView):
     context_object_name = 'alumno_list'
 
     def get_queryset(self):
-        alumnos = Alumno.objects.filter(carrera=self.request.user.carrera_user.carrera)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        alumnos = Alumno.objects.filter(
+            Q(carrera=self.request.user.carrera_user.carrera) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | Q(carrera__nombre__icontains=query))
+        )
         return getPage(self.request, alumnos, 10)
 
 
@@ -955,7 +1010,13 @@ class ListEmpresasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=(self.request.user.carrera_user.carrera).departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        empresas = Empresa.objects.filter(
+            Q(departamento=(self.request.user.carrera_user.carrera).departamento) &
+            # Query for filter by empresa
+            (Q(nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, empresas, 10)
 
 
@@ -964,7 +1025,18 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '': queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__activa=True) & Q(empresa__departamento=(self.request.user.carrera_user.carrera).departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        )
         return getPage(self.request, puestos, 10)
 
 
@@ -973,7 +1045,13 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        pasantias = Pasantia.objects.filter(
+            Q(alumno__carrera=(self.request.user.carrera_user.carrera)) & Q(practica_plan_de_estudio=True) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, pasantias, 10)
 
 
@@ -1099,8 +1177,13 @@ def edit_comision_pasantias(request):
 class ListEntrevistasComisionPasantiasView(generic.ListView):
     def get_queryset(self):
         try:
+            query = self.request.GET.get("q")
+            if query == None: query = ''
             entrevistas = Entrevista.objects.filter(
-                alumno__carrera__departamento=self.request.user.pps_user.departamento)
+                Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) &
+                # Query for filter by first_name and last_name of alumno and empresa
+                (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+            )
         except ObjectDoesNotExist:
             return None
         for entrevista in entrevistas:
@@ -1120,7 +1203,13 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        postulaciones = Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento, activa=True)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        postulaciones = Postulacion.objects.filter(
+            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) & Q(activa=True) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(puesto__empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, postulaciones, 10)
 
 
@@ -1129,7 +1218,13 @@ class ListAlumnosComisionPasantiasView(generic.ListView):
     context_object_name = 'alumno_list'
 
     def get_queryset(self):
-        alumnos = Alumno.objects.filter(carrera__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        alumnos = Alumno.objects.filter(
+            Q(carrera__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | Q(carrera__nombre__icontains=query))
+        )
         return getPage(self.request, alumnos, 10)
 
 
@@ -1138,7 +1233,13 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        empresas = Empresa.objects.filter(
+            Q(departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa
+            (Q(nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, empresas, 10)
     
     
@@ -1219,7 +1320,18 @@ class ListPuestosComisionPasantiasView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '': queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        )
         return getPage(self.request, puestos, 10)
 
 
@@ -1238,8 +1350,13 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         pasantias = Pasantia.objects.filter(
-            alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
+            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) & Q(practica_plan_de_estudio=False) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, pasantias, 10)
 
 
@@ -1341,7 +1458,13 @@ class ListTutoresComisionPasantiasView(generic.ListView):
     context_object_name = 'tutor_list'
 
     def get_queryset(self):
-        tutores = TutorEmpresa.objects.filter(empresa__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        tutores = TutorEmpresa.objects.filter(
+            Q(empresa__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa, nombre and apellido
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, tutores, 10)
 
 
@@ -1390,7 +1513,13 @@ class ListDocentesComisionPasantiasView(generic.ListView):
     context_object_name = 'docente_list'
 
     def get_queryset(self):
-        docentes = Docente.objects.filter(departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        docentes = Docente.objects.filter(
+            Q(departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by noombre and apellido
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query))
+        )
         return getPage(self.request, docentes, 10)
 
 

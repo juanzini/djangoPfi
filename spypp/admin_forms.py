@@ -75,6 +75,7 @@ class AlumnoForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'condicion_acreditacion',
             'expedicion_acreditacion',
             'comentarios_comision_carrera',
