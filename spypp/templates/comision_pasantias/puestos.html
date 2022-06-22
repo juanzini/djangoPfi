@@ -24,9 +24,10 @@
                     <tr>
                         <th>Puesto</th>
                         <th>Empresa</th>
-                        <th>Rentado
+                        <th>Rentado</th>
                         <th>Cantidad de Postulados</th>
                         <th>Horario</th>
+                        <th>Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,11 +48,14 @@
                             <td>
                                 {{ puesto.horario }}
                             </td>
+                            <td style="text-align: left;">
+                                {% if puesto.activo %} <i class="material-icons">check</i> {% else %} <i class="material-icons">close</i> {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

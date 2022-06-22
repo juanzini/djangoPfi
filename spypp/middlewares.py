@@ -2,6 +2,8 @@ from datetime import timedelta as td
 from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render
+from django.template import TemplateDoesNotExist
 
 from .models import User
 from .views import edit_ultima_actualizacion, edit_alumno
@@ -44,6 +46,15 @@ class LastUserActivityMiddleware:
         return None
 
     def process_response(self, request, response):
+        status_code = getattr(response, 'status_code', None)
+        if status_code and status_code >= 400:
+            template = u'error_codes/%s.html' % status_code
+            try:
+                response = render(request, template)
+                response.status_code = 500
+            except TemplateDoesNotExist:
+                pass
+
         return response
 
 

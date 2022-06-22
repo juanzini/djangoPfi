@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% csrf_token %}
+{% block content %}
+<head>
+  <meta http-equiv="Refresh" content="0; URL={% url 'index' %}">
+</head>
+{% endblock %}

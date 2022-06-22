@@ -58,7 +58,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination pasantia_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination pasantia_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

@@ -1036,7 +1036,7 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
             Q(empresa__activa=True) & Q(empresa__departamento=(self.request.user.carrera_user.carrera).departamento) &
             # Query for filter by empresa and nombre
             (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
-        )
+        ).order_by('-activo')
         return getPage(self.request, puestos, 10)
 
 
@@ -1331,7 +1331,7 @@ class ListPuestosComisionPasantiasView(generic.ListView):
             Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.pps_user.departamento) &
             # Query for filter by empresa and nombre
             (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
-        )
+        ).order_by('-activo')
         return getPage(self.request, puestos, 10)
 
 

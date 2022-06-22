@@ -11,29 +11,6 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.forms import ValidationError
 
-class AlumnoForm(forms.ModelForm):
-
-    class Meta():
-        model = models.Alumno
-        fields = (
-            'numero_registro',
-            'carrera',
-            'perfil',
-            'telefono',
-            'curriculum',
-            'historia_academica',
-            'descripcion_intereses',
-            'descripcion_habilidades',
-            'consideraciones_particulares',
-            'condicion_acreditacion',
-            'expedicion_acreditacion',
-            'comentarios_comision_carrera',
-            'comentarios_carrera_visibles',
-            'comentarios_comision_pps',
-            'ultima_actualizacion_perfil',
-            'user',
-        )
-
 class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'carrera'),
                     Row('telefono', 'progreso'),
@@ -329,6 +306,7 @@ class AlumnoCreateForm(forms.ModelForm):
         super(AlumnoCreateForm, self).__init__(*args, **kwargs)
         self.fields['carrera'].required = True
         self.fields['carrera'].queryset = models.Carrera.objects.filter(activa=True)
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
 
 class UserCreateForm(RegistrationForm):
     layout = Layout('username', 'email',
@@ -404,6 +382,11 @@ class AlumnoEditForm(forms.ModelForm):
     class Meta:
         model = models.Alumno
         fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades', 'consideraciones_particulares')
+
+    def __init__(self, *args, **kwargs):
+        super(AlumnoEditForm, self).__init__(*args, **kwargs)
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
+
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -575,6 +558,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.expedicion_acreditacion:
             self.fields['comentarios_comision_carrera'].label = 'No hay comentarios de la comisión de carrera'
         self.fields['comentarios_comision_carrera'].disabled = True
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
 
 class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
     layout = Layout(Row('empresa', 'alumno'),

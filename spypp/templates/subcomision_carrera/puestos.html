@@ -26,7 +26,7 @@
                         <th>Puesto</th>
                         <th>Rentado</th>
                         <th>Cantidad de Estudiantes Postulados</th>
-                        <th>Estado</th>
+                        <th>Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,18 +48,14 @@
                             <td>
                                 {{ puesto.get_cantidad_alumnos }}
                             </td>
-                            <td>
-                                {% if puesto.activo %}
-                                Activo
-                                {% else %}
-                                Inactivo
-                                {% endif %}
+                            <td style="text-align: left;">
+                                {% if puesto.activo %} <i class="material-icons">check</i> {% else %} <i class="material-icons">close</i> {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}
