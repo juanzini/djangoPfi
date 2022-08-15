@@ -909,6 +909,10 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     def get_object(self):
         return get_object_or_404(Puesto, pk=self.kwargs["pk"])
 
+    def form_valid(self, form):
+        form.instance.fecha_inactivacion = datetime.today() + td(days=15)
+        return super(DetailPuestoEmpresaView, self).form_valid(form)
+
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------SUBCOMISION-CARRERA---------------------------------------------------------------
