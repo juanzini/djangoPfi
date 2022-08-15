@@ -82,6 +82,7 @@ class AlumnoForm(forms.ModelForm):
             'comentarios_carrera_visibles',
             'comentarios_comision_pps',
             'ultima_actualizacion_perfil',
+            'is_test',
             'user',
         )
 
