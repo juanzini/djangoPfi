@@ -16,7 +16,6 @@ urlpatterns = [
     # -------------------ALUMNO--------------------
 
     path('alumno/help', login_required(permissions(views.help_alumno, User.AL)), name='help-alumno'),
-    path('alumno/detail', login_required(permissions(views.DetailAlumnoView.as_view(), User.AL)), name='detail-alumno'),
     path('alumno/edit', login_required(permissions(views.edit_alumno, User.AL)), name='edit-alumno'),
     path('alumno/entrevistas', login_required(permissions(views.ListEntrevistasAlumnoView.as_view(), User.AL)),
          name='entrevistas-alumno'),

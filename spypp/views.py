@@ -302,15 +302,6 @@ def edit_ultima_actualizacion(request, middleware):
     })
 
 
-class DetailAlumnoView(generic.DetailView):
-    model = Alumno
-    context_object_name = 'alumno'
-    template_name = 'alumno/detail.html'
-
-    def get_object(self):
-        return Alumno.objects.get(user=self.request.user.pk)
-
-
 class DetailPustoAlumnoView(generic.TemplateView):
     template_name = 'alumno/puesto_detail.html'
     context_object_name = 'puesto'
@@ -428,7 +419,7 @@ class ListPuestosAlumnoView(generic.ListView):
                 queryPuesto = AREA_CHOICES_REVERSE.get(i)
         if queryPuesto == '' : queryPuesto = query
         puestos = Puesto.objects.filter(
-            Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.alumno_user.carrera.departamento) &
+            Q(empresa__is_test=self.request.user.alumno_user.is_test) & Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.alumno_user.carrera.departamento) &
             # Query for filter by empresa and nombre
             (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
         )

@@ -107,6 +107,7 @@ class Alumno(models.Model):
     telefono = PhoneNumberField(blank=False, null=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
+    is_test = models.BooleanField(default=False, verbose_name='Determina si el estudiante es de test.')
 
     class Meta:
         verbose_name = 'Estudiante'
@@ -291,6 +292,7 @@ class Empresa(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
+    is_test = models.BooleanField(default=False, verbose_name='Determina si la empresa es de test.')
 
     class Meta:
         verbose_name = 'Empresa'
