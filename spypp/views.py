@@ -15,6 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import timedelta as td
 
 from pfiProject import settings
+from pfiProject.settings import EMAIL_FLAG
 from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm, EmpresaDetailComisionPasantiasForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
@@ -39,7 +40,6 @@ from private_storage.views import PrivateStorageDetailView
 from private_storage.views import PrivateStorageView
 from django.db.models import Case, When, Value, IntegerField
 
-email_flag = False
 class CvDownloadView(PrivateStorageDetailView):
     model = Alumno
     model_file_field = 'curriculum'
@@ -339,7 +339,7 @@ def create_postulacion_alumno(request):
                 postulacion = Postulacion.objects.create(puesto=puesto,
                                            alumno=request.user.alumno_user)
                 nuevaPostulacion = True
-        if nuevaPostulacion :
+        if nuevaPostulacion:
             context = {
                 'user': postulacion.alumno.user,
                 'postulacion': postulacion
@@ -352,7 +352,7 @@ def create_postulacion_alumno(request):
             email = EmailMessage(postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
                                  to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
             try:
-                if email_flag:
+                if EMAIL_FLAG:
                     email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
@@ -479,7 +479,7 @@ def cancel_entrevistas_alumno(entrevista, placeReturn):
         email = EmailMessage(entrevista.empresa.nombre_fantasia + " cancelaron una entrevista.", message,
                              to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
         try:
-            if email_flag:
+            if EMAIL_FLAG:
                 email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
@@ -501,7 +501,7 @@ def confirm_entrevistas_alumno_view(request):
     email = EmailMessage(entrevista.empresa.nombre_fantasia + " confirmaron una entrevista!!.", message,
                          to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
     try:
-        if email_flag:
+        if EMAIL_FLAG:
             email.send()
     except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
@@ -616,7 +616,7 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
             email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " ACEPTÓ una pasantía",
                                  message, to=list(docente.email for docente in docentes))
             try:
-                if email_flag:
+                if EMAIL_FLAG:
                     email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
@@ -628,7 +628,7 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
             email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " RECHAZÓ una pasantía",
                                  message, to=[self.object.alumno.user.email] + list(docente.email for docente in docentes))
             try:
-                if email_flag:
+                if EMAIL_FLAG:
                     email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
@@ -692,7 +692,7 @@ def cancel_entrevistas_empresa_view(request):
     email = EmailMessage(entrevista.alumno.user.first_name + " cancelaron tu entrevista.", message,
                          to=[entrevista.alumno.user.email] + list(docente.email for docente in docentes))
     try:
-        if email_flag:
+        if EMAIL_FLAG:
             email.send()
     except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
@@ -791,7 +791,7 @@ def delete_postulacion_empresa(request):
             email = EmailMessage(postulacion.alumno.user.first_name + " desestimaron tu postulacion.", message,
                                  to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
             try:
-                if email_flag:
+                if EMAIL_FLAG:
                     email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
@@ -840,7 +840,7 @@ class CreateEntrevistaView(FormView):
                 docentes = Docente.objects.filter(comision_docente=alumno.carrera.carrera_comision)
                 email = EmailMessage('Felicitaciones ' + alumno.user.first_name + "!!", message, to=[alumno.user.email] + list(docente.email for docente in docentes))
                 try:
-                    if email_flag:
+                    if EMAIL_FLAG:
                         email.send()
                 except (SMTPRecipientsRefused, SMTPSenderRefused):
                     None
@@ -1120,7 +1120,7 @@ class CreatePracticaView(generic.CreateView):
         email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
                              to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
-            if email_flag:
+            if EMAIL_FLAG:
                 email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
@@ -1429,7 +1429,7 @@ class CreatePasantiaView(generic.CreateView):
         email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
                              to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
-            if email_flag:
+            if EMAIL_FLAG:
                 email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None

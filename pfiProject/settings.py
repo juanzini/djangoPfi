@@ -229,3 +229,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
 EMAIL_HOST_PASSWORD = 'yqslizutooeoashy'
 EMAIL_USE_TLS = True
+EMAIL_FLAG = False
