@@ -269,12 +269,12 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
             self.fields['numero_legajo'].disabled = True
             self.fields['comentarios_comision_pps'].disabled = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
-                empresa=self.instance.entrevista.empresa)
+                empresa=self.instance.empresa)
         self.fields['comentarios_empresa'].disabled = True
-        self.fields['empresa'].initial = self.instance.entrevista.empresa.__str__()
+        self.fields['empresa'].initial = self.instance.empresa.__str__()
         self.fields['empresa'].disabled = True
         self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-                departamento=self.instance.carrera.departamento).order_by('apellido')
+                departamento=self.instance.alumno.carrera.departamento).order_by('apellido')
 
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
@@ -618,7 +618,8 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
                     'informe',
                     'numero_legajo',
                     'comentarios_comision_pps',
-                    'comentarios_empresa')
+                    'comentarios_empresa',
+                    'practica_plan_de_estudio')
 
     class Meta():
         model = models.Pasantia
@@ -630,6 +631,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
             'tutor_empresa',
             'informe',
             'numero_legajo',
+            'practica_plan_de_estudio',
             'comentarios_empresa',
             'comentarios_comision_pps',
         )
@@ -644,6 +646,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
+        self.fields['practica_plan_de_estudio'].widget = forms.RadioSelect(choices=((True, 'Si'), (False, 'No')))
 
 
 class PasantiaCreateForm(forms.ModelForm):

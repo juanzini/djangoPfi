@@ -3,7 +3,7 @@
     <div class="nav-wrapper container">
           <a style="width:auto;height:100%;" class="brand-logo hide-on-med-and-down" target="_blank" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="{% static '/images/dirinfo_blanco.png' %}"></a>
         {% if not request.resolver_match.url_name == 'help-login' %}
-          <a class="right" href="{% url 'help-login' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
+            <a class="right" href="{% url 'help-login' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
         {% endif %}
         {% if not request.resolver_match.url_name == 'login' %}
             <a class="left hide-on-large-only" href="{% url 'login' %}" style="position:relative !important; float: left; padding-left:0.7em;"><button class="btn my-2 my-sm-0 modal-trigger" data-target="modal1" type="submit" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
@@ -16,6 +16,8 @@
         {% endif %}
         {% if not request.resolver_match.url_name == 'login' %}
             <a class="right hide-on-med-and-down" href="{% url 'login' %}" style="position:relative !important; float: right; padding-right:1em;"><button class="btn my-2 my-sm-0 modal-trigger" type="submit" data-target="modal1" style="padding-left:0.5em; padding-right:0.5em">Iniciar Sesi&oacute;n</button></a>
+        {% else %}
+            <a class="right" href="{% url 'password_reset' %}"><button class="btn btn-md" type="button" style="background-color:yellow;color:black">Olvidé mi contraseña &#129318;</button></a>
         {% endif %}
     </div>
 </nav>

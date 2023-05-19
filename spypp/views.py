@@ -1357,7 +1357,7 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
         query = self.request.GET.get("q")
         if query == None: query = ''
         pasantias = Pasantia.objects.filter(
-            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) & Q(practica_plan_de_estudio=False) &
+            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) &
             # Query for filter by first_name and last_name of alumno and empresa
             (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
         )
@@ -1387,7 +1387,7 @@ class PasantiaDetailComisionPasantiasView(generic.UpdateView):
     form_class = PasantiaDetailComisionPasantiasForm
 
     def get_object(self):
-        return get_object_or_404(Pasantia, pk=self.kwargs["pk"], practica_plan_de_estudio=False)
+        return get_object_or_404(Pasantia, pk=self.kwargs["pk"])
 
     def get_form_kwargs(self):
         kwargs = super(PasantiaDetailComisionPasantiasView, self).get_form_kwargs()
