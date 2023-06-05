@@ -79,7 +79,7 @@
                                     {% endif %}
                                 {% endif %}
                             {% else %}
-                                <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                                <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'nueva-entrevista-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                                   <button class="btn-small" type="submit">Generar Entrevista</button>
