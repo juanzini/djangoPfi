@@ -3,7 +3,7 @@
     <div class="nav-wrapper container">
         <a style="width:auto;height:100%;" class="brand-logo hide-on-med-and-down" target="_blank" href="http://www.dirinfo.unsl.edu.ar/"><img style="width:auto;height:100%;" src="{% static '/images/dirinfo_blanco.png' %}"></a>
         {% if not request.resolver_match.url_name == 'help-subcomision-carrera' %}
-          <a class="right" href="{% url 'help-subcomision-carrera' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>
+          <!-- <a class="right" href="{% url 'help-subcomision-carrera' %}" style="position:relative !important; float: right; padding-left:1em" title="Ayuda"><i class="material-icons" style="font-size: 2rem;">help_outline</i></a>  -->
         {% endif %}
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
