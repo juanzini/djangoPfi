@@ -7,6 +7,10 @@
             <h4>Mi Perfil <a href="https://www.modelos-de-curriculum.com/hacer-un-curriculum-vitae/" target="_blank">
                     <button style="display: inline-block; float: right;" class="btn btn-primary btn-sm">Como armar mi Curriculum?</button>
                 </a></h4>
+            {% if condicion_acreditacion is None %}
+                <p style="color:red;">Condición académica aún no evaluada por la Subcomisión de Carrera.
+                Esto puede demorar unos días.</p>
+            {% endif %}
             <br>
             <form method="post" class="form" enctype="multipart/form-data">
                 {% csrf_token %}

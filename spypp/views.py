@@ -245,9 +245,10 @@ def create_alumno(request):
 
 @transaction.atomic
 def edit_alumno(request):
+    alumno = Alumno.objects.get(user=request.user.pk)
     if request.method == 'POST':
         user_form = UserEditForm(request.POST, instance=request.user)
-        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=alumno)
         if user_form.is_valid() and alumno_form.is_valid():
             try:
                 User.objects.get(Q(email=request.user.email) & (~Q(username=request.user.username)))
@@ -271,10 +272,11 @@ def edit_alumno(request):
                 alumno_form.has_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
     else:
         user_form = UserEditForm(instance=request.user)
-        alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(instance=alumno)
     return render(request, 'alumno/edit.html', {
         'user_form': user_form,
         'alumno_form': alumno_form,
+        'condicion_acreditacion': alumno.condicion_acreditacion,
     })
 
 
@@ -344,13 +346,23 @@ def create_postulacion_alumno(request):
                 'user': postulacion.alumno.user,
                 'postulacion': postulacion
             }
-            message = render_to_string(
-                template_name='emails/nueva_postulacion_empresa.txt',
-                context=context
-            )
             docentes = Docente.objects.filter(comision_docente=postulacion.alumno.carrera.carrera_comision)
-            email = EmailMessage(postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
-                                 to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
+            if postulacion.alumno.condicion_acreditacion is None:
+                message = render_to_string(
+                    template_name='emails/confirmar_condicion_alumno.txt',
+                    context=context
+                )
+                email = EmailMessage(
+                    postulacion.alumno.__str__() + " tiene una postulacion y debe evaluarse su condición.", message,
+                    to=list(docente.email for docente in docentes))
+            else:
+                message = render_to_string(
+                    template_name='emails/nueva_postulacion_empresa.txt',
+                    context=context
+                )
+                email = EmailMessage(
+                    postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
+                    to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
             try:
                 if EMAIL_FLAG:
                     email.send()
@@ -1062,6 +1074,35 @@ class AlumnoDetailSubcomisionCarreraView(generic.UpdateView):
     model = Alumno
     template_name = 'subcomision_carrera/alumno_detail.html'
     form_class = AlumnoDetailSubcomisionCarreraForm
+
+    def form_valid(self, form):
+        if form.has_changed():
+            alumno = Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+            if alumno.condicion_acreditacion is None and ('condicion_acreditacion' in form.changed_data) and not(form.instance.condicion_acreditacion is None):
+                postulaciones = Postulacion.objects.filter(Q(alumno=alumno) &
+                                                           (Q(entrevista__isnull=False) | (Q(entrevista__isnull=True) & Q(activa=True))) &
+                                                           Q(fecha_desestimacion__isnull=True) &
+                                                           Q(fecha__gt=datetime.now().date() - timedelta(days=14))
+                            )
+                docentes = Docente.objects.filter(comision_docente=alumno.carrera.carrera_comision)
+                for postulacion in postulaciones:
+                    context = {
+                        'user': alumno.user,
+                        'postulacion': postulacion
+                    }
+                    message = render_to_string(
+                        template_name='emails/nueva_postulacion_empresa.txt',
+                        context=context
+                    )
+                    email = EmailMessage(
+                        postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
+                        to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
+                    try:
+                        if EMAIL_FLAG:
+                            email.send()
+                    except (SMTPRecipientsRefused, SMTPSenderRefused):
+                        None
+        return super().form_valid(form)
 
     def get_success_url(self):
         return self.request.POST.get('next', '/')
