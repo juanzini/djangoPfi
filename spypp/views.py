@@ -719,7 +719,7 @@ class ListPostulacionesEmpresaView(generic.ListView):
         query = self.request.GET.get("q")
         if query == None: query = ''
         postulaciones = Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None)) &
+            Q(puesto__empresa=self.request.user.empresa_user) & Q(entrevista=None) & (~Q(alumno__condicion_acreditacion=None)) &
             # Query for filter by first_name and last_name of alumno
             (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
         ).order_by('-activa',
