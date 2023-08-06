@@ -5,15 +5,30 @@
     <div class="row">
         <div class="col m6">
             <h4>Nuevo Usuario para Estudiante</h4>
-            <form method="post" class="form" enctype="multipart/form-data">
+            <form method="post" class="form" id="form-id" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% form form=user_form %}{% endform %}
                 {% form form=alumno_form %}{% endform %}
                 <br>
-                <button type="submit" class="btn btn-primary btn-md">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-md" id="save-button">Guardar</button>
+                <!-- Spinner de carga oculto inicialmente -->
+                  <div class="preloader-wrapper small active" id="spinner" style="display: none; margin-left: 10px;">
+                    <div class="spinner-layer spinner-green-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div>
+                      <div class="gap-patch">
+                        <div class="circle"></div>
+                      </div>
+                      <div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
             </form>
         </div>
     </div>
+
 
 <script>
     $(document).ready(function() {
@@ -39,5 +54,16 @@
             togglePassword2.innerHTML = icon;
         });
     });
+
+      $(document).ready(function () {
+        const form = $("#form-id");
+        const saveButton = $("#save-button");
+        const spinner = $("#spinner");
+
+        form.on("submit", function (event) {
+          saveButton.hide();
+          spinner.show();
+        });
+      });
 </script>
 {% endblock %}
