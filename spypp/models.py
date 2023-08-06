@@ -72,9 +72,11 @@ class User(AbstractUser):
 
 class Alumno(models.Model):
     def validate_hash(value):
-        reg = re.compile('^30[0-9]{5,6}')
+        reg = re.compile('^30[0-9]')
         if not reg.match(str(value)):
             raise ValidationError(u'Formato de registro erroneo, recuerda que debe comenzar con 30')
+        if len(str(value)) != 7:
+            raise ValidationError(u'El número de registro está compuesto por 6 dígitos')
 
     def curriculum_upload_path(instance, filename):
         return 'curriculums/{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
