@@ -1257,6 +1257,20 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
         )
         return getPage(self.request, postulaciones, 10)
 
+class DetailPostulacionComisionPasantiasView(generic.TemplateView):
+    template_name = 'comision_pasantias/postulacion_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPostulacionComisionPasantiasView, self).get_context_data(**kwargs)
+        context['postulacion'] = Postulacion.objects.get(pk=self.kwargs["pk"])
+        context['puesto'] = context['postulacion'].puesto
+        context['is_available'] = context['postulacion'].fecha_desestimacion is None or context['postulacion'].fecha_desestimacion < (datetime.now().date() - timedelta(days=60))
+        if not context['is_available']:
+            context['next_day'] = context['postulacion'].fecha_desestimacion + timedelta(days=60)
+        if not context['postulacion'].activa:
+            context['postulacion'] = None
+        return context
+
 
 class ListAlumnosComisionPasantiasView(generic.ListView):
     template_name = 'comision_pasantias/alumnos.html'

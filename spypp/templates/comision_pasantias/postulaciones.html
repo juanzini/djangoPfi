@@ -31,7 +31,7 @@
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
+                        <tr class="table-row" data-href="{% url 'postulacion-detail-comision-pasantias' postulacion.pk %}">
                             <td>
                                 {{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}
                             </td>
