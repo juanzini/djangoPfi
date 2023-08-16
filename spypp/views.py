@@ -310,6 +310,7 @@ class DetailPustoAlumnoView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DetailPustoAlumnoView, self).get_context_data(**kwargs)
+        context['alumno'] = self.request.user.alumno_user
         context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"],empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         try:
             context['postulacion'] = Postulacion.objects.get(puesto=context['puesto'],
@@ -368,7 +369,7 @@ def create_postulacion_alumno(request):
                     email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect('../postulaciones')
 
 @transaction.atomic
 def delete_postulacion_alumno_view(request):

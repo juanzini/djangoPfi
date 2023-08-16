@@ -6,7 +6,11 @@
         <div class="col m6" style="width: 100%;">
             <div class="row" style="margin-bottom: 20px; align-items: center;">
                 <div class="col">
-                    <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% if puesto.empresa.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% else %}
+                         <i class="far fa-user fa-4x"></i>
+                    {% endif %}
                 </div>
                 <div class="col">
                     <h4>

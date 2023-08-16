@@ -164,7 +164,7 @@
                             </div>
                             {% if postulacion.activa %}
                                 <div class="col">
-                                    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'desestimar-postulacion-empresa' %}">
+                                    <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'desestimar-postulacion-empresa' %}">
                                       {% csrf_token %}
                                         <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                                         <button class="btn btn-danger my-2 my-sm-0" type="cancel" style="float: right">Desestimar</button>

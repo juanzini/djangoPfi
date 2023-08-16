@@ -26,7 +26,7 @@
                     {% if puesto.empresa.logo %}
                         <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
                     {% else %}
-                         <img height="120rem;" width="120rem;" src="{% static '/images/not_found_logo.png' %}" style="float: right; margin-right:2rem;"/>
+                         <i class="far fa-user fa-4x"></i>
                     {% endif %}
                 </div>
                 <div class="col">
