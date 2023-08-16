@@ -1000,6 +1000,7 @@ class ListPostulacionesSubcomisionCarreraView(generic.ListView):
         if query == None: query = ''
         postulaciones = Postulacion.objects.filter(
             Q(alumno__carrera=self.request.user.carrera_user.carrera) &
+            Q(activa=True) &
             # Query for filter by first_name and last_name of alumno and empresa
             (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(puesto__empresa__nombre_fantasia__icontains=query))
         )
