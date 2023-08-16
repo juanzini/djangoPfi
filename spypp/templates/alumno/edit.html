@@ -8,8 +8,13 @@
                     <button style="display: inline-block; float: right;" class="btn btn-primary btn-sm">Como armar mi Curriculum?</button>
                 </a></h4>
             {% if condicion_acreditacion is None %}
-                <p style="color:red;">Condición académica aún no evaluada por la Subcomisión de Carrera.
+                <p style="color:red;">Condición académica aún no evaluada por la Subcomisión de Pasantías de tu Carrera.
                 Esto puede demorar unos días.</p>
+            {% elif condicion_acreditacion is False %}
+                <p style="color:red;">Tu condición académica NO permite considerar tu pasantía como parte de tu plan de estudio.
+                Para más información contactar con la Subcomisión de Pasantías de tu Carrera.</p>
+            {% elif condicion_acreditacion is True %}
+                <p style="color:green;">Tu condición académica es correcta para considerar tu pasantía como parte de tu plan de estudio.</p>
             {% endif %}
             <br>
             <form method="post" class="form" enctype="multipart/form-data">

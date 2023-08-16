@@ -50,7 +50,11 @@
             <div class="row" style="align-items: center;display: flex;">
                 <div class="col">
                 {% if not puesto.activo %}
-                    Este puesto ya no se encuentra disponible
+                    <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-delete-alumno' %}" style="margin-bottom: 0px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="postulacion_id" value="{{ postulacion.pk }}">
+                        <button onClick="javascript: return confirm('No podrá volver a postularse por 60 días en este mismo puesto.\n¿Est&aacute; seguro que desea DEJAR DE POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?\n Si tiene una entrevista activa, la misma quedará CANCELADA!!');" class="btn btn-danger btn-md" type="cancel">Quitar postulaci&oacute;n</button>
+                    </form>
                 {% else %}
                     {% if not postulacion %}
                         {% if not is_available %}
@@ -76,8 +80,11 @@
                     <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
                 </div>
             </div>
+            {% if not puesto.activo %}
+                 <p>* Este puesto no se encuentra disponible actualmente.</p>
+            {% endif %}
             {% if alumno.condicion_acreditacion is None %}
-                 <p>* Postulación sujeta a revisión por comisión de carrera</p>
+                 <p>* Postulación sujeta a revisión por comisión de carrera.</p>
             {% endif %}
         </div>
     </div>

@@ -8,6 +8,7 @@
                 <thead>
                     <tr>
                         <th>Empresa/Organización</th>
+                        <th>Estado</th>
                         <th>Puesto</th>
                         <th>Fecha de Postulación</th>
                         <th>Estado Entrevista</th>
@@ -19,6 +20,13 @@
                         <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
                             <td>
                                 {{ postulacion.puesto.empresa.nombre_fantasia }}
+                            </td>
+                            <td>
+                                {% if not postulacion.puesto.activo %}
+                                    <p style="color:red;">INATIVA</p>
+                                {% else %}
+                                    <p style="color:green;">ACTIVA</p>
+                                {% endif %}
                             </td>
                             <td>
                                 {{ postulacion.puesto.get_nombre_display }}
