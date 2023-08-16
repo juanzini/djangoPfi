@@ -518,7 +518,7 @@ def confirm_entrevistas_alumno_view(request):
             email.send()
     except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect('../entrevistas')
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------EMPRESA---------------------------------------------------------------------------

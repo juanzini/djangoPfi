@@ -39,11 +39,6 @@
                                                 <span style="color:black;"> REALIZADA </span>
                                             {% else %}
                                                 <span style="color:green;"> CONFIRMADA </span>
-                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
-                                                  {% csrf_token %}
-                                                  <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="cancel">Cancelar</button>
-                                                </form>
                                             {% endif %}
                                         {% else %}
                                             {% if postulacion.entrevista.is_past_due %}

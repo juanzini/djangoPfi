@@ -8,7 +8,7 @@
             <h4>Entrevista a <a href="{% url 'alumno-detail-empresa' entrevista.alumno.pk %}">{{ entrevista.alumno.user.first_name }} {{entrevista.alumno.user.last_name}}</a></h4>
             Estado:
             {% if entrevista.status == 'CAA' %}
-                    <span style="color:red;">Cancelada por el alumno</span>
+                    <span style="color:red;">Cancelada por el estudiante</span>
                 {% else %}
                     {% if entrevista.status == 'CAE' %}
                         <span style="color:red;">Cancelada por la empresa</span>
