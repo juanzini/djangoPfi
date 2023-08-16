@@ -54,7 +54,8 @@
                 {% else %}
                     {% if not postulacion %}
                         {% if not is_available %}
-                            Debe esperar hasta el {{ next_day|date:"l j" }} para poder volver a postularse.
+                            Postulación desestimada.
+                            Debe esperar hasta el {{ next_day|date:"l j" }} de {{ next_day|date:"F" }} para poder volver a postularse.
                         {% else %}
                             <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-create-alumno' %}" style="margin-bottom: 0px;">
                                 {% csrf_token %}
