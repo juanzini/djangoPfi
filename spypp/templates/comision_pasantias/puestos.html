@@ -4,14 +4,30 @@
     <div class="row">
         <div class="col" style="width: 100%;">
             <h4>Puestos Ofrecidos</h4>
+            <form action="{{request.get_full_path}}" method="get" class="form">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <i class="material-icons prefix">search</i>
+                            <input name="q" id="id_buscador" type="text" value="{{ request.GET.q }}">
+                            <label for="id_buscador">Buscador...</label>
+                            <span style="margin-top:-1em;" class="helper-text" data-error="wrong" data-success="right">Puesto, Empresa</span>
+                        </div>
+                        {% if request.GET.q %}
+                            <div class="input-field col s4">
+                                <a href="{{request.path}}"><i class="material-icons prefix">clear</i></a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </form>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Puesto</th>
-                        <th>Empresa</th>
-                        <th>Rentado
+                        <th>Empresa/Organización</th>
+                        <th>Rentado</th>
                         <th>Cantidad de Postulados</th>
                         <th>Horario</th>
+                        <th>Activo</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,11 +48,14 @@
                             <td>
                                 {{ puesto.horario }}
                             </td>
+                            <td style="text-align: left;">
+                                {% if puesto.activo %} <i class="material-icons">check</i> {% else %} <i class="material-icons">close</i> {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

@@ -1,7 +1,10 @@
+import re
+
 from django.contrib.auth.views import redirect_to_login
 from django.views import generic
 from datetime import datetime, date, timedelta
 from django import forms
+from django.views.generic.edit import FormView
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django_registration.backends.activation.views import RegistrationView
@@ -12,6 +15,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from datetime import timedelta as td
 
 from pfiProject import settings
+from pfiProject.settings import EMAIL_FLAG
 from .forms import UserEditForm, AlumnoEditForm, AlumnoCreateForm, UserCreateForm, EmpresaDetailComisionPasantiasForm
 from .forms import EmpresaUserEditForm, EmpresaEditForm, SubcomisionCarreraEditForm, SubcomisionCarreraUserEditForm
 from .forms import AlumnoDetailSubcomisionCarreraForm, EntrevistaDetailSubcomisionCarreraForm, \
@@ -23,7 +27,8 @@ from .forms import EntrevistaDetailComisionPasantiasForm, PasantiaDetailComision
 from .forms import EntrevistaDetailAlumnoForm, EmpresaDetailSubcomisionCarreraForm, CarreraCreateComisionPasantiasForm
 from .forms import EmpresaCreateComisionPasantiasForm, UserWithoutNameCreateForm, CreateTutoresEmpresaDetailComisionPasantiasForm
 from .forms import UpdateDocenteEmpresaDetailComisionPasantiasForm
-from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage
+from .models import Alumno, User, SubcomisionCarrera, Entrevista, Postulacion, Puesto, Docente, public_storage, \
+    AREA_CHOICES_REVERSE
 from .models import Empresa, DirectorDepartamento, SubcomisionPasantiasPPS, Pasantia, TutorEmpresa, Carrera
 from django.urls import reverse
 from django.shortcuts import HttpResponseRedirect, get_object_or_404, HttpResponse
@@ -34,7 +39,6 @@ from django.db.models import Q, F
 from private_storage.views import PrivateStorageDetailView
 from private_storage.views import PrivateStorageView
 from django.db.models import Case, When, Value, IntegerField
-
 
 class CvDownloadView(PrivateStorageDetailView):
     model = Alumno
@@ -51,11 +55,6 @@ class CvDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -65,7 +64,10 @@ class CvDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
-        if self.request.user.tipo == User.EM or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.get(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
+        if self.request.user.tipo == User.EM or self.request.user.tipo == User.CP:
             return True
         return False
 
@@ -101,11 +103,6 @@ class PerfilDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -115,6 +112,9 @@ class PerfilDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.get(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
         if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
                 puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
                     "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
@@ -137,11 +137,6 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
                                                        alumno__pk=self.kwargs["pk"])
             ids = set(postulacion.alumno.id for postulacion in postulaciones)
             return super().get_queryset().filter(pk__in=ids)
-        if self.request.user.tipo == User.CC:
-            postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera,
-                                                       alumno__pk=self.kwargs["pk"])
-            ids = set(postulacion.alumno.id for postulacion in postulaciones)
-            return super().get_queryset().filter(pk__in=ids)
         return super().get_queryset().filter()
 
     def can_access_file(self, private_file):
@@ -151,6 +146,9 @@ class HistoriaAcademicaDownloadView(PrivateStorageDetailView):
             return True
         if self.request.user.is_staff:
             return True
+        if self.request.user.tipo == User.CC:
+            alumno = Alumno.objects.get(pk=self.kwargs["pk"])
+            return alumno.carrera == self.request.user.carrera_user.carrera
         if (self.request.user.tipo == User.EM and Postulacion.objects.filter(
                 puesto__empresa=self.request.user.empresa_user, alumno__pk=self.kwargs[
                     "pk"])) or self.request.user.tipo == User.CC or self.request.user.tipo == User.CP:
@@ -247,9 +245,10 @@ def create_alumno(request):
 
 @transaction.atomic
 def edit_alumno(request):
+    alumno = Alumno.objects.get(user=request.user.pk)
     if request.method == 'POST':
         user_form = UserEditForm(request.POST, instance=request.user)
-        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(request.POST, request.FILES, instance=alumno)
         if user_form.is_valid() and alumno_form.is_valid():
             try:
                 User.objects.get(Q(email=request.user.email) & (~Q(username=request.user.username)))
@@ -273,10 +272,11 @@ def edit_alumno(request):
                 alumno_form.has_error('telefono', forms.ValidationError("Ingrese un número válido, ej: 2664874878"))
     else:
         user_form = UserEditForm(instance=request.user)
-        alumno_form = AlumnoEditForm(instance=Alumno.objects.get(user=request.user.pk))
+        alumno_form = AlumnoEditForm(instance=alumno)
     return render(request, 'alumno/edit.html', {
         'user_form': user_form,
         'alumno_form': alumno_form,
+        'condicion_acreditacion': alumno.condicion_acreditacion,
     })
 
 
@@ -304,21 +304,13 @@ def edit_ultima_actualizacion(request, middleware):
     })
 
 
-class DetailAlumnoView(generic.DetailView):
-    model = Alumno
-    context_object_name = 'alumno'
-    template_name = 'alumno/detail.html'
-
-    def get_object(self):
-        return Alumno.objects.get(user=self.request.user.pk)
-
-
 class DetailPustoAlumnoView(generic.TemplateView):
     template_name = 'alumno/puesto_detail.html'
     context_object_name = 'puesto'
 
     def get_context_data(self, **kwargs):
         context = super(DetailPustoAlumnoView, self).get_context_data(**kwargs)
+        context['alumno'] = self.request.user.alumno_user
         context['puesto'] = Puesto.objects.get(pk=self.kwargs["pk"],empresa__departamento=self.request.user.alumno_user.carrera.departamento)
         try:
             context['postulacion'] = Postulacion.objects.get(puesto=context['puesto'],
@@ -350,23 +342,34 @@ def create_postulacion_alumno(request):
                 postulacion = Postulacion.objects.create(puesto=puesto,
                                            alumno=request.user.alumno_user)
                 nuevaPostulacion = True
-        if nuevaPostulacion :
+        if nuevaPostulacion:
             context = {
                 'user': postulacion.alumno.user,
                 'postulacion': postulacion
             }
-            message = render_to_string(
-                template_name='emails/nueva_postulacion_empresa.txt',
-                context=context
-            )
             docentes = Docente.objects.filter(comision_docente=postulacion.alumno.carrera.carrera_comision)
-            email = EmailMessage(postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
-                                 to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
+            if postulacion.alumno.condicion_acreditacion is None:
+                message = render_to_string(
+                    template_name='emails/confirmar_condicion_alumno.txt',
+                    context=context
+                )
+                email = EmailMessage(
+                    postulacion.alumno.__str__() + " tiene una postulacion y debe evaluarse su condición.", message,
+                    to=list(docente.email for docente in docentes))
+            else:
+                message = render_to_string(
+                    template_name='emails/nueva_postulacion_empresa.txt',
+                    context=context
+                )
+                email = EmailMessage(
+                    postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
+                    to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
             try:
-                email.send()
+                if EMAIL_FLAG:
+                    email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect('../postulaciones')
 
 @transaction.atomic
 def delete_postulacion_alumno_view(request):
@@ -422,7 +425,18 @@ class ListPuestosAlumnoView(generic.ListView):
 
     def get_queryset(self):
         to_be_deleted = []
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.alumno_user.carrera.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '' : queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__is_test=self.request.user.alumno_user.is_test) & Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.alumno_user.carrera.departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        )
         for puesto in puestos:
             try:
                 if puesto.fecha_inactivacion < datetime.now().date():
@@ -439,15 +453,10 @@ class ListPuestosAlumnoView(generic.ListView):
 
 class ListContactoAlumnoView(generic.ListView):
     template_name = 'alumno/contacto.html'
-    context_object_name = 'docente_list'
+    context_object_name = 'subcomision'
 
     def get_queryset(self):
-        carrera = Alumno.objects.get(user=self.request.user.pk).carrera
-        try:
-            subcomision = SubcomisionCarrera.objects.get(carrera=carrera)
-        except ObjectDoesNotExist:
-            return None
-        return getPage(self.request, subcomision.docentes.all(), 10)
+        return Alumno.objects.get(user=self.request.user.pk).carrera.carrera_comision
 
 class DetailEntrevistaAlumnoView(generic.UpdateView):
     model = Entrevista
@@ -483,7 +492,8 @@ def cancel_entrevistas_alumno(entrevista, placeReturn):
         email = EmailMessage(entrevista.empresa.nombre_fantasia + " cancelaron una entrevista.", message,
                              to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
         try:
-            email.send()
+            if EMAIL_FLAG:
+                email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
         return placeReturn
@@ -504,10 +514,11 @@ def confirm_entrevistas_alumno_view(request):
     email = EmailMessage(entrevista.empresa.nombre_fantasia + " confirmaron una entrevista!!.", message,
                          to=[entrevista.empresa.nombre_fantasia] + list(docente.email for docente in docentes))
     try:
-        email.send()
+        if EMAIL_FLAG:
+            email.send()
     except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect('../entrevistas')
 
 # ------------------------------------------------------------------------------------------------------------
 # --------------------------EMPRESA---------------------------------------------------------------------------
@@ -546,12 +557,18 @@ class ListEntrevistasEmpresaView(generic.ListView):
     context_object_name = 'entrevista_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         entrevistas = Entrevista.objects.filter(
-            Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None)).annotate(
+            Q(empresa=self.request.user.empresa_user) & ~Q(alumno__condicion_acreditacion=None) &
+            #Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
-                output_field=IntegerField()))
+                output_field=IntegerField())
+        )
         if len(entrevistas) == 0:
             entrevistas = []
         order = ['COA', 'NOA', 'CAA', 'NOC', 'CAE', 'REA']
@@ -564,8 +581,13 @@ class ListPasantiasEmpresaView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(Q(empresa=self.request.user.empresa_user)).order_by(
-            F('tutor_empresa').asc(), 'fecha_inicio')
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        pasantias = Pasantia.objects.filter(
+            Q(empresa=self.request.user.empresa_user) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).order_by(F('tutor_empresa').asc(), 'fecha_inicio')
         return getPage(self.request, pasantias, 10)
 
 class ListTutoresEmpresaView(generic.ListView):
@@ -573,7 +595,13 @@ class ListTutoresEmpresaView(generic.ListView):
     context_object_name = 'tutores_list'
 
     def get_queryset(self):
-        tutores = TutorEmpresa.objects.filter(Q(empresa=self.request.user.empresa_user))
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        tutores = TutorEmpresa.objects.filter(
+            Q(empresa=self.request.user.empresa_user) &
+            # Query for filter by first_name and last_name of tutor
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query))
+        )
         return getPage(self.request, tutores, 10)
 
 
@@ -601,7 +629,8 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
             email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " ACEPTÓ una pasantía",
                                  message, to=list(docente.email for docente in docentes))
             try:
-                email.send()
+                if EMAIL_FLAG:
+                    email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         elif self.object.pasantia_aceptada == False:
@@ -612,7 +641,8 @@ class DetailEntrevistaEmpresaView(generic.UpdateView):
             email = EmailMessage("La empresa " + self.object.empresa.nombre_fantasia + " RECHAZÓ una pasantía",
                                  message, to=[self.object.alumno.user.email] + list(docente.email for docente in docentes))
             try:
-                email.send()
+                if EMAIL_FLAG:
+                    email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         return super(DetailEntrevistaEmpresaView, self).form_valid(form)
@@ -675,7 +705,8 @@ def cancel_entrevistas_empresa_view(request):
     email = EmailMessage(entrevista.alumno.user.first_name + " cancelaron tu entrevista.", message,
                          to=[entrevista.alumno.user.email] + list(docente.email for docente in docentes))
     try:
-        email.send()
+        if EMAIL_FLAG:
+            email.send()
     except (SMTPRecipientsRefused, SMTPSenderRefused):
         None
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
@@ -686,8 +717,13 @@ class ListPostulacionesEmpresaView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         postulaciones = Postulacion.objects.filter(
-            Q(puesto__empresa=self.request.user.empresa_user) & (~Q(alumno__condicion_acreditacion=None))).order_by('-activa',
+            Q(puesto__empresa=self.request.user.empresa_user) & Q(entrevista=None) & (~Q(alumno__condicion_acreditacion=None)) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query))
+        ).order_by('-activa',
             F('entrevista').asc(), 'puesto', 'fecha', 'alumno__user__last_name', 'alumno__user__first_name')
         return getPage(self.request, postulaciones, 10)
 
@@ -768,35 +804,41 @@ def delete_postulacion_empresa(request):
             email = EmailMessage(postulacion.alumno.user.first_name + " desestimaron tu postulacion.", message,
                                  to=[postulacion.alumno.user.email] + list(docente.email for docente in docentes))
             try:
-                email.send()
+                if EMAIL_FLAG:
+                    email.send()
             except (SMTPRecipientsRefused, SMTPSenderRefused):
                 None
         except ObjectDoesNotExist:
             None
         return HttpResponseRedirect('../postulaciones')
 
-@transaction.atomic
-def nuevaEntrevista(request):
-    postulacion = Postulacion.objects.get(pk=request.POST.get('postulacion'),
-                                          puesto__empresa=request.user.empresa_user)
-    alumno = postulacion.alumno
-    empresa = postulacion.puesto.empresa
-    entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
-    if entrevista == None or entrevista.status in ['NOC','CAA','CAE']:
-        if request.POST:
-            form = EntrevistaCreateForm(request.POST)
-            if form.is_valid():
+class CreateEntrevistaView(FormView):
+    template_name = 'empresa/entrevista_nueva.html'
+    form_class = EntrevistaCreateForm
+    success_url = '/empresa/entrevistas'
+
+    def form_valid(self, form):
+        if self.request.GET:
+            postulacion = Postulacion.objects.get(pk=self.request.GET.get('postulacion'),
+                                                  puesto__empresa=self.request.user.empresa_user)
+        else:
+            postulacion = Postulacion.objects.get(pk=self.request.POST.get('postulacion'),
+                                              puesto__empresa=self.request.user.empresa_user)
+        alumno = postulacion.alumno
+        empresa = postulacion.puesto.empresa
+        entrevista = Entrevista.objects.filter(Q(entrevista_postulacion=postulacion)).first()
+        if entrevista == None or entrevista.status in ['NOC','CAA','CAE']:
                 if entrevista == None:
                     entrevista = Entrevista.objects.create(
                         alumno=alumno,
                         empresa=empresa,
-                        fecha=datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S"),
-                        lugar=request.POST.get('lugar')
+                        fecha=datetime.strptime(self.request.POST.get('fecha'), "%d/%m/%Y %H:%M"),
+                        lugar=self.request.POST.get('lugar')
                     )
                 else:
                     entrevista.status = 'NOA'
-                    entrevista.fecha = datetime.strptime(request.POST.get('fecha'), "%d/%m/%Y %H:%M:%S")
-                    entrevista.lugar = request.POST.get('lugar')
+                    entrevista.fecha = datetime.strptime(self.request.POST.get('fecha'), "%d/%m/%Y %H:%M")
+                    entrevista.lugar = self.request.POST.get('lugar')
                 entrevista.save()
                 postulacion.entrevista = entrevista
                 postulacion.save()
@@ -811,28 +853,16 @@ def nuevaEntrevista(request):
                 docentes = Docente.objects.filter(comision_docente=alumno.carrera.carrera_comision)
                 email = EmailMessage('Felicitaciones ' + alumno.user.first_name + "!!", message, to=[alumno.user.email] + list(docente.email for docente in docentes))
                 try:
-                    email.send()
+                    if EMAIL_FLAG:
+                        email.send()
                 except (SMTPRecipientsRefused, SMTPSenderRefused):
                     None
-                return redirect('/empresa/postulaciones')
-        return render(request, 'empresa/entrevista_nueva.html', {
-            'form': EntrevistaCreateForm,
-        })
-    if request.POST:
-        form = EntrevistaExistenteCreateForm(request.POST)
-        if form.is_valid():
-            postulacion.entrevista = entrevista
-            postulacion.save()
-            return redirect('/empresa/postulaciones')
-    return render(request, 'empresa/entrevista_nueva_existente.html', {
-        'form': EntrevistaExistenteCreateForm(instance=entrevista),
-    })
-
+                return super().form_valid(form)
 
 class CreatePuestoView(generic.CreateView):
     model = Puesto
     context_object_name = 'puesto'
-    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado']
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'requerimientos_adicionales', 'horario', 'rentado']
     template_name = 'empresa/puesto_create.html'
 
     def form_valid(self, form):
@@ -846,6 +876,7 @@ class CreatePuestoView(generic.CreateView):
                 puestoDb = Puesto.objects.get(nombre=puesto.nombre, empresa=self.request.user.empresa_user, activo=False)
                 puestoDb.descripcion_actividades = puesto.descripcion_actividades
                 puestoDb.conocimientos_requeridos = puesto.conocimientos_requeridos
+                puestoDb.requerimientos_adicionales = puesto.requerimientos_adicionales
                 puestoDb.horario = puesto.horario
                 puestoDb.rentado = puesto.rentado
                 puestoDb.activo = True
@@ -884,11 +915,15 @@ class DetailPuestoEmpresaView(generic.UpdateView):
     model = Puesto
     template_name = 'empresa/puesto_detail.html'
     context_object_name = 'puesto'
-    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'horario', 'rentado', 'activo']
+    fields = ['nombre', 'descripcion_actividades', 'conocimientos_requeridos', 'requerimientos_adicionales', 'horario', 'rentado', 'activo']
     success_url = '../../puestos'
 
     def get_object(self):
         return get_object_or_404(Puesto, pk=self.kwargs["pk"])
+
+    def form_valid(self, form):
+        form.instance.fecha_inactivacion = datetime.today() + td(days=15)
+        return super(DetailPuestoEmpresaView, self).form_valid(form)
 
 
 # ------------------------------------------------------------------------------------------------------------
@@ -927,7 +962,13 @@ def edit_subcomision_carrera(request):
 class ListEntrevistasSubcomisionCarreraView(generic.ListView):
     def get_queryset(self):
         try:
-            entrevistas = Entrevista.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera, alumno__condicion_acreditacion=True).annotate(
+            query = self.request.GET.get("q")
+            if query == None: query = ''
+            entrevistas = Entrevista.objects.filter(
+                Q(alumno__carrera=self.request.user.carrera_user.carrera) & Q(alumno__condicion_acreditacion=True) &
+                # Query for filter by first_name and last_name of alumno and empresa
+                (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+            ).annotate(
             pasantia_aceptada_undefined=Case(
                 When(status='REA', pasantia_aceptada=None, then=Value(0)),
                 default=Value(1),
@@ -955,7 +996,14 @@ class ListPostulacionesSubcomisionCarreraView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        postulaciones = Postulacion.objects.filter(alumno__carrera=self.request.user.carrera_user.carrera)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        postulaciones = Postulacion.objects.filter(
+            Q(alumno__carrera=self.request.user.carrera_user.carrera) &
+            Q(activa=True) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(puesto__empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, postulaciones, 10)
 
 
@@ -964,7 +1012,13 @@ class ListAlumnosSubcomisionCarreraView(generic.ListView):
     context_object_name = 'alumno_list'
 
     def get_queryset(self):
-        alumnos = Alumno.objects.filter(carrera=self.request.user.carrera_user.carrera)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        alumnos = Alumno.objects.filter(
+            Q(carrera=self.request.user.carrera_user.carrera) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | Q(carrera__nombre__icontains=query))
+        )
         return getPage(self.request, alumnos, 10)
 
 
@@ -973,7 +1027,13 @@ class ListEmpresasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=(self.request.user.carrera_user.carrera).departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        empresas = Empresa.objects.filter(
+            Q(departamento=(self.request.user.carrera_user.carrera).departamento) &
+            # Query for filter by empresa
+            (Q(nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, empresas, 10)
 
 
@@ -982,7 +1042,18 @@ class ListPuestosSubcomisionCarreraView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=(self.request.user.carrera_user.carrera).departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '': queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__activa=True) & Q(empresa__departamento=(self.request.user.carrera_user.carrera).departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        ).order_by('-activo')
         return getPage(self.request, puestos, 10)
 
 
@@ -991,7 +1062,13 @@ class ListPasantiasSubcomisionCarreraView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
-        pasantias = Pasantia.objects.filter(alumno__carrera=(self.request.user.carrera_user.carrera), practica_plan_de_estudio=True)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        pasantias = Pasantia.objects.filter(
+            Q(alumno__carrera=(self.request.user.carrera_user.carrera)) & Q(practica_plan_de_estudio=True) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, pasantias, 10)
 
 
@@ -999,6 +1076,35 @@ class AlumnoDetailSubcomisionCarreraView(generic.UpdateView):
     model = Alumno
     template_name = 'subcomision_carrera/alumno_detail.html'
     form_class = AlumnoDetailSubcomisionCarreraForm
+
+    def form_valid(self, form):
+        if form.has_changed():
+            alumno = Alumno.objects.get(numero_registro=self.kwargs["numero_registro"])
+            if alumno.condicion_acreditacion is None and ('condicion_acreditacion' in form.changed_data) and not(form.instance.condicion_acreditacion is None):
+                postulaciones = Postulacion.objects.filter(Q(alumno=alumno) &
+                                                           (Q(entrevista__isnull=False) | (Q(entrevista__isnull=True) & Q(activa=True))) &
+                                                           Q(fecha_desestimacion__isnull=True) &
+                                                           Q(fecha__gt=datetime.now().date() - timedelta(days=14))
+                            )
+                docentes = Docente.objects.filter(comision_docente=alumno.carrera.carrera_comision)
+                for postulacion in postulaciones:
+                    context = {
+                        'user': alumno.user,
+                        'postulacion': postulacion
+                    }
+                    message = render_to_string(
+                        template_name='emails/nueva_postulacion_empresa.txt',
+                        context=context
+                    )
+                    email = EmailMessage(
+                        postulacion.puesto.empresa.nombre_fantasia + " tienes una nueva postulacion a tu empresa.", message,
+                        to=[postulacion.puesto.empresa.user.email] + list(docente.email for docente in docentes))
+                    try:
+                        if EMAIL_FLAG:
+                            email.send()
+                    except (SMTPRecipientsRefused, SMTPSenderRefused):
+                        None
+        return super().form_valid(form)
 
     def get_success_url(self):
         return self.request.POST.get('next', '/')
@@ -1057,7 +1163,8 @@ class CreatePracticaView(generic.CreateView):
         email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
                              to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
-            email.send()
+            if EMAIL_FLAG:
+                email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
         postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
@@ -1117,8 +1224,13 @@ def edit_comision_pasantias(request):
 class ListEntrevistasComisionPasantiasView(generic.ListView):
     def get_queryset(self):
         try:
+            query = self.request.GET.get("q")
+            if query == None: query = ''
             entrevistas = Entrevista.objects.filter(
-                alumno__carrera__departamento=self.request.user.pps_user.departamento)
+                Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) &
+                # Query for filter by first_name and last_name of alumno and empresa
+                (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+            )
         except ObjectDoesNotExist:
             return None
         for entrevista in entrevistas:
@@ -1138,8 +1250,28 @@ class ListPostulacionesComisionPasantiasView(generic.ListView):
     context_object_name = 'postulacion_list'
 
     def get_queryset(self):
-        postulaciones = Postulacion.objects.filter(alumno__carrera__departamento=self.request.user.pps_user.departamento, activa=True)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        postulaciones = Postulacion.objects.filter(
+            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) & Q(activa=True) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(puesto__empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, postulaciones, 10)
+
+class DetailPostulacionComisionPasantiasView(generic.TemplateView):
+    template_name = 'comision_pasantias/postulacion_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailPostulacionComisionPasantiasView, self).get_context_data(**kwargs)
+        context['postulacion'] = Postulacion.objects.get(pk=self.kwargs["pk"])
+        context['puesto'] = context['postulacion'].puesto
+        context['is_available'] = context['postulacion'].fecha_desestimacion is None or context['postulacion'].fecha_desestimacion < (datetime.now().date() - timedelta(days=60))
+        if not context['is_available']:
+            context['next_day'] = context['postulacion'].fecha_desestimacion + timedelta(days=60)
+        if not context['postulacion'].activa:
+            context['postulacion'] = None
+        return context
 
 
 class ListAlumnosComisionPasantiasView(generic.ListView):
@@ -1147,7 +1279,13 @@ class ListAlumnosComisionPasantiasView(generic.ListView):
     context_object_name = 'alumno_list'
 
     def get_queryset(self):
-        alumnos = Alumno.objects.filter(carrera__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        alumnos = Alumno.objects.filter(
+            Q(carrera__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by first_name and last_name of alumno
+            (Q(user__first_name__icontains=query) | Q(user__last_name__icontains=query) | Q(carrera__nombre__icontains=query))
+        )
         return getPage(self.request, alumnos, 10)
 
 
@@ -1156,7 +1294,13 @@ class ListEmpresasComisionPasantiasView(generic.ListView):
     context_object_name = 'empresa_list'
 
     def get_queryset(self):
-        empresas = Empresa.objects.filter(departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        empresas = Empresa.objects.filter(
+            Q(departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa
+            (Q(nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, empresas, 10)
     
     
@@ -1237,7 +1381,18 @@ class ListPuestosComisionPasantiasView(generic.ListView):
     context_object_name = 'puesto_list'
 
     def get_queryset(self):
-        puestos = Puesto.objects.filter(empresa__activa=True, empresa__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        queryPuesto = ''
+        for i in AREA_CHOICES_REVERSE.keys():
+            if re.search(query, i, re.IGNORECASE):
+                queryPuesto = AREA_CHOICES_REVERSE.get(i)
+        if queryPuesto == '': queryPuesto = query
+        puestos = Puesto.objects.filter(
+            Q(empresa__activa=True) & Q(empresa__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa and nombre
+            (Q(empresa__nombre_fantasia__icontains=query) | Q(nombre__icontains=queryPuesto))
+        ).order_by('-activo')
         return getPage(self.request, puestos, 10)
 
 
@@ -1256,8 +1411,13 @@ class ListPasantiasComisionPasantiasView(generic.ListView):
     context_object_name = 'pasantia_list'
 
     def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query == None: query = ''
         pasantias = Pasantia.objects.filter(
-            alumno__carrera__departamento=self.request.user.pps_user.departamento, practica_plan_de_estudio=False)
+            Q(alumno__carrera__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by first_name and last_name of alumno and empresa
+            (Q(alumno__user__first_name__icontains=query) | Q(alumno__user__last_name__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, pasantias, 10)
 
 
@@ -1284,7 +1444,7 @@ class PasantiaDetailComisionPasantiasView(generic.UpdateView):
     form_class = PasantiaDetailComisionPasantiasForm
 
     def get_object(self):
-        return get_object_or_404(Pasantia, pk=self.kwargs["pk"], practica_plan_de_estudio=False)
+        return get_object_or_404(Pasantia, pk=self.kwargs["pk"])
 
     def get_form_kwargs(self):
         kwargs = super(PasantiaDetailComisionPasantiasView, self).get_form_kwargs()
@@ -1326,7 +1486,8 @@ class CreatePasantiaView(generic.CreateView):
         email = EmailMessage('Felicitaciones ' + form.instance.alumno.user.first_name + "!!", message,
                              to=[form.instance.alumno.user.email] + list(docente.email for docente in docentes))
         try:
-            email.send()
+            if EMAIL_FLAG:
+                email.send()
         except (SMTPRecipientsRefused, SMTPSenderRefused):
             None
         postulaciones = Postulacion.objects.filter(alumno=form.instance.alumno, activa=True)
@@ -1359,7 +1520,13 @@ class ListTutoresComisionPasantiasView(generic.ListView):
     context_object_name = 'tutor_list'
 
     def get_queryset(self):
-        tutores = TutorEmpresa.objects.filter(empresa__departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        tutores = TutorEmpresa.objects.filter(
+            Q(empresa__departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by empresa, nombre and apellido
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query) | Q(empresa__nombre_fantasia__icontains=query))
+        )
         return getPage(self.request, tutores, 10)
 
 
@@ -1408,7 +1575,13 @@ class ListDocentesComisionPasantiasView(generic.ListView):
     context_object_name = 'docente_list'
 
     def get_queryset(self):
-        docentes = Docente.objects.filter(departamento=self.request.user.pps_user.departamento)
+        query = self.request.GET.get("q")
+        if query == None: query = ''
+        docentes = Docente.objects.filter(
+            Q(departamento=self.request.user.pps_user.departamento) &
+            # Query for filter by noombre and apellido
+            (Q(nombre__icontains=query) | Q(apellido__icontains=query))
+        )
         return getPage(self.request, docentes, 10)
 
 

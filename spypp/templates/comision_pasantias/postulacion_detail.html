@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col" style="width: 100%;">
+            {% if postulacion %}
+                <div class="row" style="margin-bottom: 20px; align-items: center;">
+                    <div class="col">
+                        {% if postulacion.alumno.perfil %}
+                            <img height="120rem;" width="120rem;" src="{% url 'descarga-alumno-perfil' postulacion.alumno.pk %}" style="float: right; margin-right:2rem;"/>
+                        {% else %}
+                            <i class="far fa-user fa-4x" style="float: right; margin-right:2rem;"></i>
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <h4 style="margin-bottom: 0px;">
+                            <a href="{% url 'alumno-detail-comision-pasantias' postulacion.alumno.numero_registro %}">{{ postulacion.alumno.user.first_name }} {{ postulacion.alumno.user.last_name }}</a>
+                        </h4>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row" style="margin-bottom: 20px; align-items: center;">
+                <div class="col">
+                    {% if puesto.empresa.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% else %}
+                         <i class="far fa-user fa-4x"></i>
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <h4>
+                        <a href="{% url 'empresa-detail-comision-pasatia' puesto.empresa.pk %}">{{ puesto.empresa.nombre_fantasia }}</a>
+                    </h4>
+                    <h5>{{puesto.get_nombre_display}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col m8">
+                {% if puesto.descripcion_actividades %}
+                    <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
+                {% endif %}
+                {% if puesto.conocimientos_requeridos %}
+                    <span><b>Conocimientos requeridos</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                {% endif %}
+                {% if puesto.requerimientos_adicionales %}
+                    <span><b>Requerimientos adicionales</b>: {{puesto.requerimientos_adicionales}}</span><br>
+                {% endif %}
+                {% if puesto.horario %}
+                    <span><b>Horario</b>: {{ puesto.horario }}</span><br>
+                {% endif %}
+                {% if puesto.rentado %}
+                    <span><b>Rentado</b>: Si</span><br>
+                {% else %}
+                    <span><b>Rentado</b>: No</span><br>
+                {% endif %}
+                {% if puesto.fecha_inactivacion %}
+                    <span><b>Fecha l&iacute;mite para postularse</b>: {{puesto.fecha_inactivacion}}</span><br>
+                {% endif %}
+                <br>
+            <div class="row" style="align-items: center;display: flex;">
+                <div class="col">
+                {% if not puesto.activo %}
+                    Este puesto ya no se encuentra disponible
+                {% endif %}
+                </div>
+                <div class="col">
+                    <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
+                </div>
+            </div>
+            {% if postulacion.alumno.condicion_acreditacion is None %}
+                 <p>* Postulación sujeta a revisión por comisión de carrera</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -7,7 +7,7 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Empresa</th>
+                        <th>Empresa/Organización</th>
                         <th>Puesto</th>
                         <th>Fecha</th>
                         <th>Estado</th>
@@ -40,7 +40,7 @@
                                                     <span style="color:black;"> REALIZADA SIN RESPUESTA </span>
                                                 {% endif %}
                                             {% else %}
-                                                <span style="color:green;"> ACTIVA </span>
+                                                <span style="color:green;"> CONFIRMADA </span>
                                             {% endif %}
                                         {% else %}
                                             {% if entrevista.is_past_due %}
@@ -56,7 +56,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination entrevista_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination entrevista_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

@@ -1,13 +1,29 @@
 {% extends "base.html" %}
 {% load bootstrap4 %}
 {% block content %}
+{% load tags %}
     <div class="row">
         <div class="col" style="width: 100%;">
-            <h4>Ofertas</h4>
+            <h4>Ofertas Laborales</h4>
+            <form action="{{request.get_full_path}}" method="get" class="form">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">search</i>
+                        <input name="q" id="id_buscador" type="text" value="{{ request.GET.q }}">
+                        <label for="id_buscador">Buscador...</label>
+                        <span style="margin-top:-1em;" class="helper-text" data-error="wrong" data-success="right">Empresa, Área</span>
+                    </div>
+                    {% if request.GET.q %}
+                        <div class="input-field col s4">
+                            <a href="{{request.path}}"><i class="material-icons prefix">clear</i></a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Empresa</th>
+                        <th>Empresa/Organización</th>
                         <th>Área</th>
                         <th>Horario</th>
                         <th style="text-align: center;">Rentada</th>
@@ -30,13 +46,15 @@
                                 {% if puesto.rentado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
                             </td>
                             <td style="text-align: center;">
-                                {% if puesto.postulacion %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
+                                {% with postulado=puesto|is_postulated:user.alumno_user.pk %}
+                                {% if postulado %} <i class="fas fa-check"></i> {% else %} <i class="fas fa-times"></i> {% endif %}
+                                {% endwith %}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination puesto_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

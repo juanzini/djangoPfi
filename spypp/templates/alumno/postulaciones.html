@@ -7,7 +7,8 @@
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Empresa</th>
+                        <th>Empresa/Organización</th>
+                        <th>Estado</th>
                         <th>Puesto</th>
                         <th>Fecha de Postulación</th>
                         <th>Estado Entrevista</th>
@@ -19,6 +20,13 @@
                         <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
                             <td>
                                 {{ postulacion.puesto.empresa.nombre_fantasia }}
+                            </td>
+                            <td>
+                                {% if not postulacion.puesto.activo %}
+                                    <p style="color:red;">INATIVA</p>
+                                {% else %}
+                                    <p style="color:green;">ACTIVA</p>
+                                {% endif %}
                             </td>
                             <td>
                                 {{ postulacion.puesto.get_nombre_display }}
@@ -38,12 +46,7 @@
                                             {% if postulacion.entrevista.is_past_due or entrevista.status == 'REA' %}
                                                 <span style="color:black;"> REALIZADA </span>
                                             {% else %}
-                                                <span style="color:green;"> ACTIVA </span>
-                                                <form class="form my-2 my-sm-0" method="get" action="{% url 'alumno-entrevista-cancel' %}">
-                                                  {% csrf_token %}
-                                                  <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
-                                                  <button onClick="javascript: return confirm('¿Est&aacute; seguro que desea cancelar la entrevista?');" class="btn btn-outline-danger btn-sm" type="cancel">Cancelar</button>
-                                                </form>
+                                                <span style="color:green;"> CONFIRMADA </span>
                                             {% endif %}
                                         {% else %}
                                             {% if postulacion.entrevista.is_past_due %}
@@ -68,7 +71,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

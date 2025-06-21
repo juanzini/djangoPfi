@@ -7,7 +7,7 @@
             <h4>Entrevista con <a href="{% url 'puesto-detail-alumno' entrevista.entrevista_postulacion.puesto.pk %}">{{ entrevista.empresa.nombre_fantasia }}</a></h4>
                 Estado:
                 {% if entrevista.status == 'CAA' %}
-                    <span style="color:red;">Cancelada por el alumno</span>
+                    <span style="color:red;">Cancelada por el estudiante</span>
                 {% else %}
                     {% if entrevista.status == 'CAE' %}
                         <span style="color:red;">Cancelada por la empresa</span>
@@ -20,13 +20,13 @@
                                     <span style="color:black;"> REALIZADA SIN RESPUESTA </span>
                                 {% endif %}
                             {% else %}
-                                <span style="color:green;"> ACTIVA </span>
+                                <span style="color:green;"> CONFIRMADA </span>
                             {% endif %}
                         {% else %}
                             {% if entrevista.is_past_due %}
                                 <span style="color:black;"> Se excedi&oacute; la fecha y no se confirm&oacute;</span>
                             {% else %}
-                                <span style="color:orange;">A la espera de confirmación del Alumno</span>
+                                <span style="color:orange;">A la espera de confirmación del Estudiante</span>
                             {% endif %}
                         {% endif %}
                     {% endif %}

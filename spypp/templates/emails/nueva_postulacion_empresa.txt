@@ -1,6 +1,6 @@
 Hola {{postulacion.puesto.empresa.nombre_fantasia}}!!
 
-Te escribimos para informarte que el estudiante {{user.first_name}} {{user.last_name}} se postuló para puna pasantía en su empresa.
+Te escribimos para informarte que el estudiante {{user.first_name}} {{user.last_name}} se postuló para una pasantía en su empresa.
 Podrá ver información detallada del estudiante accediendo al Sistema de Pasantías y Prácticas Profesionales de la UNSL en la sección "Postulaciones".
 
 Esperamos que sea un muy buen candidato!.

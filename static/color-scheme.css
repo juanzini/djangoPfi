@@ -7,7 +7,7 @@
     color: #6b90ad;
 }
 
-.footer-media-icons li a {
+.footer-media-icons.li .footer-media-icons.a {
   background-color: #003a6a;
 }
 
@@ -15,24 +15,24 @@
   background-color: #004884;
 }
 
-.site-footer a:hover{
+.site-footer.a:hover{
   color: #ffffff;
 }
 
 .footer-widget-title,
-.footer-media-icons li a, a {
+.footer-media-icons.li, .footer-media-icons.a, .footer-media-icons.li.a {
   color: white;
 }
 
-.site-footer a {
+.site-footer.a {
   color: #8ab5d6;
 }
 
-.footer-nav li:not(:first-child):before {
+.footer-nav.li:not(:first-child):before {
   color: #4e718d;
 }
 
-.bottom-footer p.small-text {
+.bottom-footer.p.small-text {
   color: #6b90ad;
 }
 

@@ -1,0 +1,9 @@
+Hola {{user.first_name}} {{user.last_name}}!!
+
+Te escribimos para informarte registramos tu solicitud de postulación pero aún la Subcomisión de Pasantías de tu Carrera no determinó tu condición académica para poder postularte.
+Ya dimos aviso a los docentes integrantes para que puedan evaluar tu caso, mientras tanto queremos que sepas que la empersa no podrá ver tu postulación.
+
+Si luego de 48 horas hábiles no desaparece la leyenda "Condición académica aún no evaluada por la Subcomisión de Carrera" o,
+para más detalles, podés escribirle un mail a los profesores a las direcciones ubicadas en la sección de contacto.
+
+Departamento de Informática, UNSL.

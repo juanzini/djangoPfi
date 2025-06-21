@@ -17,7 +17,7 @@
                     {% if contacto|classname == "SubcomisionCarrera" %}
                         <tr>
                             <td>{{ contacto.carrera }}</td>
-                            <td><a href="mailto:{{contacto.user.email}}">
+                            <td><a href="mailto:{% if contacto.mail_publico %}{{ contacto.mail_publico }}{% else %}{{ contacto.user.email }}{% endif %}">
                                 <i class="fas fa-envelope"></i></a>
                                 {% if contacto.mail_publico %}
                                     {{ contacto.mail_publico }}
@@ -49,33 +49,6 @@
                         <tr>
                             <td><a href="mailto:{{contacto.user.email}}" mail>
                                 <i class="fas fa-envelope"></i></a> {{ contacto.user.email }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col" style="width: 100%;">
-            <h4>Director del departamento</h4>
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Mail</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for contacto in contactos %}
-                    {% if contacto|classname == "Docente" %}
-                        <tr>
-                            <td>{{ contacto.nombre}}</td>
-                            <td>{{ contacto.apellido }}</td>
-                            <td><a href="mailto:{{contacto.user.email}}" mail>
-                                <i class="fas fa-envelope"></i></a> {{ contacto.email }}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}

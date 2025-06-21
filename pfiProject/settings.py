@@ -24,7 +24,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 SECRET_KEY = '#lfqpze2(dodh-(p&boxq6)$1%$vs2qstkvbie0t$x8figm(w*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 sentry_sdk.init(
     dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
@@ -229,3 +229,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'dirinfo.spypp@gmail.com'
 EMAIL_HOST_PASSWORD = 'yqslizutooeoashy'
 EMAIL_USE_TLS = True
+EMAIL_FLAG = False

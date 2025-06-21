@@ -5,6 +5,21 @@
     <div class="row">
         <div class="col" style="width: 100%;">
             <h4>Postulaciones</h4>
+            <form action="{{request.get_full_path}}" method="get" class="form">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">search</i>
+                        <input name="q" id="id_buscador" type="text" value="{{ request.GET.q }}">
+                        <label for="id_buscador">Buscador...</label>
+                        <span style="margin-top:-1em;" class="helper-text" data-error="wrong" data-success="right">Nombre o Apellido del Estudiante</span>
+                    </div>
+                    {% if request.GET.q %}
+                        <div class="input-field col s4">
+                            <a href="{{request.path}}"><i class="material-icons prefix">clear</i></a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -47,7 +62,7 @@
                                             {% if postulacion.entrevista.is_past_due or entrevista.status == 'REA' %}
                                                 <span style="color:black;"> REALIZADA </span>
                                             {% else %}
-                                                <span style="color:green;"> ACTIVA </span>
+                                                <span style="color:green;"> CONFIRMADA </span>
                                                 <form class="form my-2 my-sm-0" method="get" action="{% url 'empresa-entrevista-cancel' %}">
                                                   {% csrf_token %}
                                                   <input type="hidden" name="entrevista_id" value="{{ postulacion.entrevista.id }}">
@@ -64,7 +79,7 @@
                                     {% endif %}
                                 {% endif %}
                             {% else %}
-                                <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'nueva-entrevista-empresa' %}">
+                                <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'nueva-entrevista-empresa' %}">
                                   {% csrf_token %}
                                     <input type="hidden" name="postulacion" value="{{ postulacion.id }}">
                                   <button class="btn-small" type="submit">Generar Entrevista</button>
@@ -81,7 +96,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

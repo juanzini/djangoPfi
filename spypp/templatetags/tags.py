@@ -1,4 +1,7 @@
 from django import template
+
+from spypp.models import Puesto
+
 register = template.Library()
 
 
@@ -14,3 +17,7 @@ def verbose_name_plural(obj):
 @register.filter
 def classname(obj):
     return obj.__class__.__name__
+
+@register.filter
+def is_postulated(obj, estudiantePk):
+    return Puesto.is_postulated(obj, estudiantePk)

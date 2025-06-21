@@ -4,19 +4,34 @@
     <div class="row">
         <div class="col" style="width: 100%;">
             <h4>Postulaciones Activas</h4>
+            <form action="{{request.get_full_path}}" method="get" class="form">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">search</i>
+                        <input name="q" id="id_buscador" type="text" value="{{ request.GET.q }}">
+                        <label for="id_buscador">Buscador...</label>
+                        <span style="margin-top:-1em;" class="helper-text" data-error="wrong" data-success="right">Nombre o Apellido del Estudiante, Empresa</span>
+                    </div>
+                    {% if request.GET.q %}
+                        <div class="input-field col s4">
+                            <a href="{{request.path}}"><i class="material-icons prefix">clear</i></a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
             <table class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Alumno</th>
+                        <th>Estudiante</th>
                         <th>Puesto</th>
-                        <th>Empresa</th>
+                        <th>Empresa/Organización</th>
                         <th>Fecha de Postulación</th>
                         <th>Entrevista Asignada</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for postulacion in postulacion_list %}
-                        <tr class="table-row" data-href="{% url 'puesto-detail-alumno' postulacion.puesto.pk %}">
+                        <tr class="table-row" data-href="{% url 'postulacion-detail-comision-pasantias' postulacion.pk %}">
                             <td>
                                 {{ postulacion.alumno.user.last_name }}, {{ postulacion.alumno.user.first_name }}
                             </td>
@@ -40,7 +55,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 %}</div>
+            <div align="center">{% bootstrap_pagination postulacion_list size="small" pages_to_show=5 extra=request.GET.urlencode %}</div>
         </div>
     </div>
 {% endblock %}

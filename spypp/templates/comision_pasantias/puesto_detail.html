@@ -6,7 +6,11 @@
         <div class="col m6" style="width: 100%;">
             <div class="row" style="margin-bottom: 20px; align-items: center;">
                 <div class="col">
-                    <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% if puesto.empresa.logo %}
+                        <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
+                    {% else %}
+                         <i class="far fa-user fa-4x"></i>
+                    {% endif %}
                 </div>
                 <div class="col">
                     <h4>
@@ -25,7 +29,10 @@
                     <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                    <span><b>Conocimientos requeridos</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                {% endif %}
+                {% if puesto.requerimientos_adicionales %}
+                    <span><b>Requerimientos adicionales</b>: {{puesto.requerimientos_adicionales}}</span><br>
                 {% endif %}
                 {% if puesto.horario %}
                     <span><b>Horario</b>: {{ puesto.horario }}</span><br>

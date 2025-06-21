@@ -13,6 +13,7 @@ from datetime import timedelta as td
 import uuid
 import re
 import os
+from django.core.exceptions import ObjectDoesNotExist
 
 from pfiProject.settings import BASE_DIR
 
@@ -20,6 +21,27 @@ public_storage = PrivateFileSystemStorage(
     location=os.path.join(BASE_DIR, 'media/public/'),
     base_url='/public-documents/'
 )
+
+BE = 'BE'
+FE = 'FE'
+QA = 'QA'
+IOS = 'MB'
+AND = 'AND'
+IND = 'IND'
+RED = 'RED'
+OTR = 'OTR'
+AREA_CHOICES = [
+    (BE, 'Back-end'),
+    (FE, 'Front-end'),
+    (QA, 'Quality Assurance'),
+    (IOS, 'Mobile - iOS'),
+    (AND, 'Mobile - Android'),
+    (IND, 'Indistinto'),
+    (RED, 'Redes'),
+    (OTR, 'Otro'),
+]
+
+AREA_CHOICES_REVERSE = {choice:idx for idx, choice in AREA_CHOICES}
 
 class UserManager(UserManager):
     pass
@@ -50,9 +72,11 @@ class User(AbstractUser):
 
 class Alumno(models.Model):
     def validate_hash(value):
-        reg = re.compile('^30[0-9]{5,6}')
+        reg = re.compile('^30[0-9]')
         if not reg.match(str(value)):
             raise ValidationError(u'Formato de registro erroneo, recuerda que debe comenzar con 30')
+        if len(str(value)) != 7:
+            raise ValidationError(u'El número de registro está compuesto por 6 dígitos')
 
     def curriculum_upload_path(instance, filename):
         return 'curriculums/{0}-{1}-{2}'.format("curriculum", instance.user.username, filename)
@@ -70,6 +94,7 @@ class Alumno(models.Model):
                                        content_types='application/pdf', max_file_size=1024 * 1024)
     descripcion_intereses = models.TextField(max_length=500, blank=True, null=True)
     descripcion_habilidades = models.TextField(max_length=1000, blank=True, null=True)
+    consideraciones_particulares = models.TextField(max_length=1000, blank=True, null=True, verbose_name='Consideraciones particulares')
     ultima_actualizacion_perfil = models.DateField(default=date.today)
     ultima_postulacion = models.DateField(null=True, blank=True)
     condicion_acreditacion = models.NullBooleanField(verbose_name='Está en condición de acreditación de práctica del plan de estudio?')
@@ -81,9 +106,10 @@ class Alumno(models.Model):
                             upload_to=perfil_upload_path, max_file_size=1024 * 1024, verbose_name='Foto de perfil')
     progreso = models.SmallIntegerField(validators=[MinValueValidator(0),
                                        MaxValueValidator(100)], default=0, verbose_name='Progreso en %')
-    telefono = PhoneNumberField(blank=True, null=True)
+    telefono = PhoneNumberField(blank=False, null=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='alumno_user')
     carrera = models.ForeignKey('Carrera', on_delete=models.DO_NOTHING)
+    is_test = models.BooleanField(default=False, verbose_name='Determina si el estudiante es de test.')
 
     class Meta:
         verbose_name = 'Estudiante'
@@ -268,6 +294,7 @@ class Empresa(models.Model):
     departamento = models.ForeignKey('Departamento', on_delete=models.CASCADE)
     activa = models.BooleanField(default=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='empresa_user')
+    is_test = models.BooleanField(default=False, verbose_name='Determina si la empresa es de test.')
 
     class Meta:
         verbose_name = 'Empresa'
@@ -287,25 +314,10 @@ class Empresa(models.Model):
 class Puesto(models.Model):
     puesto_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
-    BE = 'BE'
-    FE = 'FE'
-    QA = 'QA'
-    IOS = 'MB'
-    AND = 'AND'
-    IND = 'IND'
-    OTR = 'OTR'
-    AREA_CHOICES = [
-        (BE, 'Back-end'),
-        (FE, 'Front-end'),
-        (QA, 'Quality Assurance'),
-        (IOS, 'Mobile - iOS'),
-        (AND, 'Mobile - Android'),
-        (IND, 'Indistinto'),
-        (OTR, 'Otro'),
-    ]
     nombre = models.CharField(max_length=3, choices=AREA_CHOICES, default=IND, verbose_name='Área')
     descripcion_actividades = models.TextField(max_length=1000)
     conocimientos_requeridos = models.TextField(max_length=1000)
+    requerimientos_adicionales = models.TextField(max_length=1000, blank=True, null=True)
     horario = models.CharField(max_length=100)
     rentado = models.BooleanField(default=False, blank=False, null=False)
     fecha_inactivacion = models.DateField(default=datetime.today() + td(days=15))
@@ -318,6 +330,16 @@ class Puesto(models.Model):
 
     def get_cantidad_alumnos(self):
         return Postulacion.objects.filter(puesto=self,activa=True).count()
+
+    def is_postulated(self, estudiantePk):
+        try:
+            if self.fecha_inactivacion < datetime.now().date():
+                self.activo = False
+                self.save()
+            Postulacion.objects.get(puesto=self, alumno=estudiantePk, activa=True)
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def __str__(self):
         return self.empresa.__str__() + ' - ' + self.nombre.__str__()

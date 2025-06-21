@@ -10,7 +10,7 @@
                     {% if puesto.empresa.logo %}
                         <img height="120rem;" width="120rem;" src="{% url 'descarga-empresa-logo' puesto.empresa.pk %}" style="float: right; margin-right:2rem;"/>
                     {% else %}
-                         <img height="120rem;" width="120rem;" src="{% static '/images/not_found_logo.png' %}" style="float: right; margin-right:2rem;"/>
+                         <i class="far fa-user fa-4x"></i>
                     {% endif %}
                 </div>
                 <div class="col">
@@ -30,12 +30,15 @@
                     <span><b>Actividades</b>: {{puesto.descripcion_actividades}}</span><br>
                 {% endif %}
                 {% if puesto.conocimientos_requeridos %}
-                    <span><b>Conocimientos valorados</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                    <span><b>Conocimientos requeridos</b>: {{puesto.conocimientos_requeridos}}</span><br>
+                {% endif %}
+                {% if puesto.requerimientos_adicionales %}
+                    <span><b>Requerimientos adicionales</b>: {{puesto.requerimientos_adicionales}}</span><br>
                 {% endif %}
                 {% if puesto.horario %}
                     <span><b>Horario</b>: {{ puesto.horario }}</span><br>
                 {% endif %}
-                {% if puesto.rentada %}
+                {% if puesto.rentado %}
                     <span><b>Rentado</b>: Si</span><br>
                 {% else %}
                     <span><b>Rentado</b>: No</span><br>
@@ -47,11 +50,16 @@
             <div class="row" style="align-items: center;display: flex;">
                 <div class="col">
                 {% if not puesto.activo %}
-                    Este puesto ya no se encuentra disponible
+                    <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-delete-alumno' %}" style="margin-bottom: 0px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="postulacion_id" value="{{ postulacion.pk }}">
+                        <button onClick="javascript: return confirm('No podrá volver a postularse por 60 días en este mismo puesto.\n¿Est&aacute; seguro que desea DEJAR DE POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?\n Si tiene una entrevista activa, la misma quedará CANCELADA!!');" class="btn btn-danger btn-md" type="cancel">Quitar postulaci&oacute;n</button>
+                    </form>
                 {% else %}
                     {% if not postulacion %}
                         {% if not is_available %}
-                            Debe esperar hasta el {{ next_day }} para poder volver a postularse.
+                            Postulación desestimada.
+                            Debe esperar hasta el {{ next_day|date:"l j" }} de {{ next_day|date:"F" }} para poder volver a postularse.
                         {% else %}
                             <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-create-alumno' %}" style="margin-bottom: 0px;">
                                 {% csrf_token %}
@@ -63,7 +71,7 @@
                         <form class="form my-2 my-lg-0" method="post" action="{% url 'postulaciones-delete-alumno' %}" style="margin-bottom: 0px;">
                             {% csrf_token %}
                             <input type="hidden" name="postulacion_id" value="{{ postulacion.pk }}">
-                            <button onClick="javascript: return confirm('No podrá volver a postularse por 60 días en este mismo puesto.\n¿Est&aacute; seguro que desea DEJAR DE POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?\n Si tiene una entrevista activa, la misma CADUCARÁ!!');" class="btn btn-danger btn-md" type="cancel">Quitar postulaci&oacute;n</button>
+                            <button onClick="javascript: return confirm('No podrá volver a postularse por 60 días en este mismo puesto.\n¿Est&aacute; seguro que desea DEJAR DE POSTULARSE para el área &#34;{{puesto.get_nombre_display}}&#34; en {{ puesto.empresa.nombre_fantasia }}?\n Si tiene una entrevista activa, la misma quedará CANCELADA!!');" class="btn btn-danger btn-md" type="cancel">Quitar postulaci&oacute;n</button>
                         </form>
                     {% endif %}
                 {% endif %}
@@ -72,6 +80,12 @@
                     <a href="#" onclick="history.back();return false"><button class="btn btn-outline-primary btn-md" type="button" style="float: right;">Atr&aacute;s</button></a>
                 </div>
             </div>
+            {% if not puesto.activo %}
+                 <p>* Este puesto no se encuentra disponible actualmente.</p>
+            {% endif %}
+            {% if alumno.condicion_acreditacion is None %}
+                 <p>* Postulación sujeta a revisión por comisión de carrera.</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

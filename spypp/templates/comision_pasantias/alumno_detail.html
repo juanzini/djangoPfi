@@ -23,10 +23,10 @@
                     {% csrf_token %}
                     {% form form=form %}{% endform %}
                     {% if alumno.curriculum %}<br>
-                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
+                        <a class="btn" style="margin-bottom: 1em; width: 16em;" href="{% url 'descarga-alumno-curriculum' alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Curriculum</a>
                     {% endif %}
                     {% if alumno.historia_academica %}<br>
-                        <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' alumno.pk %}"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
+                        <a class="btn" style="margin-bottom: 3em; width: 16em;" href="{% url 'descarga-alumno-historia-academica' alumno.pk %}" target="_blank"><i class="material-icons left">picture_as_pdf</i>Historia Académica</a>
                     {% endif %}
                     <br>
                         <input type="hidden" name="next" value="{{request.META.HTTP_REFERER}}">

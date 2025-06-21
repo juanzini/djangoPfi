@@ -1,42 +1,22 @@
 from django.forms import PasswordInput
 from django_registration.forms import RegistrationForm
 from material.base import *
-
 from . import models
 from datetime import timedelta as td
 from datetime import datetime
+from django.utils import timezone
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.admin.widgets import FilteredSelectMultiple
-
-class AlumnoForm(forms.ModelForm):
-
-    class Meta():
-        model = models.Alumno
-        fields = (
-            'numero_registro',
-            'carrera',
-            'perfil',
-            'telefono',
-            'curriculum',
-            'historia_academica',
-            'descripcion_intereses',
-            'descripcion_habilidades',
-            'condicion_acreditacion',
-            'expedicion_acreditacion',
-            'comentarios_comision_carrera',
-            'comentarios_carrera_visibles',
-            'comentarios_comision_pps',
-            'ultima_actualizacion_perfil',
-            'user',
-        )
+from django.forms import ValidationError
 
 class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'carrera'),
                     Row('telefono', 'progreso'),
                     'descripcion_intereses',
                     'descripcion_habilidades',
+                    'consideraciones_particulares',
                     Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
                     'condicion_acreditacion',
                     'expedicion_acreditacion',
@@ -53,6 +33,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
             'progreso',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'ultima_actualizacion_perfil',
             'ultima_postulacion',
             'condicion_acreditacion',
@@ -67,6 +48,7 @@ class AlumnoDetailSubcomisionCarreraForm(forms.ModelForm):
         self.fields['descripcion_intereses'].disabled = True
         self.fields['telefono'].disabled = True
         self.fields['descripcion_habilidades'].disabled = True
+        self.fields['consideraciones_particulares'].disabled = True
         self.fields['ultima_actualizacion_perfil'].disabled = True
         self.fields['ultima_postulacion'].disabled = True
         self.fields['comentarios_comision_pps'].disabled = True
@@ -165,7 +147,7 @@ class EntrevistaDetailSubcomisionCarreraForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaDetailSubcomisionCarreraForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
         self.fields['resultado'].disabled = True
@@ -199,7 +181,14 @@ class EntrevistaDetailEmpresaForm(forms.ModelForm):
             self.fields['fecha'].disabled = True
             self.fields['lugar'].disabled = True
         self.fields['comentarios_comision_pps'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
 
 class EntrevistaDetailAlumnoForm(forms.ModelForm):
     class Meta():
@@ -215,7 +204,7 @@ class EntrevistaDetailAlumnoForm(forms.ModelForm):
         self.fields['fecha'].disabled = True
         self.fields['lugar'].disabled = True
         self.fields['resultado'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
 
 class PasantiaDetailEmpresaForm(forms.ModelForm):
     class Meta():
@@ -280,19 +269,19 @@ class PasantiaDetailSubcomisionCarreraForm(forms.ModelForm):
             self.fields['numero_legajo'].disabled = True
             self.fields['comentarios_comision_pps'].disabled = True
         self.fields['tutor_empresa'].queryset = models.TutorEmpresa.objects.filter(
-                empresa=self.instance.entrevista.empresa)
+                empresa=self.instance.empresa)
         self.fields['comentarios_empresa'].disabled = True
-        self.fields['empresa'].initial = self.instance.entrevista.empresa.__str__()
+        self.fields['empresa'].initial = self.instance.empresa.__str__()
         self.fields['empresa'].disabled = True
         self.fields['tutor_docente'].queryset = models.Docente.objects.filter(
-                departamento=self.instance.carrera.departamento).order_by('apellido')
+                departamento=self.instance.alumno.carrera.departamento).order_by('apellido')
 
 class AlumnoCreateForm(forms.ModelForm):
     layout = Layout(Row('numero_registro', 'telefono'),
                    'carrera',
                    Row('perfil', 'curriculum'),
                    Row('historia_academica'),
-                   'descripcion_intereses','descripcion_habilidades')
+                   'descripcion_intereses','descripcion_habilidades','consideraciones_particulares')
     class Meta:
         model = models.Alumno
         fields = (
@@ -304,16 +293,20 @@ class AlumnoCreateForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
         )
         help_texts = {
             'historia_academica': (
                 'La encontrás en tu Siu Guarani -> Reportes -> Historia Académica'),
+            'consideraciones_particulares': (
+                'Ej: celiaquía, movilidad reducida, diabetes, etc.'),
         }
 
     def __init__(self, *args, **kwargs):
         super(AlumnoCreateForm, self).__init__(*args, **kwargs)
         self.fields['carrera'].required = True
         self.fields['carrera'].queryset = models.Carrera.objects.filter(activa=True)
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
 
 class UserCreateForm(RegistrationForm):
     layout = Layout('username', 'email',
@@ -384,11 +377,16 @@ class AlumnoEditForm(forms.ModelForm):
     layout = Layout(Row('telefono'),
                     Row('perfil', 'curriculum'),
                     Row('historia_academica'),
-                    'descripcion_intereses', 'descripcion_habilidades')
+                    'descripcion_intereses', 'descripcion_habilidades', 'consideraciones_particulares')
 
     class Meta:
         model = models.Alumno
-        fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades')
+        fields = ('perfil', 'telefono', 'curriculum', 'historia_academica', 'descripcion_intereses', 'descripcion_habilidades', 'consideraciones_particulares')
+
+    def __init__(self, *args, **kwargs):
+        super(AlumnoEditForm, self).__init__(*args, **kwargs)
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
+
 
 class EmpresaUserEditForm(forms.ModelForm):
     class Meta:
@@ -455,6 +453,7 @@ class MyUserCreateForm(UserCreationForm):
         self.fields['last_name'].required = True
 
 class EntrevistaCreateForm(forms.ModelForm):
+    fecha = forms.DateTimeField()
 
     class Meta():
         model = models.Entrevista
@@ -462,9 +461,18 @@ class EntrevistaCreateForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super(EntrevistaCreateForm, self).__init__(*args, **kwargs)
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ["%d/%m/%Y %H:%M"]
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
         
 class EntrevistaExistenteCreateForm(forms.ModelForm):
+    fecha = forms.DateTimeField()
+
     class Meta:
         model = models.Entrevista
         fields = ['fecha', 'lugar']
@@ -472,7 +480,14 @@ class EntrevistaExistenteCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EntrevistaExistenteCreateForm, self).__init__(*args, **kwargs)
         self.fields['fecha'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
+        self.fields['fecha'].error_messages = {'invalid_day': "La fecha no puede ser anterior a hoy!"}
+
+    def clean_fecha(self):
+        date = self.cleaned_data['fecha']
+        if date < timezone.now():
+            raise ValidationError(self.fields['fecha'].error_messages['invalid_day'])
+        return date
 
 
 class SubcomisionPasantiasUserEditForm(forms.ModelForm):
@@ -505,12 +520,13 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
                     Row('telefono', 'progreso'),
                     'descripcion_intereses',
                     'descripcion_habilidades',
+                    'consideraciones_particulares',
                     Row('ultima_actualizacion_perfil', 'ultima_postulacion'),
                     'condicion_acreditacion',
                     'expedicion_acreditacion',
-                    'comentarios_carrera_visibles',
                     'comentarios_comision_carrera',
-                    'comentarios_comision_pps')
+                    'comentarios_comision_pps',
+                    'comentarios_carrera_visibles')
 
     class Meta():
         model = models.Alumno
@@ -524,6 +540,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
             'historia_academica',
             'descripcion_intereses',
             'descripcion_habilidades',
+            'consideraciones_particulares',
             'ultima_actualizacion_perfil',
             'ultima_postulacion',
             'condicion_acreditacion',
@@ -541,6 +558,7 @@ class AlumnoDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.expedicion_acreditacion:
             self.fields['comentarios_comision_carrera'].label = 'No hay comentarios de la comisión de carrera'
         self.fields['comentarios_comision_carrera'].disabled = True
+        self.fields['telefono'].error_messages['invalid'] = 'Ingrese un número telefónico válido (ej. 2664018048)'
 
 class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
     layout = Layout(Row('empresa', 'alumno'),
@@ -566,7 +584,7 @@ class EntrevistaDetailComisionPasantiasForm(forms.ModelForm):
         super(EntrevistaDetailComisionPasantiasForm, self).__init__(*args, **kwargs)
         self.fields['alumno'].disabled = True
         self.fields['empresa'].disabled = True
-        self.fields['fecha'].input_formats = ['%Y/%m/%d - %H:%M hs.']
+        self.fields['fecha'].input_formats = ['%d/%m/%Y %H:%M']
         if not self.instance.resultado:
             self.fields['resultado'].label = 'Aún no hay resultado de la entrevista'
         self.fields['resultado'].disabled = True
@@ -600,7 +618,8 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
                     'informe',
                     'numero_legajo',
                     'comentarios_comision_pps',
-                    'comentarios_empresa')
+                    'comentarios_empresa',
+                    'practica_plan_de_estudio')
 
     class Meta():
         model = models.Pasantia
@@ -612,6 +631,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
             'tutor_empresa',
             'informe',
             'numero_legajo',
+            'practica_plan_de_estudio',
             'comentarios_empresa',
             'comentarios_comision_pps',
         )
@@ -626,6 +646,7 @@ class PasantiaDetailComisionPasantiasForm(forms.ModelForm):
         if not self.instance.comentarios_empresa:
             self.fields['comentarios_empresa'].label = 'No hay comentarios de la empresa'
         self.fields['comentarios_empresa'].disabled = True
+        self.fields['practica_plan_de_estudio'].widget = forms.RadioSelect(choices=((True, 'Si'), (False, 'No')))
 
 
 class PasantiaCreateForm(forms.ModelForm):
