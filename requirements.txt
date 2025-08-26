@@ -41,7 +41,7 @@ python-dateutil==2.8.1
 python-decouple==3.3
 python-http-client==3.2.7
 pytz==2022.1
-redis==3.5.1
+redis==4.3.6
 s3transfer==0.3.3
 sendgrid==6.3.0
 six==1.14.0
